@@ -1,41 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tu Nombre</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #282c34;
-            color: white;
-        }
-        .container {
-            padding: 20px;
-        }
-        .profile-pic {
-            border-radius: 50%;
-            width: 150px;
-        }
-        .links a {
-            margin: 10px;
-            color: white;
-            text-decoration: none;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <img src="TboxfinnRota.gif" alt="Tu Foto" class="profile-pic">
-        <h1>Tu Nombre</h1>
-        <p>Hola, soy un programador apasionado que encuentra disfrute y satisfacción en la creación de experiencias.</p>
-        <div class="links">
-            <a href="#projects">Proyectos</a>
-            <a href="#career">Carrera</a>
-            <a href="#skills">Habilidades</a>
-            <a href="#research">Investigación</a>
+<html lang="es">
+    <head>
+        <!-- Metadatos -->
+        <meta charset="utf-8">
+        
+        <!-- Metadatos específicos para móviles -->
+        <meta name="keywords" content="programador, codificación, consola, cv, java, haskell, OpenGL, c, c++, desarrollador de juegos, desarrollador de software, inglés, israelí, hebreo" />
+        <meta name="description" content="Desarrollador de juegos y software interesado en el desarrollo de motores en c++." />
+
+        <!-- Título de la página -->
+        <title>Tu Nombre</title>
+
+        <!-- Icono de la página -->
+        <link rel="icon" type="image/png" href="./data/images/icon_trans.png">
+        
+        <!-- CSS externo -->
+        <!-- Enlace a una biblioteca de iconos -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <!-- Enlace a un script externo -->
+        <script src="scripts/quick_links.js"></script>
+    </head>
+
+    <body id="top" style="background-color: #1a1a1a; color: #e6e6e6; font-family: Arial, sans-serif;">
+        <!-- Contenedor principal -->
+        <div class="container" style="margin-top: 1%; text-align: center;">   
+            <!-- Título principal -->
+            <div id="title" style="font-size: 3em; color: #bb86fc;">Tu Nombre</div>  
+            <!-- Imagen de perfil -->          
+            <img class="landing_logo" src="./data/images/portrait.png" alt="Portrait" style="border-radius: 50%; width: 150px;">
+            <!-- Enlaces rápidos -->
+            <div id="quick_links" style="margin-top: 20px;">
+                <a href="mailto:orilazar.cs@gmail.com" target="_blank"><i class="fa fa-envelope" style="color: #bb86fc;"></i></a>
+                <a href="https://github.com/Kney-Delach" target="_blank"><i class="fa fa-github" style="color: #bb86fc;"></i></a>
+                <a href="https://www.linkedin.com/in/ori-lazar-ba531491/" target="_blank"><i class="fa fa-linkedin" style="color: #bb86fc;"></i></a>
+                <a href="https://www.youtube.com/channel/UCxb2vCV-1go3d0T8kUQSXbA" target="_blank"><i class="fa fa-youtube" style="color: #bb86fc;"></i></a>
+                <a href="https://www.instagram.com/ori_lazar_ig/" target="_blank"><i class="fa fa-instagram" style="color: #bb86fc;"></i></a>
+            </div>
+            <!-- Línea horizontal -->
+            <hr style="border-color: #bb86fc;">
+            <!-- Sección de "Sobre mí" -->
+            <div id="about_me">Hola, soy un programador apasionado que encuentra disfrute y satisfacción en la creación de experiencias.</div>
+            <hr style="border-color: #bb86fc;">
+            <!-- Botones de navegación -->
+            <section class="buttons" style="margin-top: 20px;">
+                <div class="button_container">
+                    <div id="projects-Button" class="btn btn-5 kd-button" style="background-color: #bb86fc; color: #1a1a1a; padding: 10px 20px; margin: 10px; cursor: pointer;" onClick="document.getElementById('project_data_area').style.opacity = 0;">Proyectos</div> 
+                    <div id="career-Button" class="btn btn-5 kd-button" style="background-color: #bb86fc; color: #1a1a1a; padding: 10px 20px; margin: 10px; cursor: pointer;" onClick="document.getElementById('project_data_area').style.opacity = 0;">Carrera</div> 
+                    <div id="skills-Button" class="btn btn-5 kd-button" style="background-color: #bb86fc; color: #1a1a1a; padding: 10px 20px; margin: 10px; cursor: pointer;" onClick="document.getElementById('project_data_area').style.opacity = 0;">Habilidades</div> 
+                    <div id="research-Button" class="btn btn-5 kd-button" style="background-color: #bb86fc; color: #1a1a1a; padding: 10px 20px; margin: 10px; cursor: pointer;" onClick="document.getElementById('project_data_area').style.opacity = 0;">Investigación</div> 
+                </div>
+            </section>
         </div>
+
+        <!-- Script para animación de texto -->
+        <script src="scripts/text_animation.js"></script>
+    </body>
+
+    <!-- Sección inferior del contenido -->
+    <div id="bottom" style="margin-top: 20px;">
+        <!-- Área de selección de datos -->
+        <div id="data_selection_area" class="container kd-selection-content" style="opacity: 0;"></div>
+        <!-- Área de datos de proyectos -->
+        <div id="project_data_area" class="container kd-selection-content" style="opacity: 0;"></div>
+        <!-- Scripts de navegación -->
+        <script src="scripts/button_nav_selection.js"></script>
+        <script src="scripts/button_nav_proj.js"></script>
+        <script src="scripts/button_nav_career.js"></script>
     </div>
-</body>
 </html>
