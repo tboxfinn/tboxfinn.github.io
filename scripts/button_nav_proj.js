@@ -4,13 +4,13 @@
 
 const ProjectNames = 
 [
+    "Mutant_Wastelands",
     "mapex",
     "mirage",
     "exalted",
     "15_puzzle",
     "game_tech",
-    "vpa",
-    "Itchio"
+    "vpa"
 ]
 
 let ProjectText = [];
