@@ -1,0 +1,444 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css?family=VT323&display=swap');
+@font-face
+{
+    font-family: cascadia;
+    src: url("fonts/cascadia.ttf");
+}
+body
+{
+    /* background-color: #1d2e1f;
+    background-image: repeating-linear-gradient(rgba(0, 0, 255, 0.2), rgba(0, 0, 255, 0.2),#1c2619  102% ); 
+     */
+    background-color: #1d2e1f;
+    background-image: repeating-radial-gradient(rgba(0, 0, 255, 0.2), rgba(0, 0, 255, 0.2),#1c2619  102% );
+    height: 200vh;
+    display: block; /* */
+    /*margin: 0px;*/ /* rhs margin on the page */
+    font-size: 15pt;
+    text-shadow: 0 0 3px;
+
+    /* DEBUG VARIABLES */
+    border: 0px solid rgb(255, 255, 0);
+  }
+
+#title
+{
+    color: rgba(255, 255, 255, 255);
+    font-family: 'VT323', 'monospace'; /* font family */
+    font-size: 60pt; /* size of the font */
+    margin: -25px auto; /* vertical margin from top, horizontal centering (using auto) */
+    width: max-content; /* Takes up full width of screen */
+
+    /* DEBUG VARIABLES */
+    border: 0px solid rgb(149, 255, 0);
+}  
+h5 { font-size: 1.8rem; line-height: 1.5;  letter-spacing: -.05rem; }
+
+#title_description
+{
+    color: rgba(255, 255, 255, 255);
+    font-family: 'cascadia', 'monospace'; /*'Source Code Pro', monospace;  /* font family */
+    /*font-size: 30pt; /* size of the font */
+    margin-top: 25px auto; /* vertical margin from top, horizontal centering (using auto) */
+   /* width: max-content; /* Takes up full width of screen */
+    
+    font-size: 2.2rem; 
+    line-height: 1.5;  
+    letter-spacing: -.05rem;
+    
+    /* DEBUG VARIABLES */
+    border: 0px solid rgb(149, 255, 0);
+}  
+
+#about_me
+{
+    color: rgba(255, 255, 255, 255);
+    font-family: 'cascadia', 'monospace';
+    font-size: 1.8rem; 
+    letter-spacing: -.05rem;
+}
+
+/* An image encapsulating the full width of a page */
+.landing_logo
+{
+    margin: 10px auto;
+    height: 25vh;
+
+    /* DEBUG VARIABLES */
+    border: 0px solid rgb(255, 102, 0);
+}
+
+/* List for buttons */
+ul 
+{
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    align-self:center;
+    width: max-content; /* Takes up full width of screen */
+    border: 0px solid rgb(255, 102, 0);
+    padding: 0;
+
+}
+
+ul li 
+{
+    align-self:center;
+    border: 0px solid rgba(92, 250, 0, 0.938);
+
+    /* display: block; */
+    width: max-content; /* Takes up full width of screen */
+}
+
+ul li a 
+{
+    align-self:center;
+
+    --fill-color: #ffffff;
+    --fill-color_outer: #ffffff;
+    width: max-content; /* Takes up full width of screen */    
+    display: block;
+    font-family: "cascadia", "monospace";
+    font-size: 3rem;
+    font-weight: 100;
+    text-decoration: none;
+    text-transform: uppercase;
+    -webkit-text-stroke: 2px var(--fill-color_outer);
+    background: linear-gradient(90deg, var(--fill-color) 100%, var(--fill-color) 100%);
+    background-size: 0;
+    background-position: left;
+    background-repeat: no-repeat;
+    color: transparent;
+    -webkit-background-clip: text;
+            background-clip: text;
+    transition: 0.35s linear;
+}
+
+ul li a:hover 
+{
+    background-size: 100%;
+}
+  
+
+/* Shortcut links */
+#quick_links 
+{
+    width: 100%;
+    text-align: center;
+    margin-top: -10px;
+    margin-bottom: 2px;
+    color: rgb(255, 255, 255);
+}
+
+/* Tooltip for quick links. */
+#tooltip 
+{
+    font-family: 'VT323', monospace;
+    font-size: 15pt;
+    color: rgb(255, 255, 255);
+    padding: 5px;
+    margin: 0;
+}
+
+/* Icons.*/
+i.fa {
+    text-decoration: none;
+    padding: 5px;
+    font-size: 20pt;
+    color: rgb(255, 255, 255);
+ }
+
+ /* i.fa:hover {
+    color: #ffffff;
+    background-color: #065dffc0;
+    border: 2px solid #ffffff;
+ } */
+
+/* The following sections contain references to effect classes */
+/* for words */
+
+word
+{ 
+    display:inline-block; 
+}
+
+/* for links */
+a letter
+{ 
+    color:inherit; 
+} 
+
+/* This is the NORMAL state of a character */
+letter
+{ 
+  display:inline-block; 
+  white-space:pre; 
+  background:none; 
+  transition:.4s; 
+}
+
+/* Below is the INITIAL state of a character */
+letter.initial
+{ 
+  opacity:0; 
+  text-shadow:0 0 9px; 
+  color:#FFF; 
+  -webkit-transform:scale(8); 
+  -webkit-transform-origin:150% 50%; 
+  transform:scale(8); 
+  transform-origin:150% 50%; 
+}
+
+
+
+.buttons {
+  font-family: "cascadia", "monospace";
+
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+            flex-direction: column;
+    height: 100%;
+    -webkit-box-pack: center;
+            justify-content: center;
+    text-align: center;
+    width: 90%;
+    /* border: 2px solid #f60e0e; */
+  }
+  
+  .button_container {
+    -webkit-box-align: center;
+            align-items: center;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+            flex-direction: column;
+    -webkit-box-pack: center;
+            justify-content: center;
+    text-align: center;
+  }
+
+  @media (min-width: 600px) {
+    .button_container {
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: normal;
+              flex-direction: row;
+      -webkit-box-pack: justify;
+              justify-content: space-between;
+    }
+  }
+  
+  p {
+    color: #fff;
+    font-size: 12px;
+  }
+  @media (min-width: 600px) {
+    p {
+      left: 50%;
+      position: absolute;
+      -webkit-transform: translate(-50%, 0);
+              transform: translate(-50%, 0);
+      top: 90%;
+    }
+  }
+  @media (max-height: 500px) {
+    p {
+      left: 0;
+      position: relative;
+      top: 0;
+      -webkit-transform: translate(0, 0);
+              transform: translate(0, 0);
+    }
+  }
+  p a {
+    background: rgba(255, 255, 255, 0);
+    border-bottom: 1px solid;
+    color: #fff;
+    line-height: 1.4;
+    padding: .25em;
+    min-width: 100px;
+    text-decoration: none;
+  }
+  p a:hover {
+    background: white;
+    color: #E1332D;
+  }
+
+.btn {
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 45px;
+    /* margin: 0 0 2em; */
+    max-width: 160px;
+    position: relative;
+    text-decoration: none;
+    text-transform: uppercase;
+    width: 100%;
+  }
+  /* @media (min-width: 600px) {
+    .btn {
+      margin: 1em 1em 0em;
+    }
+  } */
+  .btn:hover {
+    text-decoration: none;
+  }
+
+.btn-5 {
+    border: 0px solid;
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0);
+    outline: 1px solid;
+    outline-color: rgba(255, 255, 255, 0.5);
+    outline-offset: 0px;
+    text-shadow: none;
+    -webkit-transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+    transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  
+  .btn-5:hover 
+  {
+    border: 0px solid;
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2); 
+    outline-color: rgba(255, 255, 255, 0);
+    outline-offset: 15px;
+    text-shadow: 1px 1px 2px #427388;
+  }
+  
+  .kd-button  {
+	position: relative;
+    display: inline-block;
+    margin-left: 1rem;
+	/* border: 2px solid black; */
+	/* border-radius: 50%; */
+	overflow: hidden;
+	/* transition: transform .3s; */
+	/* max-width:10vh; */
+	vertical-align: middle;
+}
+
+#pt
+{
+  color: rgba(255, 255, 255, 255);
+  font-family: 'cascadia', 'monospace';
+  font-size: 1.8rem; 
+  letter-spacing: -.05rem;
+  text-align: center;
+}
+
+.proj-button
+{
+  border: 2px solid white;
+	position: relative;
+	display: inline-block;
+	border-radius: 50%;
+	overflow: hidden;
+	transition: transform .3s;
+	max-width:10vh;
+	min-width:10vh;
+  min-height:10vh;
+	max-height:10vh;
+  vertical-align: middle;
+}
+
+.proj-button:hover {
+    
+  /* border: 3px solid white; */
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.5); 
+  outline-color: rgba(255, 255, 255, 0);
+  text-shadow: 1px 1px 2px #427388;
+}
+
+.proj-button-active
+{
+	position: relative;
+	display: inline-block;
+	border: 2px solid yellow;
+	border-radius: 50%;
+	overflow: hidden;
+	transition: transform .3s;
+	vertical-align: middle;
+	max-width:10vh;
+	min-width:10vh;
+  min-height:10vh;
+	max-height:10vh;
+}
+
+.proj-button-active:hover
+{
+  box-shadow: inset 0 0 20px rgba(221, 189, 11, 0.5), 0 0 20px rgba(236, 221, 7, 0.5); 
+  outline-color: yellow;
+  text-shadow: 1px 1px 2px yellow;
+}
+
+.proj-button-img 
+{
+	overflow: hidden;
+	transition: transform .5s;
+	max-width: 100%;
+	width: auto;
+  height: auto;
+  vertical-align: middle;
+}
+
+.proj-button-img:hover 
+{
+	/* transform: scale(1.3); */
+}
+
+#proj-button-section
+{
+    /* border: 2px solid #0dfa2d; */
+    text-align: center;
+}
+
+/****************** Skills section *********************/
+
+#skill-chart-title
+{
+  color: rgba(255, 255, 255, 255);
+  text-align: center; 
+  font-family: 'VT323', monospace;
+  font-size: 3.5rem; 
+  letter-spacing: -.05rem;
+}
+
+/* ---------------------------------------------------- */
+
+.chart_parent
+{
+  border: 2px dotted white;
+}
+.chart .metric 
+{
+  background-color: rgba(255, 255, 255, 0);
+  background: rgba(255, 255, 255, 0);
+  color: white;
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+  border-radius: 3px;
+  padding: 10px;
+  text-align: left;
+  box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.6);
+  font-family: 'cascadia', 'monospace';
+
+}
+.chart .metric .metric-value {
+  font-weight: bold;
+}
+
+.chart-horizontal {
+  width: 100%;
+}
+.chart-horizontal .metric {
+  margin-bottom: 3px;
+  min-width: 100px;
+  padding: 6px 15px;
+}
+.chart-horizontal .metric .metric-value {
+  float: right;
+  font-weight: bold;
+}

@@ -1,0 +1,177 @@
+
+
+.buttons_career 
+{
+  margin-top: 1.5rem;
+  font-family: "cascadia", "monospace";
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  flex-direction: column;
+  height: 100%;
+  -webkit-box-pack: center;
+  justify-content: center;
+  text-align: center;
+  width: 50%;
+}
+    
+.button_career_container 
+{
+  -webkit-box-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  justify-content: center;
+  text-align: center;
+}
+  
+@media (min-width: 600px) 
+{
+  .button_career_container 
+  {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    flex-direction: row;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+  }
+}
+    
+.btn-career-5 
+{
+  /* generic button */
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 45px;
+  /* margin: 0 0 2em; */
+  max-width: 160px;
+  position: relative;
+  text-decoration: none;
+  text-transform: uppercase;
+  width: 100%;
+
+  /* btn 5 */
+  border: 0px solid;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0);
+  outline: 1px solid;
+  outline-color: rgba(255, 255, 255, 0.5);
+  outline-offset: 0px;
+  text-shadow: none;
+  -webkit-transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+
+  /* kd-button */
+  position: relative;
+  display: inline-block;
+  margin-left: 0.1rem;
+  overflow: hidden;
+  vertical-align: middle;
+}
+  
+.btn-career-5:hover 
+{
+  border: 0px solid;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2); 
+  outline-color: rgba(255, 255, 255, 0);
+  outline-offset: 15px;
+  text-shadow: 1px 1px 2px #427388;
+  text-decoration: none;
+}
+
+.btn-career-5-active 
+{
+  /* generic button */
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 45px;
+  /* margin: 0 0 2em; */
+  max-width: 160px;
+  position: relative;
+  text-decoration: none;
+  text-transform: uppercase;
+  width: 100%;
+
+  /* btn 5 */
+  border: 0px solid;
+  box-shadow: inset 0 0 20px rgba(255, 238, 0, 0);
+  outline: 1px solid;
+  outline-color: rgba(255, 251, 0, 0.5);
+  outline-offset: 0px;
+  text-shadow: none;
+  -webkit-transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+
+  /* kd-button */
+  position: relative;
+  display: inline-block;
+  margin-left: 0.1rem;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.btn-career-5-active:hover 
+{
+  border: 0px solid;
+  box-shadow: inset 0 0 20px rgba(255, 240, 29, 0.5), 0 0 20px rgba(251, 255, 22, 0.2); 
+  outline-color: rgba(255, 255, 255, 0);
+  outline-offset: 15px;
+  text-shadow: 1px 1px 2px #427388;
+  text-decoration: none;
+}
+
+.hr-career {
+  color: white;
+  display: block;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5em;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: inset;
+  border-width: 1px;
+}
+
+/* Education */
+.edu 
+{
+  color: rgba(255, 255, 255, 255);
+  display: block;
+  text-align: center;
+  font-family: 'cascadia', 'monospace';
+}
+
+.edu-title
+{
+    color: rgba(255, 255, 255, 255);
+    font-family: 'Major Mono Display', monospace;
+    font-size: 2.8rem; 
+    letter-spacing: +0.7rem;
+    text-align: center;
+    padding-bottom: 25px;
+} 
+
+.edu-title-medium
+{
+    color: rgba(255, 255, 255, 255);
+    font-family: 'cascadia', monospace;
+    font-size: 2.2rem; 
+    letter-spacing: +0.7rem;
+    text-align: center;
+    padding-bottom: 25px;
+} 
+
+.we-year
+{
+  font-family: 'Major Mono Display', monospace;
+  font-size: 2.2rem; 
+  padding-top: 10px;
+  padding-bottom: 0px;
+}
