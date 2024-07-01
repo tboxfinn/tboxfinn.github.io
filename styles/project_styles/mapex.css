@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css?family=Major+Mono+Display&display=swap');
+
+#mapex_title
+{
+    color: rgba(255, 255, 255, 255);
+    /* -webkit-text-stroke: 2px rgb(255, 255, 255); */
+    font-family: 'Major Mono Display', monospace;
+    font-size: 5.8rem; 
+    letter-spacing: +0.7rem;
+    text-align: center;
+    padding-bottom: 25px;
+} 
+
+
+#manual_link_mapex
+{
+    align-self: center;
+    text-align: center;
+    font-size: 50px;
+}
+
+#mapex_quote
+{
+    font-family: 'VT323', 'monospace';
+    color: rgba(255, 255, 255, 255);
+    border-color: rgba(255, 255, 255, 0.2);
+    text-align: center;
+    font-size: 25px;
+}
+
+#mapex_tldr
+{
+    text-align: center;
+}
+
+#mapex_body
+{
+    text-align: center;
+    font-family: 'cascadia', 'monospace';
+}
+
+#mapex_youtube
+{
+    text-align: center;
+}
+
+.mapex_text
+{
+    color: rgba(255, 255, 255, 255);
+    font-size: 1.8rem; 
+    letter-spacing: -.05rem;
+} 
+
