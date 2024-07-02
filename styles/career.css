@@ -3,7 +3,7 @@
 .buttons_career 
 {
   margin-top: 1.5rem;
-  font-family: "Montserrat-Bold", "monospace";
+  font-family: "cascadia", "monospace";
   display: -webkit-box;
   display: flex;
   -webkit-box-orient: vertical;
@@ -145,13 +145,13 @@
   color: rgba(255, 255, 255, 255);
   display: block;
   text-align: center;
-  font-family: 'Montserrat-Bold', 'monospace';
+  font-family: 'cascadia', 'monospace';
 }
 
 .edu-title
 {
     color: rgba(255, 255, 255, 255);
-    font-family: 'Montserrat-Bold', monospace;
+    font-family: 'Major Mono Display', monospace;
     font-size: 2.8rem; 
     letter-spacing: +0.7rem;
     text-align: center;
@@ -161,7 +161,7 @@
 .edu-title-medium
 {
     color: rgba(255, 255, 255, 255);
-    font-family: 'Montserrat-Bold', monospace;
+    font-family: 'cascadia', monospace;
     font-size: 2.2rem; 
     letter-spacing: +0.7rem;
     text-align: center;
@@ -170,7 +170,7 @@
 
 .we-year
 {
-  font-family: 'Montserrat-Bold', monospace;
+  font-family: 'Major Mono Display', monospace;
   font-size: 2.2rem; 
   padding-top: 10px;
   padding-bottom: 0px;
