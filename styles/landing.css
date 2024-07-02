@@ -5,6 +5,11 @@
     font-family: cascadia;
     src: url("fonts/cascadia.ttf");
 }
+@font-face
+{
+    font-family: montserrat-Black;
+    src: url("fonts/Montserrat-Black.ttf");
+}
 body
 {
     /* background-color: #1d2e1f;
@@ -25,7 +30,7 @@ body
 #title
 {
     color: rgba(255, 255, 255, 255);
-    font-family: 'VT323', 'monospace'; /* font family */
+    font-family: 'montserrat-Black', 'monospace'; /* font family */
     font-size: 60pt; /* size of the font */
     margin: -25px auto; /* vertical margin from top, horizontal centering (using auto) */
     width: max-content; /* Takes up full width of screen */
