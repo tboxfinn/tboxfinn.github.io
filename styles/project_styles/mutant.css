@@ -4,7 +4,7 @@
 {
     color: rgba(255, 255, 255, 255);
     /* -webkit-text-stroke: 2px rgb(255, 255, 255); */
-    font-family: 'Montserrat', monospace;
+    font-family: 'Montserrat', sans-serif;
     font-size: 5.8rem; 
     letter-spacing: +0.7rem;
     text-align: center;
