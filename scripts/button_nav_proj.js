@@ -4,6 +4,11 @@
 
 const ProjectNames = 
 [
+    "mapex",
+    "exalted",
+    "15_puzzle",
+    "game_tech",
+    "vpa",
     "Mutant_Wastelands",
 ]
 
