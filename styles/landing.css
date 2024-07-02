@@ -40,7 +40,7 @@ body
 #title
 {
     color: rgba(255, 255, 255, 255);
-    font-family: 'montserrat-Black', 'monospace'; /* font family */
+    font-family: 'montserrat-Black'; /* font family */
     font-size: 60pt; /* size of the font */
     margin: -25px auto; /* vertical margin from top, horizontal centering (using auto) */
     width: max-content; /* Takes up full width of screen */
@@ -53,7 +53,7 @@ h5 { font-size: 1.8rem; line-height: 1.5;  letter-spacing: -.05rem; }
 #title_description
 {
     color: rgba(255, 255, 255, 255);
-    font-family: 'cascadia', 'monospace'; /*'Source Code Pro', monospace;  /* font family */
+    font-family: 'cascadia'; /*'Source Code Pro', monospace;  /* font family */
     /*font-size: 30pt; /* size of the font */
     margin-top: 25px auto; /* vertical margin from top, horizontal centering (using auto) */
    /* width: max-content; /* Takes up full width of screen */
@@ -69,7 +69,7 @@ h5 { font-size: 1.8rem; line-height: 1.5;  letter-spacing: -.05rem; }
 #about_me
 {
     color: rgba(255, 255, 255, 255);
-    font-family: 'cascadia', 'monospace';
+    font-family: 'cascadia';
     font-size: 1.8rem; 
     letter-spacing: -.05rem;
 }
@@ -114,7 +114,7 @@ ul li a
     --fill-color_outer: #ffffff;
     width: max-content; /* Takes up full width of screen */    
     display: block;
-    font-family: "cascadia", "monospace";
+    font-family: "cascadia";
     font-size: 3rem;
     font-weight: 100;
     text-decoration: none;
@@ -208,7 +208,7 @@ letter.initial
 
 
 .buttons {
-  font-family: "cascadia", "monospace";
+  font-family: "cascadia";
 
     display: -webkit-box;
     display: flex;
@@ -438,7 +438,7 @@ letter.initial
   padding: 10px;
   text-align: left;
   box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.6);
-  font-family: 'cascadia', 'monospace';
+  font-family: 'cascadia';
 
 }
 .chart .metric .metric-value {
