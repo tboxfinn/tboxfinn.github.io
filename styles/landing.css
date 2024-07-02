@@ -37,7 +37,7 @@ body
 #title
 {
     color: rgba(255, 255, 255, 1);
-    font-family: 'Montserrat-Bold', 'Montserrat-Black', 'monospace'; /* font family */
+    font-family: 'Montserrat-Bold', 'Montserrat', 'Montserrat-Black', 'monospace'; /* font family */
     font-size: 60pt; /* size of the font */
     margin: -25px auto; /* vertical margin from top, horizontal centering (using auto) */
     width: max-content; /* Takes up full width of screen */
@@ -414,7 +414,7 @@ letter.initial
 {
   color: rgba(255, 255, 255, 255);
   text-align: center; 
-  font-family: 'VT323', monospace;
+  font-family: 'Montserrat-Bold', monospace;
   font-size: 3.5rem; 
   letter-spacing: -.05rem;
 }
