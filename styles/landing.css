@@ -12,6 +12,11 @@
     font-family: montserrat-Black;
     src: url("fonts/Montserrat-Black.ttf");
 }
+@font-face
+{
+    font-family: montserrat-Bold;
+    src: url("fonts/Montserrat-Bold.ttf");
+}
 body
 {
     /* background-color: #1d2e1f;
@@ -32,7 +37,7 @@ body
 #title
 {
     color: rgba(255, 255, 255, 1);
-    font-family: 'Montserrat', 'Montserrat-Black', 'monospace'; /* font family */
+    font-family: 'Montserrat-Black', 'monospace'; /* font family */
     font-size: 60pt; /* size of the font */
     margin: -25px auto; /* vertical margin from top, horizontal centering (using auto) */
     width: max-content; /* Takes up full width of screen */
