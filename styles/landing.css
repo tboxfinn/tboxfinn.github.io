@@ -1,15 +1,25 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap');
 @import url('https://fonts.googleapis.com/css?family=VT323&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 @font-face
 {
     font-family: cascadia;
     src: url("fonts/cascadia.ttf");
+}
+
+@font-face
+{
     font-family: montserrat-Black;
     src: url("fonts/Montserrat-Black.ttf");
+}
+
+@font-face
+{
     font-family: montserrat-Bold;
     src: url("fonts/Montserrat-Bold.ttf");
 }
+
 body
 {
     /* background-color: #1d2e1f;
