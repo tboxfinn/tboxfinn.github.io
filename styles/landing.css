@@ -32,7 +32,7 @@ body
 #title
 {
     color: rgba(255, 255, 255, 1);
-    font-family: 'Montserrat-Black', 'VT323', 'monospace'; /* font family */
+    font-family: 'Montserrat', 'Montserrat-Black', 'monospace'; /* font family */
     font-size: 60pt; /* size of the font */
     margin: -25px auto; /* vertical margin from top, horizontal centering (using auto) */
     width: max-content; /* Takes up full width of screen */
