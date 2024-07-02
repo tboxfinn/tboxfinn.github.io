@@ -32,7 +32,7 @@ body
 #title
 {
     color: rgba(255, 255, 255, 255);
-    font-family: 'montserrat-Black', 'Montserrat',  sans-serif; /* font family */
+    font-family: 'Montserrat', 'VT323', 'monospace'; /* font family */
     font-size: 60pt; /* size of the font */
     margin: -25px auto; /* vertical margin from top, horizontal centering (using auto) */
     width: max-content; /* Takes up full width of screen */
@@ -141,7 +141,7 @@ ul li a:hover
 /* Tooltip for quick links. */
 #tooltip 
 {
-    font-family: 'montserrat-Black', 'Montserrat',  sans-serif;
+    font-family: 'VT323', monospace;
     font-size: 15pt;
     color: rgb(255, 255, 255);
     padding: 5px;
