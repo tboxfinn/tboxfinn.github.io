@@ -12,18 +12,27 @@
             align-items: center;
             margin: 0;
             padding: 20px;
+            background-color: #1a1a2e; /* Fondo oscuro */
+            color: #fff; /* Texto claro */
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
         }
         .row {
             display: flex;
             justify-content: space-around;
             width: 100%;
+            max-width: 1200px;
             margin-bottom: 20px;
         }
         .list-container {
-            border: 1px solid #000;
+            border: 1px solid #fff;
             padding: 10px;
             width: 30%;
             box-sizing: border-box;
+            background-color: #16213e; /* Fondo de las listas */
+            border-radius: 8px;
         }
         .list-container h2 {
             text-align: center;
@@ -38,14 +47,17 @@
         }
         .list-container ul li a {
             text-decoration: none;
-            color: #000;
-            border: 1px solid #000;
-            padding: 5px;
+            color: #fff;
+            border: 1px solid #fff;
+            padding: 10px;
             display: block;
             text-align: center;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
         }
         .list-container ul li a:hover {
-            background-color: #f0f0f0;
+            background-color: #fff;
+            color: #16213e;
         }
     </style>
 </head>
