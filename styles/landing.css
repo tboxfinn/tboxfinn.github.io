@@ -457,6 +457,15 @@ letter.initial
 
 /****************** Tools section *********************/
 
+#tools-chart-title
+{
+  color: rgba(255, 255, 255, 255);
+  text-align: center; 
+  font-family: 'Montserrat', 'Montserrat-Bold', monospace;
+  font-size: 3.5rem; 
+  letter-spacing: -.05rem;
+}
+
 #tools-chart-title-container
 {
   display: grid;
@@ -469,7 +478,7 @@ letter.initial
   letter-spacing: -0.05rem;
 }
 
-#skill-chart-title-item 
+#tools-chart-title-item 
 {
   text-align: left;
 }
