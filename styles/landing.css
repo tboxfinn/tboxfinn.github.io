@@ -466,20 +466,4 @@ letter.initial
   letter-spacing: -.05rem;
 }
 
-#tools-chart-title-container
-{
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  color: rgba(255, 255, 255, 1);
-  text-align: left;
-  font-family: 'Montserrat', monospace;
-  font-size: 3.5rem;
-  letter-spacing: -0.05rem;
-}
-
-#tools-chart-title-item 
-{
-  text-align: left;
-}
 
