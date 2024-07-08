@@ -261,7 +261,7 @@ var altmsg = document.getElementById("altmsg");
 var alticon = document.querySelector(".ntcheck");
 const ntindi = document.querySelector(".toastnt")
 
-function toastNotify(alt, alm, alttype, altclr) {
+function toastNotify(alt, alm, alttype, altclr, downloadCV = false) {
   alttil.innerHTML = alt;
   altmsg.innerHTML = alm;
 
@@ -281,6 +281,16 @@ function toastNotify(alt, alm, alttype, altclr) {
   setTimeout(() => {
     ntprog.classList.remove("ntact");
   }, 5300)
+
+  if (downloadCV)
+  {
+    var link = document.createElement("a");
+    link.href = "assets/HugoValladolid_CV_UnityDeveloper.pdf";
+    link.download = "HugoValladolid_CV_UnityDeveloper.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 }
 
 ntclose.addEventListener("click", () => {
