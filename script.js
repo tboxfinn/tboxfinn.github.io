@@ -1,6 +1,6 @@
 /*
-    This file is a part of Saviru's Portfolio
-    Copyright (C) 2024 Saviru Kashmira Atapattu
+    This file is a part of Hugo's Portfolio
+    Copyright (C) 2024 Hugo Daniel Valladolid
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,9 +16,9 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-console.log("Welcome to Saviru's portfolio !")
+console.log("Welcome to Hugo's portfolio !")
 
-title = "Hi there, I'm Saviru Kashmira Atapattu. Welcome to my portfolio !           ";
+title = "Hi there, I'm Hugo Daniel Valladolid Daumas. Welcome to my portfolio !           ";
 position = 0;
 function scrolltitle() {
     document.title = title.substring(position, title.length) + title.substring(0, position); 
