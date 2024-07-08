@@ -18,7 +18,7 @@
 
 console.log("Welcome to Hugo's portfolio !")
 
-title = "Hi there, I'm Hugo Daniel Valladolid Daumas. Welcome to my portfolio !           ";
+title = "Hugo Valladolid's portfolio !           ";
 position = 0;
 function scrolltitle() {
     document.title = title.substring(position, title.length) + title.substring(0, position); 
