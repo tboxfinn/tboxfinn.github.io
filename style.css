@@ -1006,15 +1006,17 @@ body {
 }
 
 /*Videos*/
-div.scroll-container {
+.scroll-container {
+    display: flex;
     background-color: #333;
-    overflow: auto;
+    overflow-x: auto;
     white-space: nowrap;
     padding: 25px;
 }
 
-div.scroll-container iframe {
-padding: 25px;
+.scroll-container iframe {
+    margin-right: 20px; /* Añade espacio entre los iframes */
+    flex-shrink: 0; /* Previene que los iframes se encojan */
 }
 
 /*Contact me*/
