@@ -1008,7 +1008,7 @@ body {
 /*Videos*/
 .scroll-container {
     background-color: #333;
-    overflow: hidden;
+    overflow: scroll;
     white-space: nowrap;
     padding: 10px;
 }
