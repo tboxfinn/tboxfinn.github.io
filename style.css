@@ -1016,12 +1016,13 @@ body {
 }
 
 .video-container {
-    background: #ffffff;
+    background: #201e1e2d;
     border: 1px solid #ddd;
     padding: 20px;
     margin: 20px 0;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
 }
 
 .video-section h3 {
@@ -1031,7 +1032,6 @@ body {
 
 .video-scroll {
     display: flex;
-    overflow-x: scroll;
     gap: 10px;
 }
 
