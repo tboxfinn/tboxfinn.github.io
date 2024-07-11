@@ -1008,8 +1008,8 @@ body {
 /*Videos*/
 .scroll-container {
     display: flex;
-    background-color: #333;
-    overflow-x: auto;
+    background-color: #3333334d;
+    overflow-x: auto;  /* Permite el scroll horizontal */
     white-space: nowrap;
     padding: 25px;
 }
