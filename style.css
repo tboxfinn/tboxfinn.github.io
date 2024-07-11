@@ -1005,40 +1005,16 @@ body {
     opacity: 0;
 }
 
-#videos {
-    padding: 20px;
-    background-color: #f9f9f92d;
+/*Videos*/
+div.scroll-container {
+    background-color: #333;
+    overflow: auto;
+    white-space: nowrap;
+    padding: 10px;
 }
 
-#videos h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
-}
-
-.video-container {
-    background: #201e1e2d;
-    border: 1px solid #ddd;
-    padding: 20px;
-    margin: 20px 70px;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    overflow-x: auto;
-}
-
-.video-section h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-}
-
-.video-scroll {
-    display: flex;
-    gap: 10px;
-}
-
-.video-scroll iframe {
-    width: 300px;
-    height: 200px;
-    border: none;
+div.scroll-container img {
+padding: 10px;
 }
 
 /*Contact me*/
