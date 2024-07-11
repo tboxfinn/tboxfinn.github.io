@@ -1015,8 +1015,13 @@ body {
     margin-bottom: 10px;
 }
 
-.video-section {
-    margin-bottom: 20px;
+.video-container {
+    background: #ffffff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .video-section h3 {
