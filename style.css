@@ -1006,34 +1006,34 @@ body {
 }
 
 /*Videos*/
-.scroll-container {
-    display: flex;
-    background-color: #333;
-    overflow-x: auto;
-    white-space: nowrap;
-    padding: 25px;
-    box-sizing: border-box;
-    border: 2px solid red; /* Borde temporal para debugging */
-}
 
-.scroll-container::-webkit-scrollbar {
-    height: 10px;  /* Altura de la barra de scroll horizontal */
-}
-
-.scroll-container::-webkit-scrollbar-thumb {
-    background: #888;  /* Color de la barra de scroll */
-    border-radius: 10px;
-}
-
-.scroll-container::-webkit-scrollbar-thumb:hover {
-    background: #555;  /* Color de la barra de scroll al pasar el mouse */
-}
-
-.scroll-container iframe {
-    margin-right: 20px;
-    flex-shrink: 0;
-    box-sizing: border-box;
-    border: 2px solid blue; /* Borde temporal para debugging */
+@import  
+url('https://fonts.googleapis.com/css2?family=Poppins&display=swap'); 
+  
+body { 
+    font-family: 'Poppins', sans-serif; 
+} 
+  
+h1 { 
+    color: rgb(41, 107, 41); 
+    text-align: center; 
+} 
+  
+h3 { 
+    text-align: center; 
+} 
+  
+.gallerybox { 
+    white-space: nowrap; 
+    overflow-x: auto; 
+} 
+  
+.imgbox img { 
+    width: 400px; 
+    height: 200px; 
+    margin-right: 5px; 
+    border-radius: 20px; 
+    border: 2px solid rgb(138, 138, 128); 
 }
 
 /*Contact me*/
