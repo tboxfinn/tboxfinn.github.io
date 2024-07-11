@@ -1008,15 +1008,34 @@ body {
 /*Videos*/
 .scroll-container {
     display: flex;
-    background-color: #3333334d;
+    background-color: #333;
     overflow-x: auto;  /* Permite el scroll horizontal */
     white-space: nowrap;
     padding: 25px;
+    scroll-behavior: smooth;  /* Hace que el scroll sea suave */
+}
+
+.scroll-container::-webkit-scrollbar {
+    height: 10px;  /* Altura de la barra de scroll horizontal */
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+    background: #888;  /* Color de la barra de scroll */
+    border-radius: 10px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #555;  /* Color de la barra de scroll al pasar el mouse */
 }
 
 .scroll-container iframe {
     margin-right: 20px; /* Añade espacio entre los iframes */
     flex-shrink: 0; /* Previene que los iframes se encojan */
+}
+
+/* Asegúrate de que el primer video no se vaya demasiado a la izquierda */
+.scroll-container iframe:first-child {
+    margin-left: 25px; /* Alinea el primer video correctamente */
 }
 
 /*Contact me*/
