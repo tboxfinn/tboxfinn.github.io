@@ -1013,8 +1013,8 @@ div.scroll-container {
     padding: 10px;
 }
 
-div.scroll-container img {
-padding: 10px;
+div.scroll-container iframe {
+padding: 15px;
 }
 
 /*Contact me*/
