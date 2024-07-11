@@ -40,7 +40,8 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    overflow: hidden;
+    overflow-y: hidden;
+    overflow-x: auto;
     background: #000;
 }
 
@@ -1008,7 +1009,7 @@ body {
 /*Videos*/
 .scroll-container {
     background-color: #333;
-    overflow-x: auto;
+    overflow: auto;
     white-space: nowrap;
     padding: 10px;
 }
