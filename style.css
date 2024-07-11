@@ -1018,11 +1018,12 @@ body {
 .video-container {
     background: #201e1e2d;
     border: 1px solid #ddd;
-    padding: 20px;
-    margin: 20px 20px 20px 20px;
+    padding: 20px; /* Espacio interno entre el borde y el contenido */
+    margin: 20px; /* Espacio externo entre el contenedor y los bordes del elemento padre */
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow-x: auto;
+    max-width: calc(100% - 40px); /* Ajusta el ancho máximo para asegurar 20px de margen a cada lado */
 }
 
 .video-section h3 {
