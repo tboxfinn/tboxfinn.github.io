@@ -1005,6 +1005,37 @@ body {
     opacity: 0;
 }
 
+#videos {
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+#videos h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.video-section {
+    margin-bottom: 20px;
+}
+
+.video-section h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.video-scroll {
+    display: flex;
+    overflow-x: scroll;
+    gap: 10px;
+}
+
+.video-scroll iframe {
+    width: 300px;
+    height: 200px;
+    border: none;
+}
+
 /*Contact me*/
 .contmediv {
     position: relative;
