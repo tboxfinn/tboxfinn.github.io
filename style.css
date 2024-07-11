@@ -1006,18 +1006,6 @@ body {
 }
 
 /*Videos*/
-.gallerybox { 
-    white-space: nowrap; 
-    overflow-x: auto; 
-} 
-  
-.imgbox img { 
-    width: 400px; 
-    height: 200px; 
-    margin-right: 5px; 
-    border-radius: 20px; 
-    border: 2px solid rgb(138, 138, 128); 
-}
 
 /*Contact me*/
 .contmediv {
