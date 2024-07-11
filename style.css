@@ -1009,10 +1009,11 @@ body {
 .scroll-container {
     display: flex;
     background-color: #333;
-    overflow-x: auto;  /* Permite el scroll horizontal */
+    overflow-x: auto;
     white-space: nowrap;
     padding: 25px;
-    scroll-behavior: smooth;  /* Hace que el scroll sea suave */
+    box-sizing: border-box;
+    border: 2px solid red; /* Borde temporal para debugging */
 }
 
 .scroll-container::-webkit-scrollbar {
@@ -1029,13 +1030,10 @@ body {
 }
 
 .scroll-container iframe {
-    margin-right: 20px; /* Añade espacio entre los iframes */
-    flex-shrink: 0; /* Previene que los iframes se encojan */
-}
-
-/* Asegúrate de que el primer video no se vaya demasiado a la izquierda */
-.scroll-container iframe:first-child {
-    margin-left: 25px; /* Alinea el primer video correctamente */
+    margin-right: 20px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    border: 2px solid blue; /* Borde temporal para debugging */
 }
 
 /*Contact me*/
