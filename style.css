@@ -1020,7 +1020,7 @@ body {
 
 div.scrollmenu {
     background-color: #333;
-    overflow: auto;
+    overflow: scroll;
     white-space: nowrap;
 }
 
