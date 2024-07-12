@@ -1017,6 +1017,7 @@ body {
 .video-gallery {
     display: flex;
     gap: 10px; /* Espacio entre videos */
+    white-space: nowrap;
 }
 
 .video-gallery iframe {
