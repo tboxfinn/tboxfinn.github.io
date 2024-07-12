@@ -1006,22 +1006,22 @@ body {
 }
 
 /*Videos*/
-.flex-container {
+.video-container {
+    width: 80%; /* Ajusta el ancho según sea necesario */
+    overflow-x: auto; /* Scroll horizontal */
+    border: 2px solid #ccc; /* Borde de la caja */
+    background-color: #1f1d1d33; /* Fondo blanco */
+    white-space: nowrap; /* Evita que los elementos se rompan en varias líneas */
+}
+
+.video-gallery {
     display: flex;
-    background-color: rgba(26, 23, 23, 0.144);
+    gap: 10px; /* Espacio entre videos */
 }
 
-.flex-container > div {
-    background-color: #f1f1f1;
-    margin: 20px;
-    padding: 100px;
-    font-size: 30px;
-}
-
-div.scrollmenu {
-    background-color: #333;
-    overflow: scroll;
-    white-space: nowrap;
+.video-gallery iframe {
+    width: 300px; /* Ajusta el ancho de los iframes según sea necesario */
+    height: 170px; /* Ajusta la altura de los iframes según sea necesario */
 }
 
 /*Contact me*/
