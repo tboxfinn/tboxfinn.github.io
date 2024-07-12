@@ -1006,25 +1006,24 @@ body {
 }
 
 /*Videos*/
-/* Ocultar barras de desplazamiento */
-.video-container::-webkit-scrollbar {
-    display: none;
-}
-
 .video-container {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    width: 80%; /* Ajusta el ancho según sea necesario */
+    overflow-x: auto; /* Scroll horizontal */
+    border: 2px solid #ccc; /* Borde de la caja */
+    padding: 10px;
+    background-color: #1f1d1d33; /* Fondo blanco */
+    white-space: nowrap; /* Evita que los elementos se rompan en varias líneas */
 }
 
 .video-gallery {
-    display: inline-block;
+    display: flex;
+    gap: 10px; /* Espacio entre videos */
 }
 
-.video-item {
-    display: inline-block;
-    margin-right: 20px; /* Espacio entre videos */
+.video-gallery iframe {
+    width: 300px; /* Ajusta el ancho de los iframes según sea necesario */
+    height: 170px; /* Ajusta la altura de los iframes según sea necesario */
 }
-
 
 /*Contact me*/
 .contmediv {
