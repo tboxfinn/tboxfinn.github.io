@@ -23,6 +23,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Slab:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 
+
 html { 
     overflow-y: scroll;
     overflow-x: hidden;
@@ -1003,6 +1004,50 @@ body {
     margin-right: 10px;
     z-index: -1;
     opacity: 0;
+}
+
+/*General Styling*/
+.media-scroller {
+    display: grid;
+    gap: 3%;
+    grid-auto-flow: column;
+    grid-auto-columns: 28%;
+
+    padding: 20px 25px 20px;
+
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+}
+
+.media-element {
+    display: grid;
+    grid-template-rows: min-content;
+    gap: 3%;
+    padding: 1em;
+    background-color: #2f2f30;
+    border-radius: 10px;
+    box-shadow: 16px -10px rgba(255, 255, 255, 0.096);
+}
+
+.media-element > img {
+    inline-size: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+.media-element > iframe {
+    inline-size: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+.snaps-inline {
+    scroll-snap-type: inline mandatory;
+    scroll-padding-inline: 3%;
+}
+
+.snaps-inline > * {
+    scroll-snap-align: start;
 }
 
 /*Videos*/
