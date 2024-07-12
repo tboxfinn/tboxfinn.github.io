@@ -1006,10 +1006,14 @@ body {
 }
 
 /*Videos*/
+/* Ocultar barras de desplazamiento */
+.video-container::-webkit-scrollbar {
+    display: none;
+}
+
 .video-container {
-    overflow-x: scroll;
-    white-space: nowrap;
-    padding: 20px 0;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
 .video-gallery {
@@ -1018,8 +1022,9 @@ body {
 
 .video-item {
     display: inline-block;
-    margin-right: 10px; /* Espacio entre videos */
+    margin-right: 20px; /* Espacio entre videos */
 }
+
 
 /*Contact me*/
 .contmediv {
