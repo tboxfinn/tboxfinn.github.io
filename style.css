@@ -1051,7 +1051,24 @@ body {
 }
 
 /*Videos*/
+.vdostext {
+    color: #f0f0f0;
+    text-decoration: none;
+    margin-left: 10px;
+    margin-right: 10px;
+    z-index: 1;
+    margin-top: 40px;
+    text-align: left;
+    padding-left: 2%;
+}
 
+.vdos-h1 {
+    font-family: "Exo 2", sans-serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    position: relative;
+}
 
 /*Contact me*/
 .contmediv {
