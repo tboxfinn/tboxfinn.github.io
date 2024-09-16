@@ -1027,6 +1027,7 @@ body {
     background-color: #2f2f30;
     border-radius: 10px;
     box-shadow: 16px -10px rgba(255, 255, 255, 0.096);
+    position: relative; /* Add this line */
 }
 
 .media-element > img {
@@ -1039,6 +1040,40 @@ body {
     inline-size: 100%;
     aspect-ratio: 16 / 9;
     object-fit: cover;
+}
+
+.tooltip {
+    display: inline-block;
+    font-family: "Exo 2", sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    position: absolute;
+    color: #f0f0f0; /* Cambia este valor al color que desees */
+    top: 18px; /* Adjust the top position if needed */
+    right: 18px; /* Adjust the right position if needed */
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 400px;
+    background-color: black;
+    color: #f0f0f0;
+    text-align: center;
+    border-radius: 6px;
+    padding: 10px;
+    opacity: 0;
+    transition: opacity 0.5s;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-80%);
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }
 
 .snaps-inline {
