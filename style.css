@@ -65,6 +65,7 @@ body {
     z-index: 10;
 }
 
+
 #cursor {
     position: fixed;
     width: 250px;
@@ -804,6 +805,17 @@ body {
       transition-delay: 0s !important;
     }
 }
+
+.side-by-side-container {
+    display: flex;
+    justify-content: space-between; /* Adjusts space between the sections */
+    gap: 1px; /* Optional: Adjusts the space between the two sections */
+}
+
+.education-section, .projects-section {
+    width: 75%; /* Adjusts width to fit both sections in a row */
+}
+
 
 /*Education skills*/
 .gledu {
