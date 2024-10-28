@@ -1048,12 +1048,6 @@ body {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Efecto de sombra */
 }
 
-@media (max-width: 768px) {
-    .featured-video {
-        width: 95vw; /* Ajusta el tamaño en móviles */
-    }
-}
-
 .media-element {
     display: grid;
     grid-template-rows: min-content;
