@@ -1031,6 +1031,29 @@ body {
     overscroll-behavior-inline: contain;
 }
 
+/* Video Central */
+.featured-video-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    padding: 10px;
+}
+
+.featured-video {
+    width: 80vw; /* Tamaño adaptable para la mayoría de dispositivos */
+    max-width: 1000px; /* Tamaño máximo para pantallas grandes */
+    aspect-ratio: 16 / 9; /* Mantiene la relación de aspecto */
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Efecto de sombra */
+}
+
+@media (max-width: 768px) {
+    .featured-video {
+        width: 95vw; /* Ajusta el tamaño en móviles */
+    }
+}
+
 .media-element {
     display: grid;
     grid-template-rows: min-content;
@@ -1107,6 +1130,17 @@ body {
     margin-top: 40px;
     text-align: left;
     padding-left: 2%;
+}
+
+.vdostextCentered {
+    position: relative;
+    color: #f0f0f0;
+    text-decoration: none;
+    margin-left: 10px;
+    margin-right: 10px;
+    z-index: 1;
+    margin-top: 40px;
+    text-align: center;
 }
 
 .vdos-h1 {
