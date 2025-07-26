@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects | Hugo Valladolid</title>
+    <link rel="icon" type="image/png" href="images/LogoPNG.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              'sans': ['Inter', 'system-ui', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body class="bg-white text-gray-900 font-sans leading-relaxed">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white backdrop-blur-sm z-50 border-b border-gray-100 shadow-sm">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center space-x-3">
+            <img src="images/LogoPNG.png" alt="Hugo Valladolid Logo" class="w-8 h-8 object-contain">
+            <h1 class="text-lg sm:text-xl font-bold tracking-tight">
+              <a href="index.html" class="hover:text-gray-600 transition-colors">Tboxfinn</a>
+            </h1>
+          </div>
+          
+          <!-- Desktop Menu -->
+          <div class="hidden md:flex items-center space-x-8">
+            <a href="index.html" class="text-gray-600 hover:text-gray-900 transition-colors">Home</a>
+            <a href="about.html" class="text-gray-600 hover:text-gray-900 transition-colors">About</a>
+            <a href="projects.html" class="text-gray-800 font-medium">Projects</a>
+            <a href="assets.html" class="text-gray-600 hover:text-gray-900 transition-colors">Assets</a>
+            <a href="contact.html" class="text-gray-600 hover:text-gray-900 transition-colors">Contact</a>
+            
+            <!-- Theme Toggle Button -->
+            <button id="theme-toggle" class="theme-toggle p-2 rounded-lg" aria-label="Toggle dark mode">
+              <svg id="sun-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+              </svg>
+              <svg id="moon-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Mobile Menu Button -->
+          <div class="md:hidden">
+            <button class="hamburger" id="mobile-menu-button" aria-label="Toggle menu">
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 bg-white shadow-2xl border-l border-gray-200 z-50" id="mobile-menu">
+        <div class="pt-20 px-6 h-full">
+          <div class="flex flex-col space-y-6 bg-white p-4 rounded-lg">
+            <a href="index.html" class="text-gray-700 hover:text-gray-900 text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">Home</a>
+            <a href="about.html" class="text-gray-700 hover:text-gray-900 text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">About</a>
+            <a href="projects.html" class="text-gray-900 font-bold text-lg py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">Projects</a>
+            <a href="assets.html" class="text-gray-700 hover:text-gray-900 text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">Assets</a>
+            <a href="contact.html" class="text-gray-700 hover:text-gray-900 text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">Contact</a>
+            
+            <!-- Mobile Theme Toggle -->
+            <button id="mobile-theme-toggle" class="theme-toggle flex items-center justify-center p-3 rounded-lg text-lg font-medium" aria-label="Toggle dark mode">
+              <svg id="mobile-sun-icon" class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+              </svg>
+              <svg id="mobile-moon-icon" class="w-5 h-5 mr-2 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+              </svg>
+              <span id="theme-text">Light Mode</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Overlay -->
+      <div class="mobile-menu-overlay md:hidden fixed inset-0 bg-black z-30 hidden" id="mobile-menu-overlay" style="background-color: rgba(0, 0, 0, 0.5) !important;"></div>
+    </nav>
+
+    <!-- Projects Hero -->
+    <section class="pt-32 pb-20 px-6">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-20 scroll-fade-in">
+          <h1 class="text-6xl font-bold mb-8 tracking-tight">
+            MY<br>
+            <span class="text-gray-600">PROJECTS</span>
+          </h1>
+          <div class="w-24 h-1 bg-gray-900 mx-auto mb-8"></div>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            A collection of games and interactive experiences I've designed and developed. 
+            Each project represents a unique challenge and learning opportunity.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Projects -->
+    <section class="py-20 px-6">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold mb-12 scroll-fade-in">Featured Projects</h2>
+        
+        <!-- Project 1 -->
+        <div class="mb-20">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="order-2 lg:order-1 scroll-slide-left">
+              <div class="bg-gray-100 aspect-video rounded-lg overflow-hidden">
+                <!-- ATENCION: Reemplazar con screenshot/video real de tu proyecto principal -->
+                <!-- Para imagen: <img src="images/proyecto-principal.jpg" alt="Mi Proyecto Principal" class="w-full h-full object-cover"> -->
+                <!-- Para video: <video class="w-full h-full object-cover" controls><source src="videos/proyecto-principal.mp4" type="video/mp4"></video> -->
+                <!-- ATENCION: Crear carpetas 'images/' y 'videos/' en tu proyecto para organizar tus archivos -->
+                <div class="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                  <span class="text-gray-500">Project Screenshot/Video</span>
+                </div>
+              </div>
+            </div>
+            <div class="order-1 lg:order-2 scroll-slide-right">
+              <span class="text-sm text-gray-500 uppercase tracking-widest">Featured Project</span>
+              <!-- ATENCION: Actualizar con el nombre real de tu proyecto principal -->
+              <h3 class="text-3xl font-bold mt-2 mb-4">Quantum Odyssey</h3>
+              <!-- ATENCION: Actualizar con la descripción real de tu proyecto -->
+              <p class="text-lg text-gray-600 leading-relaxed mb-6">
+                A sci-fi puzzle-platformer that challenges players to manipulate time and space. 
+                I led the game design, created the core mechanics system, and designed over 50 unique 
+                levels that progressively introduce new concepts.
+              </p>
+              
+              <div class="space-y-4 mb-6">
+                <div>
+                  <h4 class="font-semibold mb-2">My Role:</h4>
+                  <!-- ATENCION: Actualizar con tu rol real en el proyecto -->
+                  <p class="text-gray-600">Lead Game Designer, Mechanics Programmer</p>
+                </div>
+                <div>
+                  <h4 class="font-semibold mb-2">Key Features:</h4>
+                  <!-- ATENCION: Actualizar con las características reales de tu proyecto -->
+                  <ul class="text-gray-600 space-y-1">
+                    <li>• Time manipulation mechanics</li>
+                    <li>• Physics-based puzzles</li>
+                    <li>• Progressive difficulty system</li>
+                    <li>• Custom level editor</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- ATENCION: Actualizar con las tecnologías reales que usaste -->
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Unity</span>
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">C#</span>
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Game Design</span>
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Level Design</span>
+              </div>
+
+              <div class="flex space-x-4">
+                <!-- ATENCION: Actualizar con links reales de tu proyecto -->
+                <a href="#" class="text-gray-900 font-medium hover:underline">View on Steam →</a>
+                <a href="#" class="text-gray-900 font-medium hover:underline">Watch Trailer →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="mb-20">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Removed duplicate Mutant Wastelands video -->
+            <div class="scroll-slide-right scroll-delay-1" id="mutant-wastelands">
+              <span class="text-sm text-gray-500 uppercase tracking-widest">Action Roguelite</span>
+              <h3 class="text-3xl font-bold mt-2 mb-4">Mutant Wastelands</h3>
+              <p class="text-lg text-gray-600 leading-relaxed mb-6">
+                Mutant Wastelands is a post-apocalyptic action roguelite featuring procedural maps, unique mutant abilities, and challenging combat. Developed in Unity, it offers dynamic environments and replayable gameplay with a variety of mutant powers and enemies.
+              </p>
+              <div class="space-y-4 mb-6">
+                <div>
+                  <h4 class="font-semibold mb-2">My Role:</h4>
+                  <p class="text-gray-600">Game Designer, Programmer, Level Designer</p>
+                </div>
+                <div>
+                  <h4 class="font-semibold mb-2">Key Features:</h4>
+                  <ul class="text-gray-600 space-y-1">
+                    <li>• Procedural map generation</li>
+                    <li>• Unique mutant abilities</li>
+                    <li>• Fast-paced combat</li>
+                    <li>• Replayable roguelite structure</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Unity</span>
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Procedural Generation</span>
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Roguelite</span>
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Game Design</span>
+              </div>
+              <div class="flex space-x-4">
+                <a href="https://youtu.be/x1GXpLPoXmI?si=Aqc1HlMLQlGgCX6_" target="_blank" class="text-gray-900 font-medium hover:underline">Watch Trailer →</a>
+              </div>
+            </div>
+                <div class="scroll-slide-left scroll-delay-1">
+                  <div class="bg-gray-100 aspect-video rounded-lg overflow-hidden">
+                    <div class="featured-project-media mb-6 relative aspect-video rounded-lg overflow-hidden">
+                      <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0 rounded-lg shadow-lg">
+                        <source src="videos/VideoPoryecto2.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                      </video>
+                      <div class="absolute inset-0 bg-black bg-opacity-40 z-10 rounded-lg"></div>
+                    </div>
+                  </div>
+                </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Other Projects Grid -->
+    <section class="py-20 bg-gray-50 px-6">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold mb-12 scroll-fade-in">Other Projects</h2>
+        
+        <!-- Itch.io Games Section -->
+        <div class="mb-16">
+          <h3 class="text-xl font-semibold mb-6 text-gray-700">Published Games on Itch.io</h3>
+          <div id="itch-games-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Loading placeholder -->
+            <div class="col-span-full text-center py-8">
+              <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+              <p class="mt-2 text-gray-600">Loading games from itch.io...</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Static Projects Section -->
+        <div>
+          <h3 class="text-xl font-semibold mb-6 text-gray-700">Other Projects</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Project Card 1 -->
+          <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow scroll-scale-up">
+            <div class="bg-gray-100 aspect-video">
+              <!-- ATENCION: Reemplazar con imagen real del proyecto -->
+              <!-- Para imagen estática: <img src="images/neon-runner.jpg" alt="Neon Runner" class="w-full h-full object-cover"> -->
+              <!-- Para GIF de gameplay: <img src="images/neon-runner-gameplay.gif" alt="Neon Runner Gameplay" class="w-full h-full object-cover"> -->
+              <!-- ATENCION: Crear subcarpetas por proyecto para mejor organización: images/neon-runner/ -->
+              <div class="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                <span class="text-gray-500 text-sm">Project Image</span>
+              </div>
+            </div>
+            <div class="p-6">
+              <!-- ATENCION: Actualizar con el nombre real del proyecto -->
+              <h3 class="text-xl font-bold mb-2">Neon Runner</h3>
+              <!-- ATENCION: Actualizar con la descripción real del proyecto -->
+              <p class="text-gray-600 mb-4 text-sm">
+                Fast-paced endless runner with synthwave aesthetics. Created as a learning project 
+                to master Unity's visual effects systems.
+              </p>
+              <!-- ATENCION: Actualizar con las tecnologías reales que usaste -->
+              <div class="flex flex-wrap gap-1 mb-4">
+                <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">Unity</span>
+                <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">VFX</span>
+                <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">Mobile</span>
+              </div>
+              <!-- ATENCION: Actualizar con el link real del proyecto -->
+              <a href="#" class="text-gray-900 font-medium text-sm hover:underline">View Project →</a>
+            </div>
+          </div>
+
+          <!-- Project Card 2 -->
+          <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow scroll-scale-up scroll-delay-1">
+            <div class="bg-gray-100 aspect-video">
+              <div class="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                <span class="text-gray-500 text-sm">Project Image</span>
+              </div>
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">VR Garden</h3>
+              <p class="text-gray-600 mb-4 text-sm">
+                Relaxing VR experience where players tend to a virtual garden. 
+                Experiment in therapeutic game design and VR interaction patterns.
+              </p>
+              <div class="flex flex-wrap gap-1 mb-4">
+                <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">Unreal Engine</span>
+                <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">VR</span>
+                <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">Wellness</span>
+              </div>
+              <a href="#" class="text-gray-900 font-medium text-sm hover:underline">View Project →</a>
+            </div>
+          </div>
+
+          <!-- Project Card 3 -->
+          <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow scroll-scale-up scroll-delay-2">
+            <div class="bg-gray-100 aspect-video">
+              <div class="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                <span class="text-gray-500 text-sm">Project Image</span>
+              </div>
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">Code Quest</h3>
+              <p class="text-gray-600 mb-4 text-sm">
+                Educational game teaching programming concepts through puzzle-solving. 
+                Used in computer science classrooms across 3 universities.
+              </p>
+              <div class="flex flex-wrap gap-1 mb-4">
+                <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">Unity</span>
+                <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">Educational</span>
+                <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">Web</span>
+              </div>
+              <a href="#" class="text-gray-900 font-medium text-sm hover:underline">View Project →</a>
+            </div>
+          </div>
+
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-20 px-6">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-4xl font-bold mb-8">Interested in Working Together?</h2>
+        <p class="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
+          I'm always excited to take on new challenges and create innovative gaming experiences. 
+          Let's discuss your next project!
+        </p>
+        <a href="contact.html" class="inline-flex items-center px-12 py-4 bg-gray-900 text-white font-medium text-lg hover:bg-gray-800 transition-colors">
+          Start a conversation
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 py-12 px-6">
+      <div class="max-w-6xl mx-auto text-center">
+        <p class="text-sm text-gray-500">
+          © 2020-2025 HUGO VALLADOLID. All rights reserved.
+        </p>
+      </div>
+    </footer>
+
+    <!-- Import JavaScript -->
+    <script src="scripts.js"></script>
+
+  </body>
+</html>

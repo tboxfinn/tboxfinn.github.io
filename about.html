@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About | Hugo Valladolid</title>
+    <link rel="icon" type="image/png" href="images/LogoPNG.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              'sans': ['Inter', 'system-ui', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body class="bg-white text-gray-900 font-sans leading-relaxed">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white backdrop-blur-sm z-50 border-b border-gray-100 shadow-sm">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center space-x-3">
+            <img src="images/LogoPNG.png" alt="Hugo Valladolid Logo" class="w-8 h-8 object-contain">
+            <h1 class="text-lg sm:text-xl font-bold tracking-tight">
+              <a href="index.html" class="hover:text-gray-600 transition-colors">Tboxfinn</a>
+            </h1>
+          </div>
+          
+          <!-- Desktop Menu -->
+          <div class="hidden md:flex items-center space-x-8">
+            <a href="index.html" class="text-gray-600 hover:text-gray-900 transition-colors">Home</a>
+            <a href="about.html" class="text-gray-800 font-medium">About</a>
+            <a href="projects.html" class="text-gray-600 hover:text-gray-900 transition-colors">Projects</a>
+            <a href="assets.html" class="text-gray-600 hover:text-gray-900 transition-colors">Assets</a>
+            <a href="contact.html" class="text-gray-600 hover:text-gray-900 transition-colors">Contact</a>
+            
+            <!-- Theme Toggle Button -->
+            <button id="theme-toggle" class="theme-toggle p-2 rounded-lg" aria-label="Toggle dark mode">
+              <svg id="sun-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+              </svg>
+              <svg id="moon-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Mobile Menu Button -->
+          <div class="md:hidden">
+            <button class="hamburger" id="mobile-menu-button" aria-label="Toggle menu">
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 bg-white shadow-2xl border-l border-gray-200 z-50" id="mobile-menu">
+        <div class="pt-20 px-6 h-full">
+          <div class="flex flex-col space-y-6 bg-white p-4 rounded-lg">
+            <a href="index.html" class="text-gray-700 hover:text-gray-900 text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">Home</a>
+            <a href="about.html" class="text-gray-900 font-bold text-lg py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">About</a>
+            <a href="projects.html" class="text-gray-700 hover:text-gray-900 text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">Projects</a>
+            <a href="assets.html" class="text-gray-700 hover:text-gray-900 text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">Assets</a>
+            <a href="contact.html" class="text-gray-700 hover:text-gray-900 text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">Contact</a>
+            
+            <!-- Mobile Theme Toggle -->
+            <button id="mobile-theme-toggle" class="theme-toggle flex items-center justify-center p-3 rounded-lg text-lg font-medium" aria-label="Toggle dark mode">
+              <svg id="mobile-sun-icon" class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+              </svg>
+              <svg id="mobile-moon-icon" class="w-5 h-5 mr-2 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+              </svg>
+              <span id="theme-text">Light Mode</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Overlay -->
+      <div class="mobile-menu-overlay md:hidden fixed inset-0 bg-black z-30 hidden" id="mobile-menu-overlay" style="background-color: rgba(0, 0, 0, 0.5) !important;"></div>
+    </nav>
+
+    <!-- About Hero -->
+    <section class="pt-32 pb-20 px-6">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-20 scroll-fade-in">
+          <h1 class="text-6xl font-bold mb-8 tracking-tight">
+            ABOUT<br>
+            <span class="text-gray-600">HUGO VALLADOLID</span>
+          </h1>
+          <div class="w-24 h-1 bg-gray-900 mx-auto"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main About Content -->
+    <section class="py-20 px-6">
+      <div class="max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+          <!-- Photo/Visual Element -->
+          <div class="order-2 lg:order-1 scroll-slide-left">
+            <div class="bg-gray-100 aspect-square rounded-lg mb-8">
+              <!-- ATENCION: Reemplazar con tu foto profesional -->
+              <!-- Ejemplo: <img src="images/hugo-profile.jpg" alt="Hugo Valladolid" class="w-full h-full object-cover rounded-lg"> -->
+              <!-- ATENCION: Subir tu foto profesional a la carpeta 'images/' con nombre descriptivo -->
+              <div class="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                <span class="text-gray-500">Your Photo Here</span>
+              </div>
+            </div>
+            <div class="space-y-4">
+              <h3 class="text-xl font-bold">Quick Facts</h3>
+              <ul class="space-y-2 text-gray-600">
+                <li><strong>Location:</strong> San Luis Potosí, México</li>
+                <li><strong>Experience:</strong> 4+ years</li>
+                <li><strong>Focus:</strong> Game Design & Development</li>
+                <li><strong>Education:</strong> Bachelor's in Game Design & Development</li>
+                <li><strong>Languages:</strong> Spanish (Native), English (Advanced)</li>
+                <li><strong>Specialty:</strong> Unity Asset Development</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Biography -->
+          <div class="order-1 lg:order-2 space-y-6 scroll-slide-right">
+            <h2 class="text-3xl font-bold mb-6">My Journey</h2>
+            
+            <p class="text-lg text-gray-600 leading-relaxed">
+              Hi! I'm Hugo Valladolid, a passionate game designer and developer with over 5 years of experience 
+              creating interactive experiences that connect with players on a deeper level.
+            </p>
+
+            <p class="text-lg text-gray-600 leading-relaxed">
+              My journey began in 2020 when I first discovered the magic of game development. Since then, 
+              I've specialized in game mechanics design, systems architecture, and creating engaging gameplay 
+              experiences using both Unity and Unreal Engine.
+            </p>
+
+            <p class="text-lg text-gray-600 leading-relaxed">
+              What drives me is the intersection of technology and storytelling - how we can use code, 
+              art, and design to create worlds that players genuinely care about. I believe great games 
+              aren't just about impressive graphics or complex mechanics, but about creating meaningful 
+              experiences that stay with players long after they've put down the controller.
+            </p>
+
+            <div class="pt-6">
+              <h3 class="text-xl font-bold mb-4">My Approach</h3>
+              <ul class="space-y-2 text-gray-600">
+                <li>• <strong>Player-First Design:</strong> Every decision starts with "how does this serve the player?"</li>
+                <li>• <strong>Iterative Development:</strong> Rapid prototyping and continuous refinement</li>
+                <li>• <strong>Collaborative Spirit:</strong> Great games are made by great teams</li>
+                <li>• <strong>Technical Excellence:</strong> Clean, maintainable code that scales</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience Timeline -->
+    <section class="py-20 bg-gray-50 px-6">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-4xl font-bold text-center mb-16 scroll-fade-in">Experience & Education</h2>
+        
+        <div class="space-y-12">
+          <!-- Experience Item 1 -->
+          <div class="flex flex-col md:flex-row gap-8 scroll-slide-left scroll-delay-1">
+            <div class="md:w-1/3">
+              <span class="text-sm text-gray-500 uppercase tracking-widest">2024 - Present</span>
+              <h3 class="text-xl font-bold mt-2">Freelance Game Developer</h3>
+              <p class="text-gray-600">Independent</p>
+            </div>
+            <div class="md:w-2/3">
+              <p class="text-gray-600 leading-relaxed">
+                Working as an independent game developer focusing on Unity asset development and custom game solutions. 
+                Created multiple tools for the Unity Asset Store including procedural map generators, gacha systems, 
+                and prop spawning tools that have been downloaded by hundreds of developers worldwide.
+              </p>
+            </div>
+          </div>
+
+          <!-- Experience Item 2 -->
+          <div class="flex flex-col md:flex-row gap-8 scroll-slide-right scroll-delay-2">
+            <div class="md:w-1/3">
+              <span class="text-sm text-gray-500 uppercase tracking-widest">2020 - 2024</span>
+              <h3 class="text-xl font-bold mt-2">Game Developer & Designer</h3>
+              <p class="text-gray-600">Various Projects</p>
+            </div>
+            <div class="md:w-2/3">
+              <p class="text-gray-600 leading-relaxed">
+                Developed multiple games and interactive experiences using Unity and Unreal Engine. 
+                Specialized in game mechanics design, level design, UI/UX implementation, and systems programming. 
+                Successfully launched projects on Steam and other platforms with positive user feedback.
+              </p>
+            </div>
+          </div>
+
+          <!-- Education Item -->
+          <div class="flex flex-col md:flex-row gap-8 scroll-slide-left scroll-delay-3">
+            <div class="md:w-1/3">
+              <span class="text-sm text-gray-500 uppercase tracking-widest">2020 - 2024</span>
+              <h3 class="text-xl font-bold mt-2">Bachelor's Degree in Game Design & Development</h3>
+              <p class="text-gray-600">Universidad Tecmilenio</p>
+            </div>
+            <div class="md:w-2/3">
+              <p class="text-gray-600 leading-relaxed">
+                Comprehensive program covering game design principles, programming fundamentals, 
+                3D modeling, animation, and project management. Graduated with strong foundation in 
+                both technical and creative aspects of game development.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Deep Dive -->
+    <section class="py-20 px-6">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-4xl font-bold text-center mb-16 scroll-fade-in">Skills & Expertise</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Game Design -->
+          <div class="bg-gray-50 p-8 rounded-lg scroll-scale-up">
+            <h3 class="text-xl font-bold mb-4">Game Design</h3>
+            <ul class="space-y-2 text-gray-600">
+              <li>• Core Mechanics Design</li>
+              <li>• Player Psychology</li>
+              <li>• Game Balance</li>
+              <li>• Progression Systems</li>
+              <li>• Monetization Design</li>
+              <li>• Live Operations</li>
+            </ul>
+          </div>
+
+          <!-- Technical Skills -->
+          <div class="bg-gray-50 p-8 rounded-lg scroll-scale-up scroll-delay-1">
+            <h3 class="text-xl font-bold mb-4">Technical</h3>
+            <ul class="space-y-2 text-gray-600">
+              <li>• Unity 3D (Expert)</li>
+              <li>• Unreal Engine 4/5</li>
+              <li>• C# Programming</li>
+              <li>• Blueprint Scripting</li>
+              <li>• Git Version Control</li>
+              <li>• Agile Development</li>
+            </ul>
+          </div>
+
+          <!-- Design Tools -->
+          <div class="bg-gray-50 p-8 rounded-lg scroll-scale-up scroll-delay-2">
+            <h3 class="text-xl font-bold mb-4">Design Tools</h3>
+            <ul class="space-y-2 text-gray-600">
+              <li>• Figma</li>
+              <li>• Adobe Creative Suite</li>
+              <li>• Miro/Mural</li>
+              <li>• Notion</li>
+              <li>• Analytics Tools</li>
+              <li>• A/B Testing Platforms</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-20 bg-gray-50 px-6">
+      <div class="max-w-4xl mx-auto text-center scroll-fade-in">
+        <h2 class="text-4xl font-bold mb-8">Let's Create Something Amazing</h2>
+        <p class="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
+          I'm always excited to discuss new projects and opportunities. Whether you have a game 
+          concept, need design consultation, or want to collaborate on something innovative.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <a href="contact.html" class="inline-flex items-center px-12 py-4 bg-gray-900 text-white font-medium text-lg hover:bg-gray-800 transition-colors">
+            Get in touch
+          </a>
+          <a href="HugoValladolid_Programmer_CV.pdf" download class="inline-flex items-center px-12 py-4 border-2 border-gray-900 text-gray-900 font-medium text-lg hover:bg-gray-900 hover:text-white transition-colors">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            Download CV
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 py-12 px-6">
+      <div class="max-w-6xl mx-auto text-center">
+        <p class="text-sm text-gray-500">
+          © 2020-2025 HUGO VALLADOLID. All rights reserved.
+        </p>
+      </div>
+    </footer>
+
+    <!-- Import JavaScript -->
+    <script src="scripts.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "portfolio-itch-fetcher",
+  "version": "1.0.0",
+  "description": "Fetches games from itch.io API for portfolio",
+  "main": "fetch-itch-games.js",
+  "scripts": {
+    "fetch-games": "node fetch-itch-games.js",
+    "update-games": "node fetch-itch-games.js"
+  },
+  "keywords": [
+    "itch.io",
+    "games",
+    "portfolio"
+  ],
+  "author": "Hugo Valladolid",
+  "license": "MIT"
+}
