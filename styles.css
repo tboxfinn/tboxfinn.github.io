@@ -1,3 +1,41 @@
+/* Botón tipo btn-gradient para tabs, redondeado */
+.tab-btn {
+  background: linear-gradient(90deg, #f8fafc 0%, #e0e7ff 100%);
+  color: #22223b;
+  border: none;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.04);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+.tab-btn:not(.active):hover {
+  background: linear-gradient(90deg, #e0e7ff 0%, #f8fafc 100%);
+  color: #22223b;
+  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.08);
+}
+.tab-btn.active {
+  background: linear-gradient(90deg, #6366f1 0%, #818cf8 100%);
+  color: #fff;
+  box-shadow: 0 6px 24px 0 rgba(99,102,241,0.15);
+  z-index: 1;
+}
+@media (prefers-color-scheme: dark) {
+  .tab-btn {
+    background: linear-gradient(90deg, #232946 0%, #3b3b4f 100%);
+    color: #e0e7ff;
+  }
+  .tab-btn:not(.active):hover {
+    background: linear-gradient(90deg, #3b3b4f 0%, #232946 100%);
+    color: #fff;
+  }
+  .tab-btn.active {
+    background: linear-gradient(90deg, #6366f1 0%, #818cf8 100%);
+    color: #fff;
+    box-shadow: 0 6px 24px 0 rgba(99,102,241,0.25);
+  }
+}
 /* CSS Variables for Day/Night Mode */
 :root {
   /* Day mode colors (default) */

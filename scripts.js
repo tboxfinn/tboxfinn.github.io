@@ -1,3 +1,27 @@
+// Tabs for Other Projects (Itch.io / Playstore)
+document.addEventListener('DOMContentLoaded', function () {
+  var tabItchio = document.getElementById('tab-itchio');
+  var tabPlaystore = document.getElementById('tab-playstore');
+  var sectionItchio = document.getElementById('section-itchio');
+  var sectionPlaystore = document.getElementById('section-playstore');
+  if (tabItchio && tabPlaystore && sectionItchio && sectionPlaystore) {
+    // Set initial state
+    tabItchio.classList.add('active');
+    tabPlaystore.classList.remove('active');
+    tabItchio.addEventListener('click', function () {
+      sectionItchio.style.display = '';
+      sectionPlaystore.style.display = 'none';
+      tabItchio.classList.add('active');
+      tabPlaystore.classList.remove('active');
+    });
+    tabPlaystore.addEventListener('click', function () {
+      sectionItchio.style.display = 'none';
+      sectionPlaystore.style.display = '';
+      tabPlaystore.classList.add('active');
+      tabItchio.classList.remove('active');
+    });
+  }
+});
 // Mobile menu functionality
 document.addEventListener('DOMContentLoaded', function() {
   const mobileMenuButton = document.getElementById('mobile-menu-button');

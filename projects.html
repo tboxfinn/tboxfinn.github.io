@@ -212,9 +212,13 @@
     <section class="py-20 bg-gray-50 px-6">
       <div class="max-w-6xl mx-auto">
         <h2 class="text-3xl font-bold mb-12 scroll-fade-in">Other Projects</h2>
-        
+        <!-- Tabs -->
+        <div class="flex justify-center mb-10 gap-4">
+          <button id="tab-itchio" class="tab-btn px-6 py-2 rounded-full font-medium text-sm sm:text-base transition-all duration-200" type="button">Itch.io</button>
+          <button id="tab-playstore" class="tab-btn px-6 py-2 rounded-full font-medium text-sm sm:text-base transition-all duration-200" type="button">Playstore</button>
+        </div>
         <!-- Itch.io Games Section -->
-        <div class="mb-16">
+        <div id="section-itchio">
           <h3 class="text-xl font-semibold mb-6 text-gray-700">Published Games on Itch.io</h3>
           <div id="itch-games-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <!-- Loading placeholder -->
@@ -224,42 +228,39 @@
             </div>
           </div>
         </div>
-        
-        <!-- Static Projects Section -->
-        <!-- <div>
-          <h3 class="text-xl font-semibold mb-6 text-gray-700">Other Projects</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"> -->
-          <!-- Project Card 1 -->
-          <!-- <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow scroll-scale-up">
-            <div class="bg-gray-100 aspect-video"> -->
-              <!-- ATENCION: Reemplazar con imagen real del proyecto -->
-              <!-- Para imagen estática: <img src="images/neon-runner.jpg" alt="Neon Runner" class="w-full h-full object-cover"> -->
-              <!-- Para GIF de gameplay: <img src="images/neon-runner-gameplay.gif" alt="Neon Runner Gameplay" class="w-full h-full object-cover"> -->
-              <!-- ATENCION: Crear subcarpetas por proyecto para mejor organización: images/neon-runner/ -->
-              <!-- <div class="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                <span class="text-gray-500 text-sm">Project Image</span>
+        <!-- Playstore Projects Section -->
+        <div id="section-playstore" style="display:none;">
+          <h3 class="text-xl font-semibold mb-6 text-gray-700">Published Games on Playstore</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Project Card 1: Pacomixtle (igual que Itch.io) -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 scroll-scale-up itch-game-card dark:bg-gray-900 hover:-translate-y-1">
+              <div class="bg-gray-100 aspect-video overflow-hidden dark:bg-gray-800">
+                <img src="images/Pacomixtle.png" alt="Pacomixtle" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
               </div>
-            </div> -->
-            <!-- <div class="p-6"> -->
-              <!-- ATENCION: Actualizar con el nombre real del proyecto -->
-              <!-- <h3 class="text-xl font-bold mb-2">Neon Runner</h3> -->
-              <!-- ATENCION: Actualizar con la descripción real del proyecto -->
-              <!-- <p class="text-gray-600 mb-4 text-sm">
-                Fast-paced endless runner with synthwave aesthetics. Created as a learning project 
-                to master Unity's visual effects systems.
-              </p> -->
-              <!-- ATENCION: Actualizar con las tecnologías reales que usaste -->
-              <!-- <div class="flex flex-wrap gap-1 mb-4">
-                <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">Unity</span>
-                <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">VFX</span>
-                <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">Mobile</span>
-              </div> -->
-              <!-- ATENCION: Actualizar con el link real del proyecto -->
-              <!-- <a href="#" class="text-gray-900 font-medium text-sm hover:underline">View Project →</a>
+              <div class="p-6">
+                <h3 class="text-xl font-bold mb-2 line-clamp-1">Pacomixtle</h3>
+                <p class="text-gray-600 mb-4 text-sm line-clamp-3 dark:text-gray-300">
+                  Pacomixtle is a charming mobile game available on Google Play. Help Pacomixtle, a mystical feline, on his adventure through colorful worlds, overcoming obstacles and collecting treasures. Designed for all ages, it features intuitive controls and delightful visuals.
+                </p>
+                <div class="flex flex-wrap gap-1 mb-4">
+                  <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full dark:bg-gray-700 dark:text-gray-200">Unity</span>
+                  <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full dark:bg-gray-700 dark:text-gray-200">Mobile</span>
+                  <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full dark:bg-gray-700 dark:text-gray-200">2D Art</span>
+                  <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full dark:bg-gray-700 dark:text-gray-200">Game Design</span>
+                  <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">Playstore</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <a href="https://play.google.com/store/apps/details?id=com.GrimoireStudios.Pacomixtle&hl=es_MX" target="_blank" rel="noopener noreferrer" class="text-green-700 font-medium text-sm hover:underline flex items-center group dark:text-green-400 dark:hover:text-blue-400">
+                    View on Google Play
+                    <svg class="w-4 h-4 ml-1 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                    </svg>
+                  </a>
+                  <span class="text-sm text-green-600 font-medium dark:text-green-400">Free</span>
+                </div>
+              </div>
             </div>
-          </div> -->
-
-        </div>
+          </div>
         </div>
       </div>
     </section>
