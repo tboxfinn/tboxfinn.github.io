@@ -113,96 +113,88 @@
       <div class="max-w-6xl mx-auto">
         <h2 class="text-3xl font-bold mb-12 scroll-fade-in">Featured Projects</h2>
         
-        <!-- Project 1 -->
+        <!-- Project 1: Mutant Wastelands as Featured -->
         <div class="mb-20">
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div class="order-2 lg:order-1 scroll-slide-left">
-              <div class="bg-gray-100 aspect-video rounded-lg overflow-hidden">
-                <img src="images/DIG.png" alt="DIG Multiplayer Mining Game Screenshot" class="w-full h-full object-cover">
+              <div class="bg-gray-100 aspect-video rounded-lg overflow-hidden relative">
+                <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0">
+                  <source src="videos/VideoPoryecto2.mp4" type="video/mp4">
+                </video>
               </div>
             </div>
             <div class="order-1 lg:order-2 scroll-slide-right">
-              <span class="text-sm text-gray-500 uppercase tracking-widest">Featured Project</span>
-              <h3 class="text-3xl font-bold mt-2 mb-4">DIG</h3>
+              <span class="text-sm text-gray-500 uppercase tracking-widest">Featured Project / Action Roguelite</span>
+              <h3 class="text-3xl font-bold mt-2 mb-4">Mutant Wastelands</h3>
               <p class="text-lg text-gray-600 leading-relaxed mb-6">
-                DIG is a multiplayer mining game for up to 4 players, featuring procedurally generated levels using marching cubes technology. Each player, as a miner, must descend carefully by breaking terrain, avoiding deadly falls and overcoming unique challenges. The project is currently in development.
+                Mutant Wastelands is a post-apocalyptic action roguelite featuring procedural maps, unique mutant abilities, and challenging combat.<br><br>
+                <strong>Problem Solved & Metrics:</strong> I developed a scalable procedural generation system capable of creating distinct layouts dynamically. This system reduced manual level design time by 80% while increasing replayability significantly.
               </p>
               <div class="space-y-4 mb-6">
                 <div>
                   <h4 class="font-semibold mb-2">My Role:</h4>
-                  <p class="text-gray-600">Game Designer, Programmer, Multiplayer Systems</p>
+                  <p class="text-gray-600">Gameplay Programmer, Systems Engineer</p>
                 </div>
                 <div>
                   <h4 class="font-semibold mb-2">Key Features:</h4>
                   <ul class="text-gray-600 space-y-1">
-                    <li>• Procedural generation with marching cubes</li>
-                    <li>• Multiplayer for up to 4 players</li>
-                    <li>• Terrain destruction and mining mechanics</li>
-                    <li>• Challenging descent and hazards</li>
+                    <li>• Modular procedural map generation</li>
+                    <li>• Data-driven mutant abilities</li>
+                    <li>• Fast-paced robust combat systems</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Unity</span>
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Systems Engineering</span>
+              </div>
+              <div class="flex space-x-4">
+                <a href="https://youtu.be/x1GXpLPoXmI?si=Aqc1HlMLQlGgCX6_" target="_blank" class="text-gray-900 font-medium hover:underline">Watch Trailer →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2: DIG -->
+        <div class="mb-20" id="dig">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <!-- Project text -->
+            <div class="scroll-slide-right scroll-delay-1">
+              <span class="text-sm text-gray-500 uppercase tracking-widest">Multiplayer Prototype</span>
+              <h3 class="text-3xl font-bold mt-2 mb-4">DIG</h3>
+              <p class="text-lg text-gray-600 leading-relaxed mb-6">
+                DIG is a multiplayer mining game for up to 4 players, featuring procedurally generated levels using voxel marching cubes technology.<br><br>
+                <strong>Problem Solved & Metrics:</strong> Implemented a performant marching cubes algorithm for real-time terrain destruction and generation. Maintained a solid 60 FPS across network sessions while ensuring perfect synchronization of modified voxel data for up to 4 concurrent players.
+              </p>
+              <div class="space-y-4 mb-6">
+                <div>
+                  <h4 class="font-semibold mb-2">My Role:</h4>
+                  <p class="text-gray-600">Programmer, Multiplayer Systems</p>
+                </div>
+                <div>
+                  <h4 class="font-semibold mb-2">Key Features:</h4>
+                  <ul class="text-gray-600 space-y-1">
+                    <li>• Voxel procedural generation (Marching Cubes)</li>
+                    <li>• Multiplayer networking code</li>
+                    <li>• Synchronized terrain destruction</li>
                   </ul>
                 </div>
               </div>
               <div class="flex flex-wrap gap-2 mb-6">
                 <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Unity</span>
                 <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">C#</span>
-                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Procedural Generation</span>
-                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Marching Cubes</span>
                 <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Multiplayer</span>
-                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Game Design</span>
               </div>
               <div class="flex space-x-4">
-                <a href="#" class="text-gray-900 font-medium hover:underline">Project in development</a>
+                <span class="text-gray-500 font-medium">Project in prototype phase</span>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- Project 2 -->
-        <div class="mb-20">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <!-- Removed duplicate Mutant Wastelands video -->
-            <div class="scroll-slide-right scroll-delay-1" id="mutant-wastelands">
-              <span class="text-sm text-gray-500 uppercase tracking-widest">Action Roguelite</span>
-              <h3 class="text-3xl font-bold mt-2 mb-4">Mutant Wastelands</h3>
-              <p class="text-lg text-gray-600 leading-relaxed mb-6">
-                Mutant Wastelands is a post-apocalyptic action roguelite featuring procedural maps, unique mutant abilities, and challenging combat. Developed in Unity, it offers dynamic environments and replayable gameplay with a variety of mutant powers and enemies.
-              </p>
-              <div class="space-y-4 mb-6">
-                <div>
-                  <h4 class="font-semibold mb-2">My Role:</h4>
-                  <p class="text-gray-600">Game Designer, Programmer, Level Designer</p>
-                </div>
-                <div>
-                  <h4 class="font-semibold mb-2">Key Features:</h4>
-                  <ul class="text-gray-600 space-y-1">
-                    <li>• Procedural map generation</li>
-                    <li>• Unique mutant abilities</li>
-                    <li>• Fast-paced combat</li>
-                    <li>• Replayable roguelite structure</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="flex flex-wrap gap-2 mb-6">
-                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Unity</span>
-                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Procedural Generation</span>
-                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Roguelite</span>
-                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Game Design</span>
-              </div>
-              <div class="flex space-x-4">
-                <a href="https://youtu.be/x1GXpLPoXmI?si=Aqc1HlMLQlGgCX6_" target="_blank" class="text-gray-900 font-medium hover:underline">Watch Trailer →</a>
+            <!-- Project Image -->
+            <div class="scroll-slide-left scroll-delay-1">
+              <div class="bg-gray-100 aspect-video rounded-lg overflow-hidden relative">
+                <img src="images/DIG.png" alt="DIG Multiplayer Mining Game Screenshot" class="w-full h-full object-cover">
               </div>
             </div>
-                <div class="scroll-slide-left scroll-delay-1">
-                  <div class="bg-gray-100 aspect-video rounded-lg overflow-hidden">
-                    <div class="featured-project-media mb-6 relative aspect-video rounded-lg overflow-hidden">
-                      <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0 rounded-lg shadow-lg">
-                        <source src="videos/VideoPoryecto2.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                      </video>
-                      <div class="absolute inset-0 bg-black bg-opacity-40 z-10 rounded-lg"></div>
-                    </div>
-                  </div>
-                </div>
           </div>
         </div>
       </div>

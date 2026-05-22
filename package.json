@@ -13,5 +13,8 @@
     "portfolio"
   ],
   "author": "Hugo Valladolid",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^25.0.4"
+  }
 }

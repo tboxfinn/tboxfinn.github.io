@@ -210,7 +210,54 @@ document.addEventListener('DOMContentLoaded', function() {
   if (document.getElementById('itch-games-container')) {
     loadItchioGames();
   }
+
+  // Render Assets dynamically if on assets page
+  if (document.getElementById('assets-container') && typeof assetsData !== 'undefined') {
+    renderAssets();
+  }
 });
+
+// Render Dynamic Assets
+function renderAssets() {
+  const container = document.getElementById('assets-container');
+  if (!container) return;
+  
+  let html = '';
+  assetsData.forEach((asset, index) => {
+    const delay = index > 0 ? `scroll-delay-${index > 4 ? 4 : index}` : '';
+    
+    let tagsHtml = asset.tags.map(tag => `<span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded">${tag}</span>`).join('');
+
+    html += `
+      <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-200 scroll-scale-up ${delay}">
+        <div class="bg-gray-100 aspect-video">
+          <img src="${asset.image}" alt="${asset.title} Preview" class="w-full h-full object-cover">
+        </div>
+        <div class="p-6">
+          <h3 class="text-xl font-bold mb-2">${asset.title}</h3>
+          <p class="text-gray-600 mb-4 text-sm">${asset.description}</p>
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-lg font-bold text-green-600">${asset.price}</span>
+            <div class="flex items-center">
+              <span class="text-yellow-400">${asset.rating}</span>
+              <span class="text-sm text-gray-500 ml-1">(${asset.reviews})</span>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-1 mb-4">
+            ${tagsHtml}
+          </div>
+          <a href="${asset.link}" target="_blank" rel="noopener noreferrer" class="text-blue-600 font-medium text-sm hover:underline">View on Asset Store →</a>
+        </div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html;
+  setTimeout(() => {
+    const event = new Event('scroll');
+    window.dispatchEvent(event);
+  }, 100);
+}
 
 // Itch.io Games Integration using games.json
 async function loadItchioGames() {
