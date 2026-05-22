@@ -23,7 +23,7 @@ const fs = require('fs');
                         console.log('¡[OK] Peticion de datos de Coveo interceptada con exito!');
                     }
                 } catch (e) {
-                    // Evita caídas por llamadas de red secundarias
+                    // Evita caídas por llamadas secundarias
                 }
             }
         });
@@ -43,42 +43,58 @@ const fs = require('fs');
         const packages = rawJsonData.results || rawJsonData.hits || [];
         console.log(`Procesando ${packages.length} productos encontrados en la red...`);
 
-        const formattedAssets = packages.map(asset => {
-            // Capa de seguridad para acceder a los metadatos indexados por Coveo
+        const formattedAssets = packages.map((asset, index) => {
             const r = asset.raw || {};
             
-            // 1. Obtener el Título
+            // 1. Título
             const title = asset.title || r.title || "Unity Asset";
-            
-            // Generar un slug ID limpio a partir del titulo para tus estilos locales
             const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
-            // 2. Extraer y limpiar descripción
+            // 2. Descripción
             const rawDesc = r.description || asset.excerpt || r.excerpt || "Herramienta avanzada para Unity.";
             const cleanDescription = rawDesc.replace(/<[^>]*>/g, '').substring(0, 160).trim() + '...';
 
-            // 3. SOLUCIÓN IMAGEN: Propiedades exactas de la CDN de imágenes de la Asset Store en Coveo
-            let image = 'images/LogoPNG.png';
-            if (r.tp_image_url) image = r.tp_image_url;
-            else if (r.sysimageurl) image = r.sysimageurl;
-            else if (r.thumbnail_url) image = r.thumbnail_url;
-            else if (r.key_image_url) image = r.key_image_url;
-
-            // 4. SOLUCIÓN PRECIO: Mapear los campos comerciales reales del índice
-            let price = "$0.00";
-            if (r.ec_price_formatted) {
-                price = r.ec_price_formatted;
-            } else if (r.ec_price) {
-                price = typeof r.ec_price === 'number' ? `$${r.ec_price.toFixed(2)}` : r.ec_price;
-            } else if (r.price_display) {
-                price = r.price_display;
-            } else if (r.price_label) {
-                price = r.price_label;
-            } else if (r.price_amount) {
-                price = `$${r.price_amount}`;
+            // =========================================================================
+            // EL CAZADOR DE IMÁGENES: Extracción a la fuerza
+            // =========================================================================
+            let image = 'images/LogoPNG.png'; // Fallback
+            
+            // Intento 1: Variables clásicas que usa Unity
+            const possibleKeys = ['tp_thumbnail_url', 'sysimageurl', 'key_image_url', 'thumbnail_url', 'tp_image_url', 'ec_thumbnails'];
+            for (const key of possibleKeys) {
+                if (r[key]) {
+                    // Si es un arreglo (Unity a veces manda arreglos de imagenes), tomamos la primera
+                    image = Array.isArray(r[key]) ? r[key][0] : r[key];
+                    break;
+                }
             }
 
-            // 5. SOLUCIÓN ESTRELLAS Y RESEÑAS: Campos numéricos de calificación de la tienda
+            // Intento 2: Si el intento 1 fallo y seguimos con el logo, buscamos CUALQUIER URL en los datos
+            if (image === 'images/LogoPNG.png') {
+                const flatString = JSON.stringify(asset);
+                // Expresión regular que busca cualquier enlace de la CDN de Asset Store o archivos de imagen
+                const match = flatString.match(/(https?:)?\/\/[^"']*(assetstorev1-prd-cdn|cdn\.assetstore)[^"']*/i) || 
+                              flatString.match(/(https?:)?\/\/[^"']*\.(jpg|jpeg|png|webp)/i);
+                
+                if (match && match[0]) {
+                    image = match[0];
+                }
+            }
+
+            // Corrección final de seguridad: Si la CDN omitió el "https:", se lo ponemos
+            if (image.startsWith('//')) {
+                image = 'https:' + image;
+            }
+            // =========================================================================
+
+            // 4. Precio (Ya validado que funciona)
+            let price = "$0.00";
+            if (r.ec_price_formatted) price = r.ec_price_formatted;
+            else if (r.ec_price) price = typeof r.ec_price === 'number' ? `$${r.ec_price.toFixed(2)}` : r.ec_price;
+            else if (r.price_display) price = r.price_display;
+            else if (r.price_amount) price = `$${r.price_amount}`;
+
+            // 5. Estrellas y Reseñas
             const ratingAvg = parseFloat(r.tp_rating_average || r.rating_average || r.rating || 5);
             const ratingValue = Math.round(ratingAvg);
             const stars = "★".repeat(ratingValue) + "☆".repeat(5 - ratingValue);
@@ -86,17 +102,15 @@ const fs = require('fs');
             const reviewsCount = parseInt(r.tp_rating_count || r.rating_count || r.reviews_count || 0, 10);
             const reviews = reviewsCount > 0 ? reviewsCount : "New";
 
-            // 6. Tags de Categoría dinámicos
+            // 6. Tags
             const tags = [];
             if (r.tp_category_name) tags.push(r.tp_category_name);
-            if (r.category_name) tags.push(r.category_name);
-            tags.push("Tools"); // Tag de respaldo
+            else if (r.category_name) tags.push(r.category_name);
+            tags.push("Tools");
 
-            // 7. Enlace directo estético y limpio
+            // 7. Enlace
             let link = asset.clickUri || r.clickuri || asset.uri || `https://assetstore.unity.com/packages/package/${asset.id || r.id}`;
-            if (link.includes('?')) {
-                link = link.split('?')[0]; // Cortamos los parámetros de tracking analítico de Coveo
-            }
+            if (link.includes('?')) link = link.split('?')[0];
 
             return {
                 id: id,
@@ -111,11 +125,11 @@ const fs = require('fs');
             };
         });
 
-        // Escribir y sobreescribir el archivo assets-data.js de forma automatizada
+        // Guardado de archivo
         const fileContent = "const assetsData = " + JSON.stringify(formattedAssets, null, 2) + ";\n\nif (typeof module !== 'undefined' && module.exports) {\n  module.exports = assetsData;\n}";
         fs.writeFileSync('assets-data.js', fileContent, 'utf-8');
         
-        console.log(`\n\x1b[32m[OK] ¡Sincronización Completa! Mapeados ${formattedAssets.length} assets en tu assets-data.js con datos reales de la CDN.\x1b[0m`);
+        console.log(`\n\x1b[32m[OK] ¡Sincronizacion Completa! Mapeados ${formattedAssets.length} assets con imagenes reales.\x1b[0m`);
         process.exit(0);
 
     } catch (err) {
