@@ -2,112 +2,123 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 
 (async () => {
-    console.log('Lanzando Puppeteer en modo visual para leer Coveo Atomic...');
+    console.log('Lanzando Puppeteer en modo escucha de red...');
+    let rawJsonData = null;
+
     try {
         const browser = await puppeteer.launch({ headless: true });
         const page = await browser.newPage();
         
         await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
         await page.setViewport({ width: 1400, height: 900 });
-        
-        console.log('Navegando al perfil de Publisher 78465...');
-        await page.goto('https://assetstore.unity.com/publishers/78465', { waitUntil: 'networkidle0', timeout: 60000 });
 
-        console.log('Esperando a que Coveo rinda las tarjetas de tus assets...');
-        
-        // Esperamos a que aparezca al menos una tarjeta de componente de Coveo en el DOM
-        await page.waitForSelector('atomic-result, .v_result, [class*="result"]', { timeout: 15000 }).catch(() => {
-            console.log('Nota: Tiempo de espera agotado esperando selectores especificos. Intentando raspar directamente...');
-        });
-
-        // Le damos 2 segundos extra para asegurar que las imagenes y precios se dibujen bien
-        await new Promise(r => setTimeout(r, 2000));
-
-        console.log('Extrayendo informacion de los elementos visibles en pantalla...');
-        
-        const assetsData = await page.evaluate(() => {
-            // Buscamos todas las tarjetas de productos generadas por el nuevo sistema de Unity
-            // Intentamos con varios selectores comunes que usa Coveo y el esquema de clases de la tienda
-            let cardElements = Array.from(document.querySelectorAll('atomic-result, .v_result, [class*="result-card"]'));
-            
-            // Si el query anterior falla, buscamos por los contenedores de los enlaces a los packages
-            if (cardElements.length === 0) {
-                cardElements = Array.from(document.querySelectorAll('a[href*="/packages/package/"]')).map(a => a.closest('div'));
-                // Filtrar nulos y duplicados si se selecciono el mismo contenedor
-                cardElements = [...new Set(cardElements.filter(el => el !== null))];
+        // Interceptar ráfaga de red de Coveo
+        page.on('response', async (response) => {
+            const url = response.url();
+            if (url.includes('coveo.com/rest/search/v2') || url.includes('assetstore.unity.com/api/en-US/search')) {
+                try {
+                    if (response.status() === 200) {
+                        const text = await response.text();
+                        rawJsonData = JSON.parse(text);
+                        console.log('¡[OK] Peticion de datos de Coveo interceptada con exito!');
+                    }
+                } catch (e) {
+                    // Evita caídas por llamadas de red secundarias
+                }
             }
-
-            return cardElements.map((card, index) => {
-                // 1. Extraer el Link y el ID original de Unity
-                const linkEl = card.querySelector('a[href*="/packages/package/"]');
-                if (!linkEl) return null;
-                
-                const link = linkEl.href;
-                const urlParts = link.split('/');
-                const packageId = urlParts[urlParts.length - 1]?.split('?')[0] || `computed-${index}`;
-                
-                // 2. Extraer el Titulo del asset
-                // Coveo suele usar componentes <atomic-result-text field="title"> o encabezados h3/h4
-                const titleEl = card.querySelector('atomic-result-text[field="title"], h3, h4, [class*="title"]');
-                const title = titleEl ? titleEl.innerText.trim() : "Unity Asset Tool";
-
-                // 3. Generar un slug ID limpio a partir del titulo para tu formato
-                const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || `asset-${packageId}`;
-
-                // 4. Extraer la Imagen de la tarjeta
-                const imgEl = card.querySelector('img');
-                const image = imgEl ? imgEl.src : 'images/LogoPNG.png';
-
-                // 5. Extraer el Precio
-                const priceEl = card.querySelector('[class*="price"], [field*="price"], span:last-child');
-                let price = "$15.00"; // Fallback por defecto si no se lee
-                if (priceEl && priceEl.innerText.includes('$')) {
-                    const priceMatch = priceEl.innerText.match(/\$\d+(\.\d{2})?/);
-                    if (priceMatch) price = priceMatch[0];
-                }
-
-                // 6. Extraer Estrellas y Reseñas
-                const ratingEl = card.querySelector('[class*="rating"], [class*="stars"]');
-                let rating = "★★★★★";
-                let reviews = "New";
-                
-                if (ratingEl) {
-                    const text = ratingEl.innerText || "";
-                    const numMatch = text.match(/\((\d+)\)/); // Busca el "(3)" por ejemplo
-                    if (numMatch) reviews = parseInt(numMatch[1], 10);
-                }
-
-                // 7. Descripcion y tags de soporte predefinidos para tus herramientas
-                const description = `Herramienta avanzada de optimizacion y arquitectura para mejorar los flujos de trabajo dentro del editor de Unity.`;
-
-                return {
-                    id: id,
-                    title: title,
-                    description: description,
-                    image: image,
-                    price: price,
-                    rating: rating,
-                    reviews: reviews,
-                    tags: ["Tools", "Editor"],
-                    link: link
-                };
-            }).filter(item => item !== null && item.title !== "");
         });
 
-        if (assetsData && assetsData.length > 0) {
-            // Formatear el archivo de salida identico a tu estructura
-            const fileContent = "const assetsData = " + JSON.stringify(assetsData, null, 2) + ";\n\nif (typeof module !== 'undefined' && module.exports) {\n  module.exports = assetsData;\n}";
-            fs.writeFileSync('assets-data.js', fileContent, 'utf-8');
-            console.log(`\n\x1b[32m[OK] ¡Exito Absoluto! Se encontraron y transcribieron ${assetsData.length} assets visibles de tu perfil.\x1b[0m`);
-            await browser.close();
-            process.exit(0);
-        } else {
-            console.log('\n\x1b[31m[ERROR] El navegador abrio la pagina pero las tarjetas de Coveo no cargaron a tiempo.\x1b[0m');
-            await browser.close();
+        console.log('Navegando al perfil de Publisher 78465 (capturando red)...');
+        await page.goto('https://assetstore.unity.com/publishers/78465', { waitUntil: 'domcontentloaded', timeout: 60000 });
+
+        console.log('Esperando transmisiones de la base de datos de Unity...');
+        await new Promise(r => setTimeout(r, 8000));
+        await browser.close();
+
+        if (!rawJsonData || (!rawJsonData.results && !rawJsonData.hits)) {
+            console.log('\n\x1b[31m[ERROR] No se pudo capturar la rafaga de red de Coveo.\x1b[0m');
             process.exit(1);
         }
 
-    } catch(err) {
+        const packages = rawJsonData.results || rawJsonData.hits || [];
+        console.log(`Procesando ${packages.length} productos encontrados en la red...`);
+
+        const formattedAssets = packages.map(asset => {
+            // Capa de seguridad para acceder a los metadatos indexados por Coveo
+            const r = asset.raw || {};
+            
+            // 1. Obtener el Título
+            const title = asset.title || r.title || "Unity Asset";
+            
+            // Generar un slug ID limpio a partir del titulo para tus estilos locales
+            const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+            // 2. Extraer y limpiar descripción
+            const rawDesc = r.description || asset.excerpt || r.excerpt || "Herramienta avanzada para Unity.";
+            const cleanDescription = rawDesc.replace(/<[^>]*>/g, '').substring(0, 160).trim() + '...';
+
+            // 3. SOLUCIÓN IMAGEN: Propiedades exactas de la CDN de imágenes de la Asset Store en Coveo
+            let image = 'images/LogoPNG.png';
+            if (r.tp_image_url) image = r.tp_image_url;
+            else if (r.sysimageurl) image = r.sysimageurl;
+            else if (r.thumbnail_url) image = r.thumbnail_url;
+            else if (r.key_image_url) image = r.key_image_url;
+
+            // 4. SOLUCIÓN PRECIO: Mapear los campos comerciales reales del índice
+            let price = "$0.00";
+            if (r.ec_price_formatted) {
+                price = r.ec_price_formatted;
+            } else if (r.ec_price) {
+                price = typeof r.ec_price === 'number' ? `$${r.ec_price.toFixed(2)}` : r.ec_price;
+            } else if (r.price_display) {
+                price = r.price_display;
+            } else if (r.price_label) {
+                price = r.price_label;
+            } else if (r.price_amount) {
+                price = `$${r.price_amount}`;
+            }
+
+            // 5. SOLUCIÓN ESTRELLAS Y RESEÑAS: Campos numéricos de calificación de la tienda
+            const ratingAvg = parseFloat(r.tp_rating_average || r.rating_average || r.rating || 5);
+            const ratingValue = Math.round(ratingAvg);
+            const stars = "★".repeat(ratingValue) + "☆".repeat(5 - ratingValue);
+            
+            const reviewsCount = parseInt(r.tp_rating_count || r.rating_count || r.reviews_count || 0, 10);
+            const reviews = reviewsCount > 0 ? reviewsCount : "New";
+
+            // 6. Tags de Categoría dinámicos
+            const tags = [];
+            if (r.tp_category_name) tags.push(r.tp_category_name);
+            if (r.category_name) tags.push(r.category_name);
+            tags.push("Tools"); // Tag de respaldo
+
+            // 7. Enlace directo estético y limpio
+            let link = asset.clickUri || r.clickuri || asset.uri || `https://assetstore.unity.com/packages/package/${asset.id || r.id}`;
+            if (link.includes('?')) {
+                link = link.split('?')[0]; // Cortamos los parámetros de tracking analítico de Coveo
+            }
+
+            return {
+                id: id,
+                title: title,
+                description: cleanDescription,
+                image: image,
+                price: price,
+                rating: stars,
+                reviews: reviews,
+                tags: [...new Set(tags)].slice(0, 2),
+                link: link
+            };
+        });
+
+        // Escribir y sobreescribir el archivo assets-data.js de forma automatizada
+        const fileContent = "const assetsData = " + JSON.stringify(formattedAssets, null, 2) + ";\n\nif (typeof module !== 'undefined' && module.exports) {\n  module.exports = assetsData;\n}";
+        fs.writeFileSync('assets-data.js', fileContent, 'utf-8');
+        
+        console.log(`\n\x1b[32m[OK] ¡Sincronización Completa! Mapeados ${formattedAssets.length} assets en tu assets-data.js con datos reales de la CDN.\x1b[0m`);
+        process.exit(0);
+
+    } catch (err) {
         console.log('\n\x1b[31m[ERROR FATAL]:\x1b[0m', err.message);
         process.exit(1);
     }
