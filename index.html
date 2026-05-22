@@ -22,7 +22,6 @@
   </head>
   <body class="bg-white text-gray-900 font-sans leading-relaxed">
 
-    <!-- Navigation -->
     <nav class="fixed top-0 w-full bg-white backdrop-blur-sm z-50 border-b border-gray-100 shadow-sm">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
         <div class="flex justify-between items-center">
@@ -31,7 +30,6 @@
             <h1 class="text-lg sm:text-xl font-bold tracking-tight">Tboxfinn</h1>
           </div>
           
-          <!-- Desktop Menu -->
           <div class="hidden md:flex items-center space-x-8">
             <a href="index.html" class="text-gray-800 font-medium">Home</a>
             <a href="about.html" class="text-gray-600 hover:text-gray-900 transition-colors">About</a>
@@ -39,7 +37,6 @@
             <a href="assets.html" class="text-gray-600 hover:text-gray-900 transition-colors">Assets</a>
             <a href="contact.html" class="text-gray-600 hover:text-gray-900 transition-colors">Contact</a>
             
-            <!-- Theme Toggle Button -->
             <button id="theme-toggle" class="theme-toggle p-2 rounded-lg" aria-label="Toggle dark mode">
               <svg id="sun-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
@@ -50,7 +47,6 @@
             </button>
           </div>
 
-          <!-- Mobile Menu Button -->
           <div class="md:hidden">
             <button class="hamburger" id="mobile-menu-button" aria-label="Toggle menu">
               <span></span>
@@ -61,7 +57,6 @@
         </div>
       </div>
 
-      <!-- Mobile Menu -->
       <div class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 bg-white shadow-2xl border-l border-gray-200 z-50" id="mobile-menu">
         <div class="pt-20 px-6 h-full">
           <div class="flex flex-col space-y-6 bg-white p-4 rounded-lg">
@@ -71,7 +66,6 @@
             <a href="assets.html" class="text-gray-700 hover:text-gray-900 text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">Assets</a>
             <a href="contact.html" class="text-gray-700 hover:text-gray-900 text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">Contact</a>
             
-            <!-- Mobile Theme Toggle -->
             <button id="mobile-theme-toggle" class="theme-toggle flex items-center justify-center p-3 rounded-lg text-lg font-medium" aria-label="Toggle dark mode">
               <svg id="mobile-sun-icon" class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
@@ -85,22 +79,17 @@
         </div>
       </div>
 
-      <!-- Mobile Menu Overlay -->
       <div class="mobile-menu-overlay md:hidden fixed inset-0 bg-black z-30 hidden" id="mobile-menu-overlay" style="background-color: rgba(0, 0, 0, 0.5) !important;"></div>
     </nav>
 
-    <!-- Hero -->
     <section id="home" class="min-h-screen flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-20 relative overflow-hidden">
-      <!-- Background Video -->
       <video autoplay muted loop class="absolute inset-0 w-full h-full object-cover z-0">
         <source src="videos/VideoTrailer.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
       
-      <!-- Enhanced dark overlay for better text readability -->
       <div class="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
       
-      <!-- Content -->
       <div class="max-w-5xl mx-auto relative z-20 py-12">
         <p class="hero-subtitle text-sm sm:text-base uppercase tracking-widest text-white mb-6 sm:mb-8 font-medium text-shadow-lg">GAME DEVELOPER</p>
         <h1 class="hero-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-8 sm:mb-12 tracking-tight text-white leading-tight">
@@ -114,7 +103,6 @@
       </div>
     </section>
 
-    <!-- About Section -->
     <section id="about" class="py-16 sm:py-24 lg:py-32 px-4 sm:px-6">
       <div class="max-w-7xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center">
@@ -135,20 +123,15 @@
                 <img src="images/MyPicture.jpg" alt="Hugo Valladolid - Gameplay & Tools Engineer" class="w-full h-full object-cover">
               </div>
               
-              <!-- Logo más grande -->
               <div class="absolute -bottom-6 -right-6 sm:-bottom-8 sm:-right-8 w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-xl shadow-xl flex items-center justify-center">
                 <img src="images/LogoPNG.png" alt="Hugo Valladolid Logo" class="w-16 h-16 sm:w-20 sm:h-20 object-contain">
               </div>
               
-              <!-- Diseño decorativo mejorado con cuadros pequeños -->
               <div class="absolute -top-6 -left-6 sm:-top-8 sm:-left-8">
-                <!-- Cuadro principal más pequeño -->
                 <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gray-900 rounded-xl shadow-lg relative overflow-hidden">
-                  <!-- Punto central simple -->
                   <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-gray-600 rounded-full"></div>
                 </div>
                 
-                <!-- Cuadros flotantes más grandes y variados -->
                 <div class="absolute -bottom-4 -right-4 w-6 h-6 bg-gray-800 rounded transform rotate-45 shadow-md"></div>
                 <div class="absolute -bottom-3 right-8 w-5 h-5 bg-gray-700 rounded-full shadow-md"></div>
                 <div class="absolute bottom-6 -right-5 w-3 h-3 bg-gray-600 rounded shadow-md"></div>
@@ -190,7 +173,6 @@
             </div>
           </div>
           <div class="flex justify-center lg:justify-start scroll-scale-up">
-            <!-- Quick Facts Card -->
             <div class="bg-gray-50 p-6 sm:p-8 rounded-lg border w-full max-w-sm floating">
               <h3 class="text-lg sm:text-xl font-bold mb-6 flex items-center">
                 <img src="images/LogoPNG.png" alt="Logo" class="w-5 h-5 sm:w-6 sm:h-6 object-contain mr-3">
@@ -220,7 +202,6 @@
       </div>
     </section>
 
-    <!-- Skills Section -->
     <section class="py-16 sm:py-24 lg:py-32 bg-gray-50 px-4 sm:px-6">
       <div class="max-w-6xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
@@ -290,7 +271,6 @@
       </div>
     </section>
 
-    <!-- Unity Assets Preview -->
     <section id="assets-preview" class="py-16 sm:py-24 lg:py-32 px-4 sm:px-6">
       <div class="max-w-6xl mx-auto">
         <div class="text-center mb-12 sm:mb-16 lg:mb-20 scroll-fade-in">
@@ -303,66 +283,8 @@
           </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12">
-          
-          <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-200 scroll-scale-up">
-            <div class="bg-gray-100 aspect-video">
-              <img src="images/ProceduralMap.jpg" alt="Procedural Map Generator Preview" class="w-full h-full object-cover">
-            </div>
-            <div class="p-6">
-              <h3 class="text-xl font-bold mb-2">Procedural Map Generator</h3>
-              <p class="text-gray-600 mb-4 text-sm">
-                A powerful and customizable tool for generating procedural islands and ocean-surrounded terrains in Unity. 
-              </p>
-              <div class="flex items-center justify-between mb-4">
-                <span class="text-lg font-bold text-green-600">$20.00</span>
-                <div class="flex items-center">
-                  <span class="text-yellow-400">★★★★★</span>
-                </div>
-              </div>
-              <a href="assets.html" class="text-blue-600 font-medium text-sm hover:underline">View more in Assets →</a>
-            </div>
+        <div id="featured-assets-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12">
           </div>
-
-          <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-200 scroll-scale-up scroll-delay-1">
-            <div class="bg-gray-100 aspect-video flex items-center justify-center">
-              <img src="images/LogoPNG.png" alt="Smart Pool Pro" class="w-20 h-20 object-cover object-contain opacity-50">
-            </div>
-            <div class="p-6">
-              <h3 class="text-xl font-bold mb-2">Smart Pool Pro</h3>
-              <p class="text-gray-600 mb-4 text-sm">
-                Advanced object pooling system for Unity, designed to improve performance and manage memory efficiently.
-              </p>
-              <div class="flex items-center justify-between mb-4">
-                <span class="text-lg font-bold text-green-600">$30.00</span>
-                <div class="flex items-center">
-                  <span class="text-yellow-400">★★★★★</span>
-                </div>
-              </div>
-              <a href="assets.html" class="text-blue-600 font-medium text-sm hover:underline">View more in Assets →</a>
-            </div>
-          </div>
-
-          <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-200 scroll-scale-up scroll-delay-2 hidden lg:block">
-            <div class="bg-gray-100 aspect-video flex items-center justify-center">
-              <img src="images/LogoPNG.png" alt="Data Sync Pro" class="w-20 h-20 object-cover object-contain opacity-50">
-            </div>
-            <div class="p-6">
-              <h3 class="text-xl font-bold mb-2">Data Sync Pro</h3>
-              <p class="text-gray-600 mb-4 text-sm">
-                Robust data synchronization and tracking tool. Keep all your in-game data variables synced across components automatically.
-              </p>
-              <div class="flex items-center justify-between mb-4">
-                <span class="text-lg font-bold text-green-600">$20.00</span>
-                <div class="flex items-center">
-                  <span class="text-yellow-400">★★★★★</span>
-                </div>
-              </div>
-              <a href="assets.html" class="text-blue-600 font-medium text-sm hover:underline">View more in Assets →</a>
-            </div>
-          </div>
-
-        </div>
 
         <div class="text-center mt-12 sm:mt-16 scroll-fade-in">
           <a href="assets.html" class="inline-flex items-center px-6 sm:px-8 py-3 text-gray-900 dark:text-gray-100 font-medium text-sm sm:text-base btn-gradient">
@@ -372,7 +294,6 @@
       </div>
     </section>
 
-    <!-- Projects Preview -->
     <section id="projects" class="py-16 sm:py-24 lg:py-32 px-4 sm:px-6">
       <div class="max-w-6xl mx-auto">
         <div class="text-center mb-12 sm:mb-16 lg:mb-20 scroll-fade-in">
@@ -432,7 +353,6 @@
       </div>
     </section>
 
-    <!-- Contact Preview -->
     <section id="contact" class="py-16 sm:py-24 lg:py-32 bg-gray-50 px-4 sm:px-6">
       <div class="max-w-4xl mx-auto text-center scroll-fade-in">
         <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-8 sm:mb-12 tracking-tight">
@@ -472,7 +392,6 @@
       </div>
     </section>
 
-    <!-- Footer -->
     <footer class="border-t border-gray-200 py-8 sm:py-12 px-4 sm:px-6">
       <div class="max-w-6xl mx-auto text-center">
         <p class="text-xs sm:text-sm text-gray-500">
@@ -481,8 +400,44 @@
       </div>
     </footer>
 
-    <!-- Import JavaScript -->
+    <script src="assets-data.js"></script>
     <script src="scripts.js"></script>
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        if (typeof assetsData !== 'undefined') {
+          const container = document.getElementById('featured-assets-container');
+          if (container) {
+            // Tomamos únicamente los 3 activos más recientes del JSON
+            const featuredAssets = assetsData.slice(0, 3);
+            
+            container.innerHTML = featuredAssets.map((asset, index) => {
+              // Mantenemos las clases de retardo de animación nativas de tus estilos
+              const delayClass = index > 0 ? `scroll-delay-${index}` : '';
+              const visibilityClass = index === 2 ? 'hidden lg:block' : '';
+              
+              return `
+              <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-200 scroll-scale-up ${delayClass} ${visibilityClass}">
+                <div class="bg-gray-100 aspect-video">
+                  <img src="${asset.image}" alt="${asset.title}" class="w-full h-full object-cover">
+                </div>
+                <div class="p-6 flex flex-col h-[280px]">
+                  <h3 class="text-xl font-bold mb-2 line-clamp-1">${asset.title}</h3>
+                  <p class="text-gray-600 mb-4 text-sm flex-grow line-clamp-3">${asset.description}</p>
+                  <div class="flex items-center justify-between mb-4">
+                    <span class="text-lg font-bold text-green-600">${asset.price}</span>
+                    <div class="flex items-center">
+                      <span class="text-yellow-400">${asset.rating}</span>
+                    </div>
+                  </div>
+                  <a href="${asset.link}" target="_blank" rel="noopener noreferrer" class="text-blue-600 font-medium text-sm hover:underline">View on Asset Store →</a>
+                </div>
+              </div>`;
+            }).join('');
+          }
+        }
+      });
+    </script>
 
   </body>
 </html>
