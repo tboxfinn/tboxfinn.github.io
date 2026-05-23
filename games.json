@@ -1,26 +1,8 @@
 {
   "success": true,
-  "fetched_at": "2026-05-22T04:54:57.733Z",
+  "fetched_at": "2026-05-23T18:49:34.402Z",
   "total_games": 6,
   "display_games": [
-    {
-      "id": 4241212,
-      "title": "MUDRA",
-      "short_text": "An exciting game experience.",
-      "url": "https://grimoirestudios.itch.io/mudra",
-      "cover_url": null,
-      "min_price": 0,
-      "classification": "game",
-      "type": "default",
-      "published_at": "2026-02-01 23:47:46",
-      "downloads_count": 1,
-      "views_count": 15,
-      "published": true,
-      "can_be_bought": false,
-      "traits": [],
-      "created_at": "2026-01-30 06:09:35",
-      "updated_at": null
-    },
     {
       "id": 3275977,
       "title": "Lía",
@@ -110,27 +92,27 @@
       "traits": [],
       "created_at": "2024-01-28 19:53:16",
       "updated_at": null
-    }
-  ],
-  "all_games": [
+    },
     {
-      "id": 4241212,
-      "title": "MUDRA",
-      "short_text": "An exciting game experience.",
-      "url": "https://grimoirestudios.itch.io/mudra",
-      "cover_url": null,
+      "id": 2395385,
+      "title": "KERNEL LOCKS",
+      "short_text": "Adéntrate en los circuitos y componentes, captura y supera a tus adversarios, se el rey y apoderate del Kernel!!!",
+      "url": "https://tboxfinn.itch.io/kernel-locks",
+      "cover_url": "https://img.itch.zone/aW1nLzE0MjMyNTkzLnBuZw==/315x250%23c/srPVV%2B.png",
       "min_price": 0,
       "classification": "game",
       "type": "default",
-      "published_at": "2026-02-01 23:47:46",
-      "downloads_count": 1,
-      "views_count": 15,
+      "published_at": "2023-12-04 19:27:31",
+      "downloads_count": 7,
+      "views_count": 109,
       "published": true,
       "can_be_bought": false,
       "traits": [],
-      "created_at": "2026-01-30 06:09:35",
+      "created_at": "2023-11-30 02:08:52",
       "updated_at": null
-    },
+    }
+  ],
+  "all_games": [
     {
       "id": 3275977,
       "title": "Lía",
@@ -268,7 +250,7 @@
       "type": "default",
       "published_at": "2023-09-09 10:10:26",
       "downloads_count": 10,
-      "views_count": 83,
+      "views_count": 84,
       "published": true,
       "can_be_bought": false,
       "traits": [],
@@ -411,8 +393,8 @@
       "classification": "game",
       "type": "default",
       "published_at": "2022-05-20 06:07:16",
-      "downloads_count": 28,
-      "views_count": 568,
+      "downloads_count": 29,
+      "views_count": 570,
       "published": true,
       "can_be_bought": false,
       "traits": [],
@@ -475,24 +457,6 @@
     }
   ],
   "games": [
-    {
-      "id": 4241212,
-      "title": "MUDRA",
-      "short_text": "An exciting game experience.",
-      "url": "https://grimoirestudios.itch.io/mudra",
-      "cover_url": null,
-      "min_price": 0,
-      "classification": "game",
-      "type": "default",
-      "published_at": "2026-02-01 23:47:46",
-      "downloads_count": 1,
-      "views_count": 15,
-      "published": true,
-      "can_be_bought": false,
-      "traits": [],
-      "created_at": "2026-01-30 06:09:35",
-      "updated_at": null
-    },
     {
       "id": 3275977,
       "title": "Lía",
@@ -581,6 +545,24 @@
       "can_be_bought": false,
       "traits": [],
       "created_at": "2024-01-28 19:53:16",
+      "updated_at": null
+    },
+    {
+      "id": 2395385,
+      "title": "KERNEL LOCKS",
+      "short_text": "Adéntrate en los circuitos y componentes, captura y supera a tus adversarios, se el rey y apoderate del Kernel!!!",
+      "url": "https://tboxfinn.itch.io/kernel-locks",
+      "cover_url": "https://img.itch.zone/aW1nLzE0MjMyNTkzLnBuZw==/315x250%23c/srPVV%2B.png",
+      "min_price": 0,
+      "classification": "game",
+      "type": "default",
+      "published_at": "2023-12-04 19:27:31",
+      "downloads_count": 7,
+      "views_count": 109,
+      "published": true,
+      "can_be_bought": false,
+      "traits": [],
+      "created_at": "2023-11-30 02:08:52",
       "updated_at": null
     }
   ]
