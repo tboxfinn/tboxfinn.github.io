@@ -1,0 +1,12 @@
+
+# Dependencias de Node.js
+node_modules/
+
+# Scripts de automatización local
+*.bat
+
+# Archivos de prueba o temporales
+test-unity.json
+
+# Archivos del sistema Windows
+Thumbs.db
