@@ -13,6 +13,45 @@ const assetsData = [
     "link": "https://assetstore.unity.com/packages/package/311957"
   },
   {
+    "id": "fishing-system-pro",
+    "title": "Fishing System Pro",
+    "description": "Players must control a catcher's lift and gravity to keep a resisting fish within bounds ... Key Features: ... Whether you're developing a cozy farming sim or a...",
+    "image": "https://assetstorev1-prd-cdn.unity3d.com/key-image/326dc00e-fe33-4f09-a298-74364ef0ae5b.jpg",
+    "price": "$19.98",
+    "rating": "★★★★★",
+    "reviews": "New",
+    "tags": [
+      "Tools"
+    ],
+    "link": "https://assetstore.unity.com/packages/package/371894"
+  },
+  {
+    "id": "multi-scene-manager",
+    "title": "Multi Scene Manager",
+    "description": "A lightweight, additive scene management system for Unity. It uses a fluent Builder Pattern API to handle complex multi-scene loading, unloading, and UI fades w...",
+    "image": "https://assetstorev1-prd-cdn.unity3d.com/key-image/00b8fc86-b4e6-4d63-b0cc-6d5e3d63a00c.jpg",
+    "price": "$19.98",
+    "rating": "★★★★★",
+    "reviews": "New",
+    "tags": [
+      "Tools"
+    ],
+    "link": "https://assetstore.unity.com/packages/package/370546"
+  },
+  {
+    "id": "dice-roller-pro",
+    "title": "Dice Roller Pro",
+    "description": "✔ Custom Editor Tools — Per-face rotation calibration directly in the Inspector. ... Whether you're building a board game, an RPG with dice mechanics, a dungeon...",
+    "image": "https://assetstorev1-prd-cdn.unity3d.com/key-image/7c0da3a1-a10a-4658-9ee0-6c7d7b4955d1.jpg",
+    "price": "$19.98",
+    "rating": "★★★★★",
+    "reviews": "New",
+    "tags": [
+      "Tools"
+    ],
+    "link": "https://assetstore.unity.com/packages/package/378300"
+  },
+  {
     "id": "smart-pool-pro",
     "title": "Smart Pool Pro",
     "description": "Auto Expand: Automatically grows memory for critical game objects. Recycle Oldest (Circular Buffer): The \"Bullet Hell\" standard. ... Old Way: Instantiate(prefab...",
@@ -26,19 +65,6 @@ const assetsData = [
     "link": "https://assetstore.unity.com/packages/package/349950"
   },
   {
-    "id": "data-sync-pro",
-    "title": "Data Sync Pro",
-    "description": "... Smart Type-Safe ParsingDon't worry about casting types. The tool automatically detects and converts: Primitives: int, float, string, bool. ... ️ Zero Depend...",
-    "image": "https://assetstorev1-prd-cdn.unity3d.com/key-image/04422d2f-9601-4b89-9a9f-b9054ac4d7a3.jpg",
-    "price": "$20.00",
-    "rating": "★★★★★",
-    "reviews": "New",
-    "tags": [
-      "Tools"
-    ],
-    "link": "https://assetstore.unity.com/packages/package/348812"
-  },
-  {
     "id": "modular-gacha-system",
     "title": "Modular Gacha System",
     "description": "A flexible and easy-to-integrate tool for implementing gacha mechanics in Unity. Tboxfinn Modular Gacha System is a fully modular and customizable gacha system...",
@@ -50,6 +76,19 @@ const assetsData = [
       "Tools"
     ],
     "link": "https://assetstore.unity.com/packages/package/323249"
+  },
+  {
+    "id": "data-sync-pro",
+    "title": "Data Sync Pro",
+    "description": "... Smart Type-Safe ParsingDon't worry about casting types. The tool automatically detects and converts: Primitives: int, float, string, bool. ... ️ Zero Depend...",
+    "image": "https://assetstorev1-prd-cdn.unity3d.com/key-image/04422d2f-9601-4b89-9a9f-b9054ac4d7a3.jpg",
+    "price": "$20.00",
+    "rating": "★★★★★",
+    "reviews": "New",
+    "tags": [
+      "Tools"
+    ],
+    "link": "https://assetstore.unity.com/packages/package/348812"
   },
   {
     "id": "smart-spawn-system",
