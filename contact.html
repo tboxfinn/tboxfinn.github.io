@@ -111,7 +111,11 @@
     <section class="reveal">
       <p class="eyebrow">02 — Send a Message</p>
       <h2>Tell me about your project</h2>
-      <form id="contact-form" style="margin-top: 1.4rem;">
+      <form id="contact-form" action="https://formspree.io/f/mzeprqve" method="POST" accept-charset="utf-8" style="margin-top: 1.4rem;">
+        <!-- Honeypot anti-spam: invisible para humanos; si un bot lo llena, Formspree descarta el mensaje -->
+        <input type="text" name="_gotcha" style="display:none !important;" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <!-- Asunto del correo que recibirás, con el nombre del remitente -->
+        <input type="hidden" name="_subject" value="New portfolio message from {{firstName}} {{lastName}}" />
         <div class="form-row">
           <div class="form-field">
             <label for="firstName">First Name</label>

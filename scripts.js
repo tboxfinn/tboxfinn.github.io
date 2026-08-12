@@ -268,3 +268,55 @@ document.addEventListener('DOMContentLoaded', function () {
   if (document.getElementById('assets-container')) renderAssets();
   if (document.getElementById('featured-assets-container')) renderFeaturedAssets();
 });
+
+// Notificación tipo toast (reutiliza el estilo #toasts/.toast del CSS)
+function showToast(msg) {
+  var box = document.getElementById('toasts');
+  if (!box) return;
+  var t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  box.appendChild(t);
+  requestAnimationFrame(function () { t.classList.add('show'); });
+  setTimeout(function () {
+    t.classList.remove('show');
+    setTimeout(function () { t.remove(); }, 400);
+  }, 4000);
+}
+
+// Formulario de contacto (Formspree): envío por fetch sin recargar la página.
+// El endpoint sale del atributo action del form (ver contact.html).
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('contact-form');
+  if (!form) return;
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const btn = form.querySelector('button[type="submit"]');
+    const original = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { Accept: 'application/json' }
+    })
+      .then(function (res) {
+        if (res.ok) {
+          form.reset();
+          showToast('✅ Message sent! I will get back to you soon.');
+        } else {
+          return res.json().then(function (data) {
+            throw new Error(data.errors ? data.errors.map(function (err) { return err.message; }).join(', ') : 'HTTP ' + res.status);
+          });
+        }
+      })
+      .catch(function (err) {
+        console.error('❌ Formspree error:', err.message);
+        showToast('⚠️ Could not send the message. Please email me directly.');
+      })
+      .finally(function () {
+        btn.disabled = false;
+        btn.textContent = original;
+      });
+  });
+});
