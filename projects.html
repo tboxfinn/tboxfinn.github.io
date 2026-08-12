@@ -1,287 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Projects | Hugo Valladolid</title>
-    <link rel="icon" type="image/png" href="images/LogoPNG.png">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              'sans': ['Inter', 'system-ui', 'sans-serif'],
-            }
-          }
-        }
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Projects | Hugo Valladolid</title>
+<link rel="icon" type="image/png" href="images/LogoPNG.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Space+Grotesk:wght@300..700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js" } }
+</script>
+</head>
+<body>
+
+  <div id="scene-fallback" aria-hidden="true"><div class="silhouette"></div></div>
+  <canvas id="scene" aria-hidden="true"></canvas>
+  <div id="page-veil" aria-hidden="true"></div>
+
+  <nav>
+    <a class="nav-brand" href="index.html" id="egg-logo" title="Tboxfinn">
+      <img src="images/LogoPNG.png" alt="Tboxfinn logo" />
+      TBOXFINN
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="projects.html" class="active">Projects</a>
+      <a href="assets.html">Assets</a>
+      <a href="contact.html">Contact</a>
+      <button id="theme-toggle" aria-label="Toggle dark mode">
+        <svg class="icon-sun" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+        </svg>
+        <svg class="icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+        </svg>
+      </button>
+      <button class="hamburger" id="mobile-menu-button" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mobile-menu fixed top-0 right-0 h-full w-64 z-50 border-l" style="background: var(--nav-bg); backdrop-filter: blur(10px); border-color: var(--border);" id="mobile-menu">
+    <div class="pt-24 px-6 h-full">
+      <div class="flex flex-col space-y-5">
+        <a href="index.html" class="text-lg">Home</a>
+        <a href="about.html" class="text-lg">About</a>
+        <a href="projects.html" class="active text-lg">Projects</a>
+        <a href="assets.html" class="text-lg">Assets</a>
+        <a href="contact.html" class="text-lg">Contact</a>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-menu-overlay fixed inset-0 z-40 hidden" id="mobile-menu-overlay" style="background-color: rgba(0,0,0,0.5);"></div>
+
+  <div id="hud" aria-hidden="true">
+    <div class="row"><span class="label">Visible</span><span class="val" id="hud-build">100%</span></div>
+    <div class="row"><span class="label">Discoveries</span><span class="val" id="hud-disc">0/3</span></div>
+  </div>
+  <div id="toasts" aria-hidden="true"></div>
+
+  <main>
+
+    <!-- ═══════════ HEADER ═══════════ -->
+    <section class="page-header">
+      <p class="eyebrow reveal">Projects</p>
+      <h2 class="reveal" style="font-size: clamp(2.4rem, 6vw, 3.6rem);">MY PROJECTS</h2>
+      <p class="reveal reveal-delay-1" style="max-width: 44ch;">A collection of games and interactive experiences I've designed and developed. Each project represents a unique challenge and learning opportunity.</p>
+    </section>
+
+    <!-- ═══════════ FEATURED: MUTANT WASTELANDS ═══════════ -->
+    <section id="mutant-wastelands" class="reveal">
+      <p class="eyebrow">01 — Featured Project / Action Roguelite</p>
+      <h2>Mutant Wastelands</h2>
+      <div class="feature-grid">
+        <div class="media">
+          <div class="project-media">
+            <video autoplay muted loop playsinline>
+              <source src="videos/VideoPoryecto2.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+        <div class="text">
+          <p>Mutant Wastelands is a post-apocalyptic action roguelite featuring procedural maps, unique mutant abilities, and challenging combat.</p>
+          <p style="margin-top: 0.8rem;"><strong>Problem Solved &amp; Metrics:</strong> I developed a scalable procedural generation system capable of creating distinct layouts dynamically. This system reduced manual level design time by 80% while increasing replayability significantly.</p>
+          <div style="margin-top: 1rem;">
+            <p class="project-role">My Role: Gameplay Programmer, Systems Engineer</p>
+            <ul class="project-features">
+              <li>Modular procedural map generation</li>
+              <li>Data-driven mutant abilities</li>
+              <li>Fast-paced robust combat systems</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">Unity</span><span class="tag">Procedural Generation</span><span class="tag">Systems Engineering</span>
+          </div>
+          <div style="margin-top: 1rem;">
+            <a class="link-underline" href="https://youtu.be/x1GXpLPoXmI?si=Aqc1HlMLQlGgCX6_" target="_blank" rel="noopener noreferrer">Watch Trailer →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ FEATURED: DIG ═══════════ -->
+    <section id="dig" class="reveal">
+      <p class="eyebrow">02 — Multiplayer Prototype</p>
+      <h2>DIG</h2>
+      <div class="feature-grid">
+        <div class="media">
+          <div class="project-media">
+            <img src="images/DIG.png" alt="DIG Multiplayer Mining Game Screenshot" />
+          </div>
+        </div>
+        <div class="text">
+          <p>DIG is a multiplayer mining game for up to 4 players, featuring procedurally generated levels using voxel marching cubes technology.</p>
+          <p style="margin-top: 0.8rem;"><strong>Problem Solved &amp; Metrics:</strong> Implemented a performant marching cubes algorithm for real-time terrain destruction and generation. Maintained a solid 60 FPS across network sessions while ensuring perfect synchronization of modified voxel data for up to 4 concurrent players.</p>
+          <div style="margin-top: 1rem;">
+            <p class="project-role">My Role: Programmer, Multiplayer Systems</p>
+            <ul class="project-features">
+              <li>Voxel procedural generation (Marching Cubes)</li>
+              <li>Multiplayer networking code</li>
+              <li>Synchronized terrain destruction</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">Unity</span><span class="tag">C#</span><span class="tag">Multiplayer</span>
+          </div>
+          <div style="margin-top: 1rem;">
+            <span class="project-role">Project in prototype phase</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ OTHER PROJECTS (tabs) ═══════════ -->
+    <section class="reveal">
+      <p class="eyebrow">03 — Other Projects</p>
+      <h2>More games</h2>
+      <div style="display: flex; gap: 0.8rem; margin-bottom: 2rem;">
+        <button id="tab-itchio" class="tab-btn active" type="button">Itch.io</button>
+        <button id="tab-playstore" class="tab-btn" type="button">Playstore</button>
+      </div>
+
+      <!-- Itch.io (dinámico desde games.json) -->
+      <div id="section-itchio">
+        <h3 style="margin-bottom: 1.2rem;">Published Games on Itch.io</h3>
+        <div id="itch-games-container" class="grid-3">
+          <div class="loading"><div class="animate-spin" style="width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;margin:0 auto 0.6rem;"></div>Loading games from itch.io...</div>
+        </div>
+      </div>
+
+      <!-- Playstore -->
+      <div id="section-playstore" style="display:none;">
+        <h3 style="margin-bottom: 1.2rem;">Published Games on Playstore</h3>
+        <div class="grid-3">
+          <a class="game-card" href="https://play.google.com/store/apps/details?id=com.GrimoireStudios.Pacomixtle&hl=es_MX" target="_blank" rel="noopener noreferrer">
+            <div class="thumb">
+              <img src="images/Pacomixtle.png" alt="Pacomixtle" />
+            </div>
+            <div class="card-body">
+              <h3 class="line-clamp-1">Pacomixtle</h3>
+              <p class="line-clamp-3">Pacomixtle is a charming mobile game available on Google Play. Help Pacomixtle, a mystical feline, on his adventure through colorful worlds, overcoming obstacles and collecting treasures. Designed for all ages, it features intuitive controls and delightful visuals.</p>
+              <div class="tags">
+                <span class="tag">Unity</span><span class="tag">Mobile</span><span class="tag">2D Art</span><span class="tag">Game Design</span>
+              </div>
+              <span class="go">View on Google Play →</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ CTA ═══════════ -->
+    <section class="cta-block reveal">
+      <h2>Interested in Working Together?</h2>
+      <p>I'm always excited to take on new challenges and create innovative gaming experiences. Let's discuss your next project!</p>
+      <a class="btn btn-primary" href="contact.html">Start a conversation</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2020-2026 HUGO VALLADOLID · <span class="heart" id="egg-heart" title="♥">♥</span></p>
+  </footer>
+
+<script>
+  document.documentElement.classList.add('js');
+
+  (function initTheme() {
+    var read = function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } };
+    var write = function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} };
+    var theme = read('theme');
+    var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var current = theme || (systemDark ? 'night' : 'day');
+    document.body.classList.toggle('dark-mode', current === 'night');
+
+    var toggles = document.querySelectorAll('#theme-toggle, #mobile-theme-toggle');
+    toggles.forEach(function (btn) {
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        current = current === 'day' ? 'night' : 'day';
+        document.body.classList.toggle('dark-mode', current === 'night');
+        write('theme', current);
+        window.dispatchEvent(new CustomEvent('themechange', { detail: current }));
+      });
+    });
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+      if (!read('theme')) {
+        current = e.matches ? 'night' : 'day';
+        document.body.classList.toggle('dark-mode', current === 'night');
+        window.dispatchEvent(new CustomEvent('themechange', { detail: current }));
       }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  <body class="bg-white text-gray-900 font-sans leading-relaxed">
+    });
+  })();
+</script>
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full bg-white backdrop-blur-sm z-50 border-b border-gray-100 shadow-sm">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
-        <div class="flex justify-between items-center">
-          <div class="flex items-center space-x-3">
-            <img src="images/LogoPNG.png" alt="Hugo Valladolid Logo" class="w-8 h-8 object-contain">
-            <h1 class="text-lg sm:text-xl font-bold tracking-tight">
-              <a href="index.html" class="hover:text-gray-600 transition-colors">Tboxfinn</a>
-            </h1>
-          </div>
-          
-          <!-- Desktop Menu -->
-          <div class="hidden md:flex items-center space-x-8">
-            <a href="index.html" class="text-gray-600 hover:text-gray-900 transition-colors">Home</a>
-            <a href="about.html" class="text-gray-600 hover:text-gray-900 transition-colors">About</a>
-            <a href="projects.html" class="text-gray-800 font-medium">Projects</a>
-            <a href="assets.html" class="text-gray-600 hover:text-gray-900 transition-colors">Assets</a>
-            <a href="contact.html" class="text-gray-600 hover:text-gray-900 transition-colors">Contact</a>
-            
-            <!-- Theme Toggle Button -->
-            <button id="theme-toggle" class="theme-toggle p-2 rounded-lg" aria-label="Toggle dark mode">
-              <svg id="sun-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-              </svg>
-              <svg id="moon-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-              </svg>
-            </button>
-          </div>
-
-          <!-- Mobile Menu Button -->
-          <div class="md:hidden">
-            <button class="hamburger" id="mobile-menu-button" aria-label="Toggle menu">
-              <span></span>
-              <span></span>
-              <span></span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Mobile Menu -->
-      <div class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 bg-white shadow-2xl border-l border-gray-200 z-50" id="mobile-menu">
-        <div class="pt-20 px-6 h-full">
-          <div class="flex flex-col space-y-6 bg-white p-4 rounded-lg">
-            <a href="index.html" class="text-gray-700 hover:text-gray-900 text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">Home</a>
-            <a href="about.html" class="text-gray-700 hover:text-gray-900 text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">About</a>
-            <a href="projects.html" class="text-gray-900 font-bold text-lg py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">Projects</a>
-            <a href="assets.html" class="text-gray-700 hover:text-gray-900 text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">Assets</a>
-            <a href="contact.html" class="text-gray-700 hover:text-gray-900 text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">Contact</a>
-            
-            <!-- Mobile Theme Toggle -->
-            <button id="mobile-theme-toggle" class="theme-toggle flex items-center justify-center p-3 rounded-lg text-lg font-medium" aria-label="Toggle dark mode">
-              <svg id="mobile-sun-icon" class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-              </svg>
-              <svg id="mobile-moon-icon" class="w-5 h-5 mr-2 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-              </svg>
-              <span id="theme-text">Light Mode</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Mobile Menu Overlay -->
-      <div class="mobile-menu-overlay md:hidden fixed inset-0 bg-black z-30 hidden" id="mobile-menu-overlay" style="background-color: rgba(0, 0, 0, 0.5) !important;"></div>
-    </nav>
-
-    <!-- Projects Hero -->
-    <section class="pt-32 pb-20 px-6">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-20 scroll-fade-in">
-          <h1 class="text-6xl font-bold mb-8 tracking-tight">
-            MY<br>
-            <span class="text-gray-600">PROJECTS</span>
-          </h1>
-          <div class="w-24 h-1 bg-gray-900 mx-auto mb-8"></div>
-          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-            A collection of games and interactive experiences I've designed and developed. 
-            Each project represents a unique challenge and learning opportunity.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Featured Projects -->
-    <section class="py-20 px-6">
-      <div class="max-w-6xl mx-auto">
-        <h2 class="text-3xl font-bold mb-12 scroll-fade-in">Featured Projects</h2>
-        
-        <!-- Project 1: Mutant Wastelands as Featured -->
-        <div class="mb-20">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div class="order-2 lg:order-1 scroll-slide-left">
-              <div class="bg-gray-100 aspect-video rounded-lg overflow-hidden relative">
-                <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0">
-                  <source src="videos/VideoPoryecto2.mp4" type="video/mp4">
-                </video>
-              </div>
-            </div>
-            <div class="order-1 lg:order-2 scroll-slide-right">
-              <span class="text-sm text-gray-500 uppercase tracking-widest">Featured Project / Action Roguelite</span>
-              <h3 class="text-3xl font-bold mt-2 mb-4">Mutant Wastelands</h3>
-              <p class="text-lg text-gray-600 leading-relaxed mb-6">
-                Mutant Wastelands is a post-apocalyptic action roguelite featuring procedural maps, unique mutant abilities, and challenging combat.<br><br>
-                <strong>Problem Solved & Metrics:</strong> I developed a scalable procedural generation system capable of creating distinct layouts dynamically. This system reduced manual level design time by 80% while increasing replayability significantly.
-              </p>
-              <div class="space-y-4 mb-6">
-                <div>
-                  <h4 class="font-semibold mb-2">My Role:</h4>
-                  <p class="text-gray-600">Gameplay Programmer, Systems Engineer</p>
-                </div>
-                <div>
-                  <h4 class="font-semibold mb-2">Key Features:</h4>
-                  <ul class="text-gray-600 space-y-1">
-                    <li>• Modular procedural map generation</li>
-                    <li>• Data-driven mutant abilities</li>
-                    <li>• Fast-paced robust combat systems</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="flex flex-wrap gap-2 mb-6">
-                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Unity</span>
-                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Systems Engineering</span>
-              </div>
-              <div class="flex space-x-4">
-                <a href="https://youtu.be/x1GXpLPoXmI?si=Aqc1HlMLQlGgCX6_" target="_blank" class="text-gray-900 font-medium hover:underline">Watch Trailer →</a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 2: DIG -->
-        <div class="mb-20" id="dig">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <!-- Project text -->
-            <div class="scroll-slide-right scroll-delay-1">
-              <span class="text-sm text-gray-500 uppercase tracking-widest">Multiplayer Prototype</span>
-              <h3 class="text-3xl font-bold mt-2 mb-4">DIG</h3>
-              <p class="text-lg text-gray-600 leading-relaxed mb-6">
-                DIG is a multiplayer mining game for up to 4 players, featuring procedurally generated levels using voxel marching cubes technology.<br><br>
-                <strong>Problem Solved & Metrics:</strong> Implemented a performant marching cubes algorithm for real-time terrain destruction and generation. Maintained a solid 60 FPS across network sessions while ensuring perfect synchronization of modified voxel data for up to 4 concurrent players.
-              </p>
-              <div class="space-y-4 mb-6">
-                <div>
-                  <h4 class="font-semibold mb-2">My Role:</h4>
-                  <p class="text-gray-600">Programmer, Multiplayer Systems</p>
-                </div>
-                <div>
-                  <h4 class="font-semibold mb-2">Key Features:</h4>
-                  <ul class="text-gray-600 space-y-1">
-                    <li>• Voxel procedural generation (Marching Cubes)</li>
-                    <li>• Multiplayer networking code</li>
-                    <li>• Synchronized terrain destruction</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="flex flex-wrap gap-2 mb-6">
-                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Unity</span>
-                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">C#</span>
-                <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Multiplayer</span>
-              </div>
-              <div class="flex space-x-4">
-                <span class="text-gray-500 font-medium">Project in prototype phase</span>
-              </div>
-            </div>
-            <!-- Project Image -->
-            <div class="scroll-slide-left scroll-delay-1">
-              <div class="bg-gray-100 aspect-video rounded-lg overflow-hidden relative">
-                <img src="images/DIG.png" alt="DIG Multiplayer Mining Game Screenshot" class="w-full h-full object-cover">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Other Projects Grid -->
-    <section class="py-20 bg-gray-50 px-6">
-      <div class="max-w-6xl mx-auto">
-        <h2 class="text-3xl font-bold mb-12 scroll-fade-in">Other Projects</h2>
-        <!-- Tabs -->
-        <div class="flex justify-center mb-10 gap-4">
-          <button id="tab-itchio" class="tab-btn px-6 py-2 rounded-full font-medium text-sm sm:text-base transition-all duration-200" type="button">Itch.io</button>
-          <button id="tab-playstore" class="tab-btn px-6 py-2 rounded-full font-medium text-sm sm:text-base transition-all duration-200" type="button">Playstore</button>
-        </div>
-        <!-- Itch.io Games Section -->
-        <div id="section-itchio">
-          <h3 class="text-xl font-semibold mb-6 text-gray-700">Published Games on Itch.io</h3>
-          <div id="itch-games-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Loading placeholder -->
-            <div class="col-span-full text-center py-8">
-              <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-              <p class="mt-2 text-gray-600">Loading games from itch.io...</p>
-            </div>
-          </div>
-        </div>
-        <!-- Playstore Projects Section -->
-        <div id="section-playstore" style="display:none;">
-          <h3 class="text-xl font-semibold mb-6 text-gray-700">Published Games on Playstore</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Project Card 1: Pacomixtle (igual que Itch.io) -->
-            <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 scroll-scale-up itch-game-card dark:bg-gray-900 hover:-translate-y-1">
-              <div class="bg-gray-100 aspect-video overflow-hidden dark:bg-gray-800">
-                <img src="images/Pacomixtle.png" alt="Pacomixtle" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
-              </div>
-              <div class="p-6">
-                <h3 class="text-xl font-bold mb-2 line-clamp-1">Pacomixtle</h3>
-                <p class="text-gray-600 mb-4 text-sm line-clamp-3 dark:text-gray-300">
-                  Pacomixtle is a charming mobile game available on Google Play. Help Pacomixtle, a mystical feline, on his adventure through colorful worlds, overcoming obstacles and collecting treasures. Designed for all ages, it features intuitive controls and delightful visuals.
-                </p>
-                <div class="flex flex-wrap gap-1 mb-4">
-                  <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full dark:bg-gray-700 dark:text-gray-200">Unity</span>
-                  <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full dark:bg-gray-700 dark:text-gray-200">Mobile</span>
-                  <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full dark:bg-gray-700 dark:text-gray-200">2D Art</span>
-                  <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full dark:bg-gray-700 dark:text-gray-200">Game Design</span>
-                  <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">Playstore</span>
-                </div>
-                <div class="flex items-center justify-between">
-                  <a href="https://play.google.com/store/apps/details?id=com.GrimoireStudios.Pacomixtle&hl=es_MX" target="_blank" rel="noopener noreferrer" class="text-green-700 font-medium text-sm hover:underline flex items-center group dark:text-green-400 dark:hover:text-blue-400">
-                    View on Google Play
-                    <svg class="w-4 h-4 ml-1 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                    </svg>
-                  </a>
-                  <span class="text-sm text-green-600 font-medium dark:text-green-400">Free</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Call to Action -->
-    <section class="py-20 px-6">
-      <div class="max-w-4xl mx-auto text-center">
-        <h2 class="text-4xl font-bold mb-8">Interested in Working Together?</h2>
-        <p class="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
-          I'm always excited to take on new challenges and create innovative gaming experiences. 
-          Let's discuss your next project!
-        </p>
-        <a href="contact.html" class="inline-flex items-center px-6 sm:px-8 py-3 text-gray-900 dark:text-gray-100 font-medium text-sm sm:text-base btn-gradient">
-          Start a conversation
-        </a>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="border-t border-gray-200 py-12 px-6">
-      <div class="max-w-6xl mx-auto text-center">
-        <p class="text-sm text-gray-500">
-          © 2020-2025 HUGO VALLADOLID. All rights reserved.
-        </p>
-      </div>
-    </footer>
-
-    <!-- Import JavaScript -->
-    <script src="scripts.js"></script>
-
-  </body>
+<script src="scripts.js"></script>
+<script type="module" src="tower3d.js"></script>
+</body>
 </html>

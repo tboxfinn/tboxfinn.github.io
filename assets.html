@@ -1,244 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Assets | Hugo Valladolid</title>
-    <link rel="icon" type="image/png" href="images/LogoPNG.png">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              'sans': ['Inter', 'system-ui', 'sans-serif'],
-            }
-          }
-        }
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Assets | Hugo Valladolid</title>
+<link rel="icon" type="image/png" href="images/LogoPNG.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Space+Grotesk:wght@300..700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js" } }
+</script>
+</head>
+<body>
+
+  <div id="scene-fallback" aria-hidden="true"><div class="silhouette"></div></div>
+  <canvas id="scene" aria-hidden="true"></canvas>
+  <div id="page-veil" aria-hidden="true"></div>
+
+  <nav>
+    <a class="nav-brand" href="index.html" id="egg-logo" title="Tboxfinn">
+      <img src="images/LogoPNG.png" alt="Tboxfinn logo" />
+      TBOXFINN
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="projects.html">Projects</a>
+      <a href="assets.html" class="active">Assets</a>
+      <a href="contact.html">Contact</a>
+      <button id="theme-toggle" aria-label="Toggle dark mode">
+        <svg class="icon-sun" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+        </svg>
+        <svg class="icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+        </svg>
+      </button>
+      <button class="hamburger" id="mobile-menu-button" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mobile-menu fixed top-0 right-0 h-full w-64 z-50 border-l" style="background: var(--nav-bg); backdrop-filter: blur(10px); border-color: var(--border);" id="mobile-menu">
+    <div class="pt-24 px-6 h-full">
+      <div class="flex flex-col space-y-5">
+        <a href="index.html" class="text-lg">Home</a>
+        <a href="about.html" class="text-lg">About</a>
+        <a href="projects.html" class="text-lg">Projects</a>
+        <a href="assets.html" class="active text-lg">Assets</a>
+        <a href="contact.html" class="text-lg">Contact</a>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-menu-overlay fixed inset-0 z-40 hidden" id="mobile-menu-overlay" style="background-color: rgba(0,0,0,0.5);"></div>
+
+  <div id="hud" aria-hidden="true">
+    <div class="row"><span class="label">Visible</span><span class="val" id="hud-build">100%</span></div>
+    <div class="row"><span class="label">Discoveries</span><span class="val" id="hud-disc">0/3</span></div>
+  </div>
+  <div id="toasts" aria-hidden="true"></div>
+
+  <main>
+
+    <!-- ═══════════ HEADER ═══════════ -->
+    <section class="page-header">
+      <p class="eyebrow reveal">Assets</p>
+      <h2 class="reveal" style="font-size: clamp(2.4rem, 6vw, 3.6rem);">MY ASSETS</h2>
+      <p class="reveal reveal-delay-1" style="max-width: 44ch;">Tools, systems, and components I've developed for the game development community. Helping other developers create amazing experiences faster and more efficiently.</p>
+    </section>
+
+    <!-- ═══════════ UNITY ASSET STORE (dinámico) ═══════════ -->
+    <section class="reveal">
+      <p class="eyebrow">01 — Unity Asset Store</p>
+      <h2>Tools for the community</h2>
+      <p style="margin-bottom: 1.6rem;">These assets help other developers create better games faster.</p>
+      <div id="assets-container" class="grid-3"><!-- renderizado por scripts.js desde assets-data.js --></div>
+      <!-- Botón "ver más" (oculto si hay 9 o menos) -->
+      <div class="cta-block" id="assets-more-wrap" style="display: none;">
+        <button class="btn btn-ghost" id="assets-more-btn">View all assets →</button>
+      </div>
+    </section>
+
+    <!-- ═══════════ ESTADÍSTICAS ═══════════ -->
+    <section class="reveal">
+      <p class="eyebrow">02 — Asset Performance</p>
+      <h2>Impact</h2>
+      <p style="margin-bottom: 1.6rem;">My assets have helped thousands of developers worldwide create amazing experiences.</p>
+      <div class="stats-grid">
+        <div class="stat"><div class="num" id="stat-assets">—</div><div class="label">Published Assets</div></div>
+        <div class="stat"><div class="num">100+</div><div class="label">Total Downloads</div></div>
+        <div class="stat"><div class="num" id="stat-rating">—</div><div class="label">Average Rating</div></div>
+        <div class="stat"><div class="num" id="stat-reviews">—</div><div class="label">Total Reviews</div></div>
+      </div>
+    </section>
+
+    <!-- ═══════════ CTA ═══════════ -->
+    <section class="cta-block reveal">
+      <h2>Need a Custom Asset?</h2>
+      <p>I also create custom tools and systems for specific project needs. Let's discuss how I can help accelerate your development workflow.</p>
+      <a class="btn btn-primary" href="contact.html">Get Custom Development</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2020-2026 HUGO VALLADOLID · <span class="heart" id="egg-heart" title="♥">♥</span></p>
+  </footer>
+
+<script>
+  document.documentElement.classList.add('js');
+
+  (function initTheme() {
+    var read = function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } };
+    var write = function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} };
+    var theme = read('theme');
+    var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var current = theme || (systemDark ? 'night' : 'day');
+    document.body.classList.toggle('dark-mode', current === 'night');
+
+    var toggles = document.querySelectorAll('#theme-toggle, #mobile-theme-toggle');
+    toggles.forEach(function (btn) {
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        current = current === 'day' ? 'night' : 'day';
+        document.body.classList.toggle('dark-mode', current === 'night');
+        write('theme', current);
+        window.dispatchEvent(new CustomEvent('themechange', { detail: current }));
+      });
+    });
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+      if (!read('theme')) {
+        current = e.matches ? 'night' : 'day';
+        document.body.classList.toggle('dark-mode', current === 'night');
+        window.dispatchEvent(new CustomEvent('themechange', { detail: current }));
       }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  <body class="bg-white text-gray-900 font-sans leading-relaxed">
+    });
+  })();
+</script>
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full bg-white backdrop-blur-sm z-50 border-b border-gray-100 shadow-sm">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
-        <div class="flex justify-between items-center">
-          <div class="flex items-center space-x-3">
-            <img src="images/LogoPNG.png" alt="Hugo Valladolid Logo" class="w-8 h-8 object-contain">
-            <h1 class="text-lg sm:text-xl font-bold tracking-tight">
-              <a href="index.html" class="hover:text-gray-600 transition-colors">Tboxfinn</a>
-            </h1>
-          </div>
-          
-          <!-- Desktop Menu -->
-          <div class="hidden md:flex items-center space-x-8">
-            <a href="index.html" class="text-gray-600 hover:text-gray-900 transition-colors">Home</a>
-            <a href="about.html" class="text-gray-600 hover:text-gray-900 transition-colors">About</a>
-            <a href="projects.html" class="text-gray-600 hover:text-gray-900 transition-colors">Projects</a>
-            <a href="assets.html" class="text-gray-800 font-medium">Assets</a>
-            <a href="contact.html" class="text-gray-600 hover:text-gray-900 transition-colors">Contact</a>
-            
-            <!-- Theme Toggle Button -->
-            <button id="theme-toggle" class="theme-toggle p-2 rounded-lg" aria-label="Toggle dark mode">
-              <svg id="sun-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-              </svg>
-              <svg id="moon-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-              </svg>
-            </button>
-          </div>
-
-          <!-- Mobile Menu Button -->
-          <div class="md:hidden">
-            <button class="hamburger" id="mobile-menu-button" aria-label="Toggle menu">
-              <span></span>
-              <span></span>
-              <span></span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Mobile Menu -->
-      <div class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 bg-white shadow-2xl border-l border-gray-200 z-50" id="mobile-menu">
-        <div class="pt-20 px-6 h-full">
-          <div class="flex flex-col space-y-6 bg-white p-4 rounded-lg">
-            <a href="index.html" class="text-gray-700 hover:text-gray-900 text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">Home</a>
-            <a href="about.html" class="text-gray-700 hover:text-gray-900 text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">About</a>
-            <a href="projects.html" class="text-gray-700 hover:text-gray-900 text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">Projects</a>
-            <a href="assets.html" class="text-gray-900 font-bold text-lg py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">Assets</a>
-            <a href="contact.html" class="text-gray-700 hover:text-gray-900 text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">Contact</a>
-            
-            <!-- Mobile Theme Toggle -->
-            <button id="mobile-theme-toggle" class="theme-toggle flex items-center justify-center p-3 rounded-lg text-lg font-medium" aria-label="Toggle dark mode">
-              <svg id="mobile-sun-icon" class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-              </svg>
-              <svg id="mobile-moon-icon" class="w-5 h-5 mr-2 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-              </svg>
-              <span id="theme-text">Light Mode</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Mobile Menu Overlay -->
-      <div class="mobile-menu-overlay md:hidden fixed inset-0 bg-black z-30 hidden" id="mobile-menu-overlay" style="background-color: rgba(0, 0, 0, 0.5) !important;"></div>
-    </nav>
-
-    <!-- Assets Hero -->
-    <section class="pt-32 pb-20 px-6">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-20 scroll-fade-in">
-          <h1 class="text-6xl font-bold mb-8 tracking-tight">
-            MY<br>
-            <span class="text-gray-600">ASSETS</span>
-          </h1>
-          <div class="w-24 h-1 bg-gray-900 mx-auto mb-8"></div>
-          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-            Tools, systems, and components I've developed for the game development community. 
-            Helping other developers create amazing experiences faster and more efficiently.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Unity Asset Store -->
-    <section class="py-20 px-6">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-16 scroll-fade-in">
-          <h2 class="text-4xl font-bold mb-6">Unity Asset Store</h2>
-          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-            Tools and systems I've developed for the Unity community. 
-            These assets help other developers create better games faster.
-          </p>
-        </div>
-        
-        <div id="assets-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <!-- Assets will be dynamically loaded here by scripts.js from assets-data.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Unreal Engine Marketplace -->
-    <!-- <section class="py-20 bg-gray-50 px-6">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-16">
-          <h2 class="text-4xl font-bold mb-6">Unreal Engine Marketplace</h2>
-          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-            Future-ready assets and blueprints for Unreal Engine developers. 
-            Expanding my toolkit to serve the broader game development community.
-          </p>
-        </div> -->
-        
-        <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"> -->
-          <!-- Unreal Asset 1 -->
-          <!-- <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-200">
-            <div class="bg-gray-100 aspect-video relative"> -->
-              <!-- ATENCION: Reemplazar con screenshot real del asset en Unreal Marketplace -->
-              <!-- Para imagen: <img src="images/unreal-assets/vr-interaction-preview.jpg" alt="VR Interaction System Preview" class="w-full h-full object-cover"> -->
-              <!-- ATENCION: Crear carpeta images/unreal-assets/ para organizar screenshots -->
-              <!-- <div class="w-full h-full bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center">
-                <span class="text-purple-600 text-sm font-medium">Unreal Asset Preview</span>
-              </div>
-              <div class="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded">
-                Coming Soon
-              </div>
-            </div>
-            <div class="p-6"> -->
-              <!-- ATENCION: Actualizar con el nombre real de tu futuro asset para Unreal -->
-              <!-- <h3 class="text-xl font-bold mb-2">Advanced VR Interaction System</h3> -->
-              <!-- ATENCION: Actualizar con la descripción real -->
-              <!-- <p class="text-gray-600 mb-4 text-sm">
-                Complete VR interaction framework with physics-based hand tracking, 
-                object manipulation, and UI interaction systems for Unreal Engine.
-              </p> -->
-              
-              <!-- <div class="flex items-center justify-between mb-4"> -->
-                <!-- ATENCION: Actualizar con el precio esperado -->
-                <!-- <span class="text-lg font-bold text-gray-500">TBD</span>
-                <div class="flex it</div>ems-center">
-                  <span class="text-gray-400">★★★★★</span>
-                  <span class="text-sm text-gray-400 ml-1">(New)</span>
-                </div>
-              </div> -->
-              
-              <!-- <div class="flex flex-wrap gap-1 mb-4">
-                <span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded">VR</span>
-                <span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded">Blueprints</span>
-                <span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded">Interaction</span>
-              </div> -->
-              
-              <!-- ATENCION: Actualizar con el link real cuando esté disponible
-              <span class="text-gray-400 text-sm">Coming Q3 2025</span>
-            </div>
-          </div>          
-        </div>
-      </div>
-    </section> -->
-
-    <!-- Revenue Statistics -->
-    <section class="py-20 px-6">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-16 scroll-fade-in">
-          <h2 class="text-3xl font-bold mb-6">Asset Performance</h2>
-          <p class="text-gray-600 max-w-2xl mx-auto">
-            My assets have helped thousands of developers worldwide create amazing experiences.
-          </p>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div class="text-center scroll-scale-up">
-            <div class="text-4xl font-bold text-blue-600 mb-2">12</div>
-            <div class="text-gray-600">Published Assets</div>
-          </div>
-          <div class="text-center scroll-scale-up scroll-delay-1">
-            <div class="text-4xl font-bold text-green-600 mb-2">100+</div>
-            <div class="text-gray-600">Total Downloads</div>
-          </div>
-          <div class="text-center scroll-scale-up scroll-delay-2">
-            <div class="text-4xl font-bold text-purple-600 mb-2">5.0</div>
-            <div class="text-gray-600">Average Rating</div>
-          </div>
-          <div class="text-center scroll-scale-up scroll-delay-3">
-            <div class="text-4xl font-bold text-orange-600 mb-2">50+</div>
-            <div class="text-gray-600">Total Reviews</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Call to Action -->
-    <section class="py-20 bg-gray-50 px-6">
-      <div class="max-w-4xl mx-auto text-center scroll-fade-in">
-        <h2 class="text-4xl font-bold mb-8">Need a Custom Asset?</h2>
-        <p class="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
-          I also create custom tools and systems for specific project needs. 
-          Let's discuss how I can help accelerate your development workflow.
-        </p>
-        <a href="contact.html" class="inline-flex items-center px-6 sm:px-8 py-3 text-gray-900 dark:text-gray-100 font-medium text-sm sm:text-base btn-gradient">
-          Get Custom Development
-        </a>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="border-t border-gray-200 py-12 px-6">
-      <div class="max-w-6xl mx-auto text-center">
-        <p class="text-sm text-gray-500">
-          © 2020-2025 HUGO VALLADOLID. All rights reserved.
-        </p>
-      </div>
-    </footer>
-
-    <!-- Import JavaScript -->
-    <script src="assets-data.js"></script>
-    <script src="scripts.js"></script>
-
-  </body>
+<script src="assets-data.js"></script>
+<script src="scripts.js"></script>
+<script type="module" src="tower3d.js"></script>
+</body>
 </html>

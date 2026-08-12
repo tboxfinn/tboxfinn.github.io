@@ -1,443 +1,252 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hugo Valladolid | Portfolio</title>
-    <link rel="icon" type="image/png" href="images/LogoPNG.png">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              'sans': ['Inter', 'system-ui', 'sans-serif'],
-            }
-          }
-        }
-      }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  <body class="bg-white text-gray-900 font-sans leading-relaxed">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HUGO VALLADOLID — Gameplay & Tools Engineer</title>
+<link rel="icon" type="image/png" href="images/LogoPNG.png" />
 
-    <nav class="fixed top-0 w-full bg-white backdrop-blur-sm z-50 border-b border-gray-100 shadow-sm">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
-        <div class="flex justify-between items-center">
-          <div class="flex items-center space-x-3">
-            <img src="images/LogoPNG.png" alt="Hugo Valladolid Logo" class="w-8 h-8 object-contain">
-            <h1 class="text-lg sm:text-xl font-bold tracking-tight">Tboxfinn</h1>
-          </div>
-          
-          <div class="hidden md:flex items-center space-x-8">
-            <a href="index.html" class="text-gray-800 font-medium">Home</a>
-            <a href="about.html" class="text-gray-600 hover:text-gray-900 transition-colors">About</a>
-            <a href="projects.html" class="text-gray-600 hover:text-gray-900 transition-colors">Projects</a>
-            <a href="assets.html" class="text-gray-600 hover:text-gray-900 transition-colors">Assets</a>
-            <a href="contact.html" class="text-gray-600 hover:text-gray-900 transition-colors">Contact</a>
-            
-            <button id="theme-toggle" class="theme-toggle p-2 rounded-lg" aria-label="Toggle dark mode">
-              <svg id="sun-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-              </svg>
-              <svg id="moon-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-              </svg>
-            </button>
-          </div>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Space+Grotesk:wght@300..700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
 
-          <div class="md:hidden">
-            <button class="hamburger" id="mobile-menu-button" aria-label="Toggle menu">
-              <span></span>
-              <span></span>
-              <span></span>
-            </button>
-          </div>
-        </div>
+<!-- importmap: three.js y sus loaders comparten instancia desde el CDN -->
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js" } }
+</script>
+</head>
+<body>
+
+  <!-- Capa 0: fallback sin WebGL -->
+  <div id="scene-fallback" aria-hidden="true"><div class="silhouette"></div></div>
+
+  <!-- Capa 1: escena 3D (fondo, nunca captura clicks) -->
+  <canvas id="scene" aria-hidden="true"></canvas>
+
+  <!-- Capa 2: velón global (la página "es" el fondo) -->
+  <div id="page-veil" aria-hidden="true"></div>
+
+  <!-- Capa 4: nav + HUD -->
+  <nav>
+    <a class="nav-brand" href="index.html" id="egg-logo" title="Tboxfinn">
+      <img src="images/LogoPNG.png" alt="Tboxfinn logo" />
+      TBOXFINN
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="about.html">About</a>
+      <a href="projects.html">Projects</a>
+      <a href="assets.html">Assets</a>
+      <a href="contact.html">Contact</a>
+      <button id="theme-toggle" aria-label="Toggle dark mode">
+        <svg class="icon-sun" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+        </svg>
+        <svg class="icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+        </svg>
+      </button>
+      <button class="hamburger" id="mobile-menu-button" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Menú móvil -->
+  <div class="mobile-menu fixed top-0 right-0 h-full w-64 z-50 border-l" style="background: var(--nav-bg); backdrop-filter: blur(10px); border-color: var(--border);" id="mobile-menu">
+    <div class="pt-24 px-6 h-full">
+      <div class="flex flex-col space-y-5">
+        <a href="index.html" class="active text-lg">Home</a>
+        <a href="about.html" class="text-lg">About</a>
+        <a href="projects.html" class="text-lg">Projects</a>
+        <a href="assets.html" class="text-lg">Assets</a>
+        <a href="contact.html" class="text-lg">Contact</a>
       </div>
+    </div>
+  </div>
+  <div class="mobile-menu-overlay fixed inset-0 z-40 hidden" id="mobile-menu-overlay" style="background-color: rgba(0,0,0,0.5);"></div>
 
-      <div class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 bg-white shadow-2xl border-l border-gray-200 z-50" id="mobile-menu">
-        <div class="pt-20 px-6 h-full">
-          <div class="flex flex-col space-y-6 bg-white p-4 rounded-lg">
-            <a href="index.html" class="text-gray-900 font-bold text-lg py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">Home</a>
-            <a href="about.html" class="text-gray-700 hover:text-gray-900 text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">About</a>
-            <a href="projects.html" class="text-gray-700 hover:text-gray-900 text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">Projects</a>
-            <a href="assets.html" class="text-gray-700 hover:text-gray-900 text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">Assets</a>
-            <a href="contact.html" class="text-gray-700 hover:text-gray-900 text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">Contact</a>
-            
-            <button id="mobile-theme-toggle" class="theme-toggle flex items-center justify-center p-3 rounded-lg text-lg font-medium" aria-label="Toggle dark mode">
-              <svg id="mobile-sun-icon" class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-              </svg>
-              <svg id="mobile-moon-icon" class="w-5 h-5 mr-2 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-              </svg>
-              <span id="theme-text">Light Mode</span>
-            </button>
-          </div>
-        </div>
+  <div id="hud" aria-hidden="true">
+    <div class="row"><span class="label">Visible</span><span class="val" id="hud-build">100%</span></div>
+    <div class="row"><span class="label">Discoveries</span><span class="val" id="hud-disc">0/5</span></div>
+  </div>
+  <div id="toasts" aria-hidden="true"></div>
+
+  <!-- Capa 3: contenido -->
+  <main id="top">
+
+    <!-- ═══════════ HERO ═══════════ -->
+    <section class="hero">
+      <p class="eyebrow reveal">Gameplay &amp; Tools Engineer</p>
+      <h1 id="hero-name" aria-label="Hugo Valladolid">
+        <span class="line">HUGO</span>
+        <span class="line">VALLADOLID</span>
+      </h1>
+      <p class="hero-tagline reveal reveal-delay-1">Building solid Unity systems and interactive experiences since 2020.</p>
+      <div class="hero-ctas reveal reveal-delay-2">
+        <a class="btn btn-primary" href="#contact">Let's talk →</a>
+        <a class="btn btn-ghost" href="HugoValladolid_Programmer_CV.pdf" download>Download CV</a>
       </div>
-
-      <div class="mobile-menu-overlay md:hidden fixed inset-0 bg-black z-30 hidden" id="mobile-menu-overlay" style="background-color: rgba(0, 0, 0, 0.5) !important;"></div>
-    </nav>
-
-    <section id="home" class="min-h-screen flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-20 relative overflow-hidden">
-      <video autoplay muted loop class="absolute inset-0 w-full h-full object-cover z-0">
-        <source src="videos/VideoTrailer.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-      
-      <div class="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
-      
-      <div class="max-w-5xl mx-auto relative z-20 py-12">
-        <p class="hero-subtitle text-sm sm:text-base uppercase tracking-widest text-white mb-6 sm:mb-8 font-medium text-shadow-lg">GAME DEVELOPER</p>
-        <h1 class="hero-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-8 sm:mb-12 tracking-tight text-white leading-tight">
-          <span>SPECIALIZED IN</span><br>
-          <span class="text-gray-200 text-shadow-xl">GAMEPLAY & TOOLS</span>
-        </h1>
-        <div class="hero-divider w-20 sm:w-32 h-1 bg-white mx-auto mb-8 sm:mb-12 shadow-lg"></div>
-        <p class="hero-description text-xl sm:text-2xl md:text-3xl text-gray-100 max-w-4xl mx-auto leading-relaxed text-shadow-lg">
-          Building solid Unity systems and interactive experiences since 2020
-        </p>
-      </div>
+      <div class="scroll-hint">↓ scroll to build</div>
     </section>
 
-    <section id="about" class="py-16 sm:py-24 lg:py-32 px-4 sm:px-6">
-      <div class="max-w-7xl mx-auto">
-        <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center">
-          <div class="lg:col-span-3 lg:pr-8 text-center lg:text-left scroll-slide-left">
-            <h2 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-8 lg:mb-12 tracking-tight leading-tight">
-              <span>MY NAME IS</span><br>
-              <span class="text-gray-600">HUGO VALLADOLID,</span><br>
-              <span>GAMEPLAY & TOOLS ENGINEER.</span>
-            </h2>
-            <div class="w-24 sm:w-32 h-1 bg-gray-900 mb-6 lg:mb-8 mx-auto lg:mx-0"></div>
-            <p class="text-lg sm:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              Passionate about creating interactive experiences that push the boundaries of traditional game design.
-            </p>
-          </div>
-          <div class="lg:col-span-2 flex justify-center order-first lg:order-last scroll-slide-right">
-            <div class="relative">
-              <div class="w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96 xl:w-[450px] xl:h-[450px] rounded-2xl overflow-hidden shadow-2xl">
-                <img src="images/MyPicture.jpg" alt="Hugo Valladolid - Gameplay & Tools Engineer" class="w-full h-full object-cover">
-              </div>
-              
-              <div class="absolute -bottom-6 -right-6 sm:-bottom-8 sm:-right-8 w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-xl shadow-xl flex items-center justify-center">
-                <img src="images/LogoPNG.png" alt="Hugo Valladolid Logo" class="w-16 h-16 sm:w-20 sm:h-20 object-contain">
-              </div>
-              
-              <div class="absolute -top-6 -left-6 sm:-top-8 sm:-left-8">
-                <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gray-900 rounded-xl shadow-lg relative overflow-hidden">
-                  <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-gray-600 rounded-full"></div>
-                </div>
-                
-                <div class="absolute -bottom-4 -right-4 w-6 h-6 bg-gray-800 rounded transform rotate-45 shadow-md"></div>
-                <div class="absolute -bottom-3 right-8 w-5 h-5 bg-gray-700 rounded-full shadow-md"></div>
-                <div class="absolute bottom-6 -right-5 w-3 h-3 bg-gray-600 rounded shadow-md"></div>
-                
-                <div class="absolute -top-3 right-6 w-4 h-4 bg-gray-800 rounded transform rotate-12 shadow-md"></div>
-                <div class="absolute top-8 -right-4 w-3 h-3 bg-gray-700 rounded-full shadow-md"></div>
-                
-                <div class="absolute bottom-10 -right-8 w-5 h-5 bg-gray-600 rounded transform rotate-45 shadow-md opacity-80"></div>
-                <div class="absolute -bottom-5 right-3 w-4 h-4 bg-gray-800 rounded shadow-md opacity-60"></div>
-                <div class="absolute top-4 -right-7 w-2 h-2 bg-gray-700 rounded-full shadow-md opacity-70"></div>
-              </div>
-            </div>
-          </div>
+    <!-- ═══════════ ABOUT ═══════════ -->
+    <section id="about" class="reveal">
+      <p class="eyebrow">01 — About</p>
+      <h2>My name is Hugo Valladolid.</h2>
+      <img class="about-photo" src="images/MyPicture.jpg" alt="Hugo Valladolid portrait" />
+      <p>Specialized in game mechanics and systems. Since 2020, I have worked on different video games and tools in both Unreal Engine and Unity, some of them launched on platforms like Steam and consoles.</p>
+      <p>My focus is on creating engaging experiences that not only entertain but also challenge players to think differently about how they interact with digital worlds.</p>
+      <ul class="facts">
+        <li><span>Years of experience</span><span>5+</span></li>
+        <li><span>Projects completed</span><span>10+</span></li>
+        <li><span>Main engines</span><span>Unity / Unreal</span></li>
+        <li><span>Specialty</span><span>Gameplay &amp; Tools</span></li>
+      </ul>
+    </section>
+
+    <!-- ═══════════ BELIEFS ═══════════ -->
+    <section id="beliefs" class="reveal">
+      <p class="eyebrow">02 — What I stand for</p>
+      <h2>3 things I strongly believe in</h2>
+      <ul class="beliefs">
+        <li class="egg-belief">Games are systems — if the systems are solid, the fun follows.</li>
+        <li class="egg-belief">Tools are the force multiplier: a great team is only as fast as its pipeline.</li>
+        <li class="egg-belief">Care is not optional. It's the difference between shipped and loved.</li>
+      </ul>
+    </section>
+
+    <!-- ═══════════ SKILLS ═══════════ -->
+    <section id="skills" class="reveal">
+      <p class="eyebrow">03 — Skills</p>
+      <h2>What I bring to the table</h2>
+      <div class="skills-grid">
+        <div>
+          <h3>Game Design</h3>
+          <ul>
+            <li>Mechanics and gameplay design</li>
+            <li>Level design and dialogue systems</li>
+            <li>Menu design and implementation</li>
+            <li>Game balance &amp; progression</li>
+            <li>UX/UI Design</li>
+            <li>Combat systems</li>
+            <li>Rapid prototyping</li>
+          </ul>
         </div>
-        
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start mt-12 lg:mt-16">
-          <div class="space-y-6 scroll-fade-in">
-            <p class="text-base sm:text-lg text-gray-600 leading-relaxed">
-              Specialized in game mechanics and systems. Since 2020, I have worked on different video games 
-              and tools in both Unreal Engine and Unity, some of them launched on platforms like 
-              Steam and consoles.
-            </p>
-            <p class="text-base sm:text-lg text-gray-600 leading-relaxed">
-              My focus is on creating engaging experiences that not only entertain but also challenge players to think differently about how they interact with digital worlds.
-            </p>
-            <div class="pt-6">
-              <p class="text-sm text-gray-500 mb-4">Interested in my work?</p>
-              <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                <a href="contact.html" class="inline-flex items-center px-6 sm:px-8 py-3 text-gray-900 dark:text-gray-100 font-medium text-sm sm:text-base btn-gradient">
-                  Contact me!
-                </a>
-                <a href="HugoValladolid_Programmer_CV.pdf" download class="inline-flex items-center px-6 sm:px-8 py-3 text-gray-900 dark:text-gray-100 font-medium text-sm sm:text-base btn-gradient">
-                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                  </svg>
-                  Download CV
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="flex justify-center lg:justify-start scroll-scale-up">
-            <div class="bg-gray-50 p-6 sm:p-8 rounded-lg border w-full max-w-sm floating">
-              <h3 class="text-lg sm:text-xl font-bold mb-6 flex items-center">
-                <img src="images/LogoPNG.png" alt="Logo" class="w-5 h-5 sm:w-6 sm:h-6 object-contain mr-3">
-                <span>Quick Facts</span>
-              </h3>
-              <div class="space-y-4">
-                <div class="flex justify-between items-center">
-                  <span class="text-gray-600 text-sm sm:text-base">Years of Experience</span>
-                  <span class="font-semibold text-sm sm:text-base">5+</span>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-gray-600 text-sm sm:text-base">Projects Completed</span>
-                  <span class="font-semibold text-sm sm:text-base">10+</span>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-gray-600 text-sm sm:text-base">Main Engine</span>
-                  <span class="font-semibold text-sm sm:text-base">Unity / Unreal</span>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-gray-600 text-sm sm:text-base">Specialty</span>
-                  <span class="font-semibold text-sm sm:text-base text-right">Gameplay & Tools Engineering</span>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div>
+          <h3>Technical Tools</h3>
+          <ul>
+            <li>Unity 3D / Unreal Engine 4 &amp; 5</li>
+            <li>C# / Blueprints</li>
+            <li>Git / Perforce</li>
+            <li>Figma / Adobe Creative Suite</li>
+            <li>Detailed technical documentation</li>
+            <li>Agile methodologies</li>
+          </ul>
         </div>
       </div>
     </section>
 
-    <section class="py-16 sm:py-24 lg:py-32 bg-gray-50 px-4 sm:px-6">
-      <div class="max-w-6xl mx-auto">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-          <div class="scroll-slide-left">
-            <h3 class="text-xl sm:text-2xl font-bold mb-6 sm:mb-8">Game Design</h3>
-            <ul class="space-y-3 text-gray-600">
-              <li class="flex items-start">
-                <span class="text-gray-900 mr-3">•</span>
-                <span class="text-sm sm:text-base">Mechanics and gameplay design</span>
-              </li>
-              <li class="flex items-start">
-                <span class="text-gray-900 mr-3">•</span>
-                <span class="text-sm sm:text-base">Level design and dialogue systems</span>
-              </li>
-              <li class="flex items-start">
-                <span class="text-gray-900 mr-3">•</span>
-                <span class="text-sm sm:text-base">Menu design and implementation</span>
-              </li>
-              <li class="flex items-start">
-                <span class="text-gray-900 mr-3">•</span>
-                <span class="text-sm sm:text-base">Game balance & progression</span>
-              </li>
-              <li class="flex items-start">
-                <span class="text-gray-900 mr-3">•</span>
-                <span class="text-sm sm:text-base">UX/UI Design</span>
-              </li>
-              <li class="flex items-start">
-                <span class="text-gray-900 mr-3">•</span>
-                <span class="text-sm sm:text-base">Combat systems</span>
-              </li>
-              <li class="flex items-start">
-                <span class="text-gray-900 mr-3">•</span>
-                <span class="text-sm sm:text-base">Rapid prototyping</span>
-              </li>
-            </ul>
-          </div>
-          <div class="scroll-slide-right">
-            <h3 class="text-xl sm:text-2xl font-bold mb-6 sm:mb-8">Technical Tools</h3>
-            <ul class="space-y-3 text-gray-600">
-              <li class="flex items-start">
-                <span class="text-gray-900 mr-3">•</span>
-                <span class="text-sm sm:text-base">Unity 3D / Unreal Engine 4 & 5</span>
-              </li>
-              <li class="flex items-start">
-                <span class="text-gray-900 mr-3">•</span>
-                <span class="text-sm sm:text-base">C# / Blueprints</span>
-              </li>
-              <li class="flex items-start">
-                <span class="text-gray-900 mr-3">•</span>
-                <span class="text-sm sm:text-base">Git / Perforce</span>
-              </li>
-              <li class="flex items-start">
-                <span class="text-gray-900 mr-3">•</span>
-                <span class="text-sm sm:text-base">Figma / Adobe Creative Suite</span>
-              </li>
-              <li class="flex items-start">
-                <span class="text-gray-900 mr-3">•</span>
-                <span class="text-sm sm:text-base">Detailed technical documentation</span>
-              </li>
-              <li class="flex items-start">
-                <span class="text-gray-900 mr-3">•</span>
-                <span class="text-sm sm:text-base">Agile methodologies</span>
-              </li>
-            </ul>
-          </div>
+    <!-- ═══════════ PROJECTS ═══════════ -->
+    <section id="work" class="reveal">
+      <p class="eyebrow">04 — Selected work</p>
+      <h2>Check out my portfolio</h2>
+
+      <a class="project" href="projects.html#mutant-wastelands">
+        <div class="project-media">
+          <video autoplay muted loop playsinline>
+            <source src="videos/VideoPoryecto2.mp4" type="video/mp4" />
+          </video>
         </div>
+        <div class="project-body">
+          <h3>Mutant Wastelands <span class="arrow">→</span></h3>
+          <p>A post-apocalyptic action roguelite with procedural maps, unique mutant abilities, and challenging combat.</p>
+          <div class="tags">
+            <span class="tag">Unity</span><span class="tag">Procedural Generation</span><span class="tag">Systems Engineering</span>
+          </div>
+          <div class="metric">▸ -80% manual level design time</div>
+        </div>
+      </a>
+
+      <a class="project" href="projects.html#dig">
+        <div class="project-media">
+          <img src="images/DIG.png" alt="DIG Multiplayer Mining Game screenshot" />
+        </div>
+        <div class="project-body">
+          <h3>DIG <span class="arrow">→</span></h3>
+          <p>Multiplayer mining game for up to 4 players featuring procedurally generated levels and networking.</p>
+          <div class="tags">
+            <span class="tag">Unity</span><span class="tag">Multiplayer</span><span class="tag">Marching Cubes</span>
+          </div>
+          <div class="metric">▸ 60 FPS with voxel terrain destruction</div>
+        </div>
+      </a>
+    </section>
+
+    <!-- ═══════════ ASSETS (dinámico desde assets-data.js) ═══════════ -->
+    <section id="assets" class="reveal">
+      <p class="eyebrow">05 — Unity Assets</p>
+      <h2>Tools for the community</h2>
+      <div id="featured-assets-container" class="grid-3"><!-- renderizado por scripts.js --></div>
+      <div class="cta-block">
+        <a class="btn btn-ghost" href="assets.html">View all my Assets →</a>
       </div>
     </section>
 
-    <section id="assets-preview" class="py-16 sm:py-24 lg:py-32 px-4 sm:px-6">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-12 sm:mb-16 lg:mb-20 scroll-fade-in">
-          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 tracking-tight">
-            <span>FEATURED</span><br>
-            <span class="text-gray-600">UNITY ASSETS</span>
-          </h2>
-          <p class="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-            Tools and systems I've developed to help the game dev community create amazing experiences faster.
-          </p>
-        </div>
-
-        <div id="featured-assets-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12">
-          </div>
-
-        <div class="text-center mt-12 sm:mt-16 scroll-fade-in">
-          <a href="assets.html" class="inline-flex items-center px-6 sm:px-8 py-3 text-gray-900 dark:text-gray-100 font-medium text-sm sm:text-base btn-gradient">
-            View all my Assets
-          </a>
-        </div>
+    <!-- ═══════════ CONTACT ═══════════ -->
+    <section id="contact" class="reveal">
+      <p class="eyebrow">06 — Contact</p>
+      <h2>Let's build something together.</h2>
+      <p>I'm always open to new projects and collaborations. If you have an interesting idea, I'd love to hear it!</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; margin-top: 1.4rem;">
+        <a href="https://github.com/tboxfinn" target="_blank" rel="noopener noreferrer" class="link-underline" style="font-family:'IBM Plex Mono',monospace;font-size:0.85rem;">GitHub</a>
+        <a href="https://www.linkedin.com/in/hugodanielvd" target="_blank" rel="noopener noreferrer" class="link-underline" style="font-family:'IBM Plex Mono',monospace;font-size:0.85rem;">LinkedIn</a>
+        <a href="https://www.youtube.com/@tboxfinn" target="_blank" rel="noopener noreferrer" class="link-underline" style="font-family:'IBM Plex Mono',monospace;font-size:0.85rem;">YouTube</a>
+        <a href="https://tboxfinn.itch.io" target="_blank" rel="noopener noreferrer" class="link-underline" style="font-family:'IBM Plex Mono',monospace;font-size:0.85rem;">Itch.io</a>
       </div>
     </section>
+  </main>
 
-    <section id="projects" class="py-16 sm:py-24 lg:py-32 px-4 sm:px-6">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-12 sm:mb-16 lg:mb-20 scroll-fade-in">
-          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 tracking-tight">
-            <span>CHECK OUT</span><br>
-            <span class="text-gray-600">MY PORTFOLIO</span>
-          </h2>
-          <p class="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-            Interested in knowing more about my profile and experience?<br>
-            Take a look at my portfolio!
-          </p>
-        </div>
+  <footer>
+    <p>© 2020-2026 HUGO VALLADOLID · <span class="heart" id="egg-heart" title="♥">♥</span></p>
+  </footer>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
-          <div class="group cursor-pointer scroll-scale-up scroll-delay-1">
-            <div class="bg-gray-100 aspect-video rounded-lg mb-4 sm:mb-6 overflow-hidden relative">
-              <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0 group-hover:scale-105 transition-transform duration-300">
-                <source src="videos/VideoPoryecto2.mp4" type="video/mp4">
-              </video>
-            </div>
-            <h3 class="text-xl sm:text-2xl font-bold mb-3 group-hover:text-gray-600 transition-colors">Mutant Wastelands</h3>
-            <p class="text-gray-600 leading-relaxed mb-4 text-sm sm:text-base">
-              Mutant Wastelands is a post-apocalyptic action roguelite with procedural maps, unique mutant abilities, and challenging combat.<br><br>
-              <strong>Problem Solved & Metrics:</strong> I developed a scalable procedural generation system capable of creating distinct layouts dynamically, reducing manual level design time by 80%.
-            </p>
-            <div class="flex flex-wrap gap-2 mb-4">
-              <span class="px-2 sm:px-3 py-1 bg-gray-100 text-gray-700 text-xs sm:text-sm rounded-full">Unity</span>
-              <span class="px-2 sm:px-3 py-1 bg-gray-100 text-gray-700 text-xs sm:text-sm rounded-full">Procedural Generation</span>
-              <span class="px-2 sm:px-3 py-1 bg-gray-100 text-gray-700 text-xs sm:text-sm rounded-full">Systems Engineering</span>
-            </div>
-            <a href="projects.html#mutant-wastelands" class="text-gray-900 font-medium hover:underline text-sm sm:text-base">View complete project →</a>
-          </div>
+<!-- Script 1 (NO module): marca JS activo + tema día/noche. Siempre corre. -->
+<script>
+  document.documentElement.classList.add('js');
 
-          <div class="group cursor-pointer scroll-scale-up scroll-delay-2">
-            <div class="bg-gray-100 aspect-video rounded-lg mb-4 sm:mb-6 overflow-hidden">
-              <img src="images/DIG.png" alt="DIG Multiplayer Mining Game Screenshot" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-            </div>
-            <h3 class="text-xl sm:text-2xl font-bold mb-3 group-hover:text-gray-600 transition-colors">DIG (Prototype)</h3>
-            <p class="text-gray-600 leading-relaxed mb-4 text-sm sm:text-base">
-              Multiplayer mining game for up to 4 players featuring procedurally generated levels and networking.<br><br>
-              <strong>Problem Solved & Metrics:</strong> Implemented a performant marching cubes voxel algorithm for real-time terrain destruction, maintaining 60 FPS across multiplayer sessions while synchronizing voxel states.
-            </p>
-            <div class="flex flex-wrap gap-2 mb-4">
-              <span class="px-2 sm:px-3 py-1 bg-gray-100 text-gray-700 text-xs sm:text-sm rounded-full">Unity</span>
-              <span class="px-2 sm:px-3 py-1 bg-gray-100 text-gray-700 text-xs sm:text-sm rounded-full">Multiplayer</span>
-              <span class="px-2 sm:px-3 py-1 bg-gray-100 text-gray-700 text-xs sm:text-sm rounded-full">Marching Cubes</span>
-            </div>
-            <a href="projects.html#dig" class="text-gray-900 font-medium hover:underline text-sm sm:text-base">View complete project →</a>
-          </div>
-        </div>
+  (function initTheme() {
+    var read = function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } };
+    var write = function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} };
+    var theme = read('theme');
+    var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var current = theme || (systemDark ? 'night' : 'day');
+    document.body.classList.toggle('dark-mode', current === 'night');
 
-        <div class="text-center mt-12 sm:mt-16 scroll-fade-in">
-          <a href="projects.html" class="inline-flex items-center px-6 sm:px-8 py-3 text-gray-900 dark:text-gray-100 font-medium text-sm sm:text-base btn-gradient">
-            View more projects
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section id="contact" class="py-16 sm:py-24 lg:py-32 bg-gray-50 px-4 sm:px-6">
-      <div class="max-w-4xl mx-auto text-center scroll-fade-in">
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-8 sm:mb-12 tracking-tight">
-          LET'S TALK?
-        </h2>
-        <p class="text-lg sm:text-xl text-gray-600 mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed">
-          I'm always open to new projects and collaborations. 
-          If you have an interesting idea, I'd love to hear it!
-        </p>
-        
-        <div class="mb-8 sm:mb-12 flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <a href="contact.html" class="inline-flex items-center px-8 sm:px-12 py-3 sm:py-4 text-gray-900 dark:text-gray-100 font-medium text-base sm:text-lg btn-gradient">
-            Contact me
-          </a>
-          <a href="HugoValladolid_Programmer_CV.pdf" download class="inline-flex items-center px-8 sm:px-12 py-3 sm:py-4 text-gray-900 dark:text-gray-100 font-medium text-base sm:text-lg btn-gradient">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-            </svg>
-            Download CV
-          </a>
-        </div>
-
-        <div class="flex flex-wrap justify-center gap-6 sm:gap-12">
-          <a href="https://github.com/tboxfinn" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-gray-900 transition-colors font-medium text-sm sm:text-base">
-            GitHub
-          </a>
-          <a href="https://www.linkedin.com/in/hugodanielvd" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-gray-900 transition-colors font-medium text-sm sm:text-base">
-            LinkedIn
-          </a>
-          <a href="https://www.youtube.com/@tboxfinn" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-gray-900 transition-colors font-medium text-sm sm:text-base">
-            YouTube
-          </a>
-          <a href="https://tboxfinn.itch.io" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-gray-900 transition-colors font-medium text-sm sm:text-base">
-            Itch.io
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <footer class="border-t border-gray-200 py-8 sm:py-12 px-4 sm:px-6">
-      <div class="max-w-6xl mx-auto text-center">
-        <p class="text-xs sm:text-sm text-gray-500">
-          © 2020-2025 HUGO VALLADOLID. All rights reserved.
-        </p>
-      </div>
-    </footer>
-
-    <script src="assets-data.js"></script>
-    <script src="scripts.js"></script>
-    
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        if (typeof assetsData !== 'undefined') {
-          const container = document.getElementById('featured-assets-container');
-          if (container) {
-            // Tomamos únicamente los 3 activos más recientes del JSON
-            const featuredAssets = assetsData.slice(0, 3);
-            
-            container.innerHTML = featuredAssets.map((asset, index) => {
-              // Mantenemos las clases de retardo de animación nativas de tus estilos
-              const delayClass = index > 0 ? `scroll-delay-${index}` : '';
-              const visibilityClass = index === 2 ? 'hidden lg:block' : '';
-              
-              return `
-              <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-200 scroll-scale-up ${delayClass} ${visibilityClass}">
-                <div class="bg-gray-100 aspect-video">
-                  <img src="${asset.image}" alt="${asset.title}" class="w-full h-full object-cover">
-                </div>
-                <div class="p-6 flex flex-col h-[280px]">
-                  <h3 class="text-xl font-bold mb-2 line-clamp-1">${asset.title}</h3>
-                  <p class="text-gray-600 mb-4 text-sm flex-grow line-clamp-3">${asset.description}</p>
-                  <div class="flex items-center justify-between mb-4">
-                    <span class="text-lg font-bold text-green-600">${asset.price}</span>
-                    <div class="flex items-center">
-                      <span class="text-yellow-400">${asset.rating}</span>
-                    </div>
-                  </div>
-                  <a href="${asset.link}" target="_blank" rel="noopener noreferrer" class="text-blue-600 font-medium text-sm hover:underline">View on Asset Store →</a>
-                </div>
-              </div>`;
-            }).join('');
-          }
-        }
+    var toggles = document.querySelectorAll('#theme-toggle, #mobile-theme-toggle');
+    toggles.forEach(function (btn) {
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        current = current === 'day' ? 'night' : 'day';
+        document.body.classList.toggle('dark-mode', current === 'night');
+        write('theme', current);
+        window.dispatchEvent(new CustomEvent('themechange', { detail: current }));
       });
-    </script>
+    });
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+      if (!read('theme')) {
+        current = e.matches ? 'night' : 'day';
+        document.body.classList.toggle('dark-mode', current === 'night');
+        window.dispatchEvent(new CustomEvent('themechange', { detail: current }));
+      }
+    });
+  })();
+</script>
 
-  </body>
+<!-- Datos y lógica de página + escena 3D compartida -->
+<script src="assets-data.js"></script>
+<script src="scripts.js"></script>
+<script type="module" src="tower3d.js"></script>
+</body>
 </html>

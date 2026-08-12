@@ -2,6 +2,10 @@
 # Dependencias de Node.js
 node_modules/
 
+# SECRETOS — nunca subir al repositorio
+.env
+.env.local
+
 # Scripts de automatización local
 *.bat
 

@@ -4,8 +4,29 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-// Your itch.io API key
-const API_KEY = 'GiBiK7lzc7ix6fz5Z2jTd4oXSMEdEpjTKhXmoGqE';
+// Tu API key de itch.io — NUNCA embebida en el código (repo público).
+// Orden de lectura:
+//   1. Variable de entorno ITCH_API_KEY (usada por GitHub Actions con el secret)
+//   2. Archivo .env local (gitignored — para correr el .bat en tu máquina)
+function loadEnvKey() {
+  try {
+    const content = fs.readFileSync(path.join(__dirname, '.env'), 'utf-8');
+    const m = content.match(/^\s*ITCH_API_KEY\s*=\s*(.+)\s*$/m);
+    if (m) return m[1].trim().replace(/^["']|["']$/g, '');
+  } catch (e) { /* no hay .env — se usará el secret de CI o fallará */ }
+  return null;
+}
+const API_KEY = process.env.ITCH_API_KEY || loadEnvKey();
+if (process.env.ITCH_API_KEY) {
+  console.log('🔑 API key leída del secret ITCH_API_KEY (CI)');
+} else if (API_KEY) {
+  console.log('🔑 API key leída del archivo .env local');
+} else {
+  console.error('❌ No se encontró ITCH_API_KEY.');
+  console.error('   Local:  crea un archivo .env con: ITCH_API_KEY=tu_key');
+  console.error('   GitHub: Settings → Secrets and variables → Actions → ITCH_API_KEY');
+  process.exit(1);
+}
 
 // Function to make HTTP requests
 function makeRequest(url, options = {}) {

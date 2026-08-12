@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HUGO VALLADOLID — Gameplay & Tools Engineer</title>
+<link rel="icon" type="image/png" href="images/LogoPNG.png" />
+
+<!-- ══════════════════════════════════════════════════════════════
+     PROTOTYPE — Rediseño del portfolio (fase de visualización)
+     Tenshu japonés 3D que se construye con el scroll + estética journal.
+     IMPORTANTE: el contenido HTML es SIEMPRE visible; el 3D es
+     un fondo opcional (canvas fixed, pointer-events: none).
+     ══════════════════════════════════════════════════════════════ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Space+Grotesk:wght@300..700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+  /* ─────────────── Variables día / noche ─────────────── */
+  :root {
+    --bg: #F6F1E7;
+    --ink: #221C15;
+    --muted: #6B6257;
+    --faint: #9A9082;
+    /* Acento extraído del logo Tboxfinn (CajitaStatic.gif, paleta PICO-8):
+       naranja dorado #ffa300 → oscurecido para contraste AA sobre papel claro */
+    --accent: #9E5300;
+    --accent-hover: #8A4800;
+    --accent-contrast: #ffffff;
+    --accent-glow: rgba(158, 83, 0, 0.3);
+    --accent-pink: #ff77a8; /* rosa PICO-8 del logo */
+    --panel: rgba(246, 241, 231, 0.92);
+    --panel-solid: #F6F1E7;
+    --border: rgba(34, 28, 21, 0.14);
+    --line: #DCD1BC;
+    --nav-bg: rgba(246, 241, 231, 0.85);
+    --hud-bg: rgba(246, 241, 231, 0.9);
+    --veil-a: rgba(246, 241, 231, 0.94);
+    --veil-b: rgba(246, 241, 231, 0.88);
+    --veil-c: rgba(246, 241, 231, 0.42);
+    --veil-d: rgba(246, 241, 231, 0.10);
+  }
+  .dark-mode {
+    --bg: #161310;
+    --ink: #F0E9DC;
+    --muted: #A89E8D;
+    --faint: #6E6559;
+    /* En dark el acento es el naranja PICO-8 puro del logo, brillante */
+    --accent: #ffa300;
+    --accent-hover: #ffbd45;
+    --accent-contrast: #1d1608;
+    --accent-glow: rgba(255, 163, 0, 0.35);
+    --accent-pink: #ff77a8;
+    --panel: rgba(22, 19, 16, 0.88);
+    --panel-solid: #161310;
+    --border: rgba(240, 233, 220, 0.14);
+    --line: #3A332A;
+    --nav-bg: rgba(22, 19, 16, 0.85);
+    --hud-bg: rgba(22, 19, 16, 0.9);
+    --veil-a: rgba(22, 19, 16, 0.94);
+    --veil-b: rgba(22, 19, 16, 0.88);
+    --veil-c: rgba(22, 19, 16, 0.42);
+    --veil-d: rgba(22, 19, 16, 0.10);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    transition: background-color 0.4s ease, color 0.4s ease;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: var(--accent); color: var(--accent-contrast); }
+
+  /* ─────────────── Capas (z-index explícito) ─────────────── */
+  #scene-fallback {
+    position: fixed; inset: 0; z-index: 0;
+    background: linear-gradient(180deg, #87CEEB 0%, #F6F1E7 60%, #E4D9C3 100%);
+    display: none;
+  }
+  .dark-mode #scene-fallback {
+    background: linear-gradient(180deg, #0d0b1a 0%, #161310 60%, #221D17 100%);
+  }
+  #scene-fallback .silhouette {
+    position: absolute; left: 55%; bottom: 8%; transform: translateX(-50%);
+    width: 150px; height: 320px;
+    background:
+      repeating-linear-gradient(180deg,
+        #00000012 0 18px, transparent 18px 30px);
+    clip-path: polygon(12% 100%, 12% 62%, 0% 62%, 0% 52%, 18% 52%, 18% 40%, 30% 40%, 30% 26%, 40% 26%, 40% 12%, 50% 0%, 60% 12%, 60% 26%, 70% 26%, 70% 40%, 82% 40%, 82% 52%, 100% 52%, 100% 62%, 88% 62%, 88% 100%);
+  }
+  .dark-mode #scene-fallback .silhouette {
+    background: repeating-linear-gradient(180deg,
+      #F0E9DC0d 0 18px, transparent 18px 30px);
+  }
+
+  canvas#scene {
+    position: fixed; inset: 0; z-index: 1;
+    pointer-events: none; /* nunca compite con el contenido */
+    display: block;
+    /* El modelo es FONDO: blureado y atenuado para no robar atención */
+    filter: blur(2.5px) brightness(0.96);
+    opacity: 0.92;
+  }
+  @media (max-width: 768px) {
+    canvas#scene { filter: blur(1.5px); }
+  }
+
+  /* Velón global en vez de cuadros por sección: la página "es" el fondo.
+     Opaco donde está la info (izquierda), transparente donde está el modelo. */
+  #page-veil {
+    position: fixed; inset: 0; z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(105deg,
+      var(--veil-a) 0%, var(--veil-b) 55%, var(--veil-c) 82%, var(--veil-d) 100%);
+  }
+  @media (max-width: 768px) {
+    #page-veil {
+      background: linear-gradient(105deg,
+        var(--veil-a) 0%, var(--veil-b) 55%, var(--veil-c) 100%);
+    }
+  }
+
+  /* ─────────────── Nav ─────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 4;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem clamp(1rem, 4vw, 2.5rem);
+    background: var(--nav-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    transition: background-color 0.4s ease, border-color 0.4s ease;
+  }
+  .nav-brand {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500; font-size: 0.95rem;
+    color: var(--ink); text-decoration: none;
+    letter-spacing: 0.05em;
+  }
+  .nav-brand img { width: 28px; height: 28px; object-fit: contain; }
+  .nav-links { display: flex; align-items: center; gap: 1.4rem; }
+  .nav-links a {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--muted); text-decoration: none;
+    transition: color 0.25s ease;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  #theme-toggle {
+    background: none; border: 1px solid var(--border);
+    border-radius: 50%; width: 34px; height: 34px;
+    display: grid; place-items: center;
+    cursor: pointer; color: var(--ink);
+    transition: border-color 0.25s ease, transform 0.2s ease;
+  }
+  #theme-toggle:hover { border-color: var(--accent); transform: rotate(15deg); }
+  #theme-toggle svg { width: 16px; height: 16px; }
+  #theme-toggle .icon-moon { display: none; }
+  .dark-mode #theme-toggle .icon-sun { display: none; }
+  .dark-mode #theme-toggle .icon-moon { display: block; }
+
+  @media (max-width: 640px) {
+    .nav-links a { display: none; }
+  }
+
+  /* ─────────────── Contenido (columna journal) ───────────────
+     La información ocupa ~72-78% del viewport en desktop, con un
+     margen desde el borde izquierdo; el modelo 3D queda de fondo
+     en el ~20% restante a la derecha. */
+  main {
+    position: relative; z-index: 3;
+    width: min(72vw, 62rem);
+    margin: 0 auto 0 clamp(1.5rem, 6vw, 6rem);
+    padding: 0 1.25rem 6rem;
+  }
+  @media (max-width: 768px) {
+    main { width: auto; margin: 0 auto; max-width: 40rem; }
+  }
+
+  /* Sin cuadros: las secciones son parte de la página, texto directo
+     sobre el velón (el contraste lo da el velo + el blur del modelo) */
+  section {
+    background: none;
+    border: none;
+    border-radius: 0;
+    padding: clamp(2rem, 5vw, 3.5rem) 0 0;
+    margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+    position: relative;
+  }
+
+  h1, h2, h3 { font-family: 'Fraunces', serif; font-weight: 600; line-height: 1.15; }
+  h2 { font-size: clamp(1.9rem, 5vw, 2.6rem); margin-bottom: 1.4rem; letter-spacing: -0.01em; }
+  h3 { font-size: 1.25rem; }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.9rem;
+  }
+
+  .link-underline {
+    color: var(--ink); text-decoration: none;
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-size: 0% 2px; background-position: 0 100%; background-repeat: no-repeat;
+    transition: background-size 0.3s ease;
+  }
+  .link-underline:hover { background-size: 100% 2px; }
+
+  /* ─────────────── Hero ─────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    background: transparent; border: none; backdrop-filter: none;
+    padding-top: 6rem;
+  }
+  .hero h1 {
+    font-size: clamp(2.5rem, 8.5vw, 4.6rem);
+    font-weight: 700; letter-spacing: -0.02em;
+    margin: 0.4rem 0 1.1rem;
+  }
+  /* Dos líneas fijas: HUGO / VALLADOLID — nunca se parten por la mitad */
+  .hero h1 .line { display: block; }
+  /* El stagger por letras lo crea JS; si no hay JS el nombre se ve igual */
+  .hero h1 .ch {
+    display: inline-block;
+    opacity: 0; transform: translateY(0.5em);
+    transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .hero h1 .ch.visible {
+    opacity: 1; transform: translateY(0);
+  }
+  .hero-loc {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem; color: var(--muted);
+    letter-spacing: 0.08em; margin-bottom: 1.6rem;
+  }
+  .hero-tagline {
+    font-size: clamp(1.05rem, 2.6vw, 1.3rem);
+    color: var(--muted); max-width: 32ch;
+    margin-bottom: 2.2rem;
+  }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 0.9rem; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 0.7rem 1.3rem; border-radius: 999px;
+    text-decoration: none; transition: transform 0.25s ease, box-shadow 0.25s ease;
+    border: 1px solid var(--border);
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary {
+    background: var(--accent); border-color: var(--accent);
+    color: var(--accent-contrast);
+    box-shadow: 0 4px 14px var(--accent-glow);
+  }
+  .btn-primary:hover { background: var(--accent-hover); box-shadow: 0 8px 22px var(--accent-glow); }
+  .btn-ghost { color: var(--ink); background: transparent; }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  .scroll-hint {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--faint);
+    animation: bob 2.2s ease-in-out infinite;
+    white-space: nowrap;
+  }
+  @keyframes bob { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 8px); } }
+
+  /* ─────────────── About / facts ─────────────── */
+  .about-grid { display: grid; grid-template-columns: 1fr; gap: 1.4rem; }
+  .about-photo {
+    width: 84px; height: 84px; border-radius: 50%;
+    object-fit: cover; border: 3px solid var(--accent);
+    float: right; margin: 0 0 1rem 1.4rem;
+    shape-outside: circle(50%);
+  }
+  .about p { color: var(--muted); margin-bottom: 1rem; font-size: 1.02rem; }
+  .facts {
+    list-style: none; margin-top: 1.4rem;
+    border-top: 1px dashed var(--line); padding-top: 1.2rem;
+  }
+  .facts li {
+    display: flex; justify-content: space-between; gap: 1rem;
+    padding: 0.45rem 0; font-size: 0.95rem;
+    border-bottom: 1px dashed var(--line);
+  }
+  .facts li span:first-child { color: var(--muted); }
+  .facts li span:last-child { font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; }
+
+  /* ─────────────── Beliefs ─────────────── */
+  .beliefs { list-style: none; }
+  .beliefs li {
+    padding: 1rem 0; border-bottom: 1px dashed var(--line);
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.1rem, 3vw, 1.35rem);
+    font-style: italic; line-height: 1.5;
+    cursor: default;
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+  .beliefs li:last-child { border-bottom: none; }
+  .beliefs li::before { content: '·'; color: var(--accent); margin-right: 0.7rem; }
+  .beliefs li:hover { color: var(--accent); transform: translateX(6px); }
+
+  /* ─────────────── Skills ─────────────── */
+  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; }
+  @media (max-width: 560px) { .skills-grid { grid-template-columns: 1fr; } }
+  .skills-grid h3 { margin-bottom: 0.9rem; font-size: 1.15rem; }
+  .skills-grid ul { list-style: none; }
+  .skills-grid li {
+    padding: 0.42rem 0 0.42rem 1.4rem; position: relative;
+    color: var(--muted); font-size: 0.95rem;
+    transition: color 0.25s ease, padding-left 0.25s ease;
+  }
+  .skills-grid li::before {
+    content: '▸'; position: absolute; left: 0; top: 0.42rem;
+    color: var(--accent); opacity: 0.5; transition: opacity 0.25s ease;
+  }
+  .skills-grid li:hover { color: var(--ink); padding-left: 1.8rem; }
+  .skills-grid li:hover::before { opacity: 1; }
+
+  /* ─────────────── Projects ─────────────── */
+  .project {
+    display: block; text-decoration: none; color: inherit;
+    margin-bottom: 2.6rem;
+    transition: transform 0.3s ease;
+  }
+  .project:last-of-type { margin-bottom: 0; }
+  .project:hover { transform: translateY(-3px); }
+  .project-media {
+    aspect-ratio: 16 / 9; overflow: hidden;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #E4D9C3, #CBBFA6);
+  }
+  .dark-mode .project-media { background: linear-gradient(135deg, #2A251E, #1A1713); }
+  .project-media video, .project-media img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  .project:hover .project-media video,
+  .project:hover .project-media img { transform: scale(1.04); }
+  .project-body { padding: 1.4rem 1.5rem 1.6rem; }
+  .project-body h3 { margin-bottom: 0.6rem; }
+  .project-body h3 .arrow { color: var(--accent); opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; display: inline-block; }
+  .project:hover h3 .arrow { opacity: 1; transform: translateX(4px); }
+  .project-body p { color: var(--muted); font-size: 0.95rem; margin-bottom: 0.9rem; }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tags span {
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem;
+    letter-spacing: 0.05em; padding: 0.25rem 0.7rem;
+    border: 1px solid var(--border); border-radius: 999px; color: var(--muted);
+  }
+  .metric {
+    margin-top: 0.9rem; font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem; color: var(--accent);
+  }
+
+  /* ─────────────── Assets ─────────────── */
+  .asset-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+  @media (max-width: 700px) { .asset-grid { grid-template-columns: 1fr; } }
+  .asset-card {
+    border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+    background: transparent; text-decoration: none; color: inherit;
+    display: flex; flex-direction: column;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+  .asset-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+  .asset-thumb {
+    aspect-ratio: 16 / 10; overflow: hidden;
+    background: linear-gradient(135deg, #E4D9C3, #CBBFA6);
+  }
+  .dark-mode .asset-thumb { background: linear-gradient(135deg, #2A251E, #1A1713); }
+  .asset-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+  .asset-card:hover .asset-thumb img { transform: scale(1.05); }
+  .asset-body { padding: 1rem 1.1rem 1.2rem; display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
+  .asset-body h3 { font-size: 1.02rem; }
+  .asset-body .price { font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: var(--accent); }
+  .asset-body .go { margin-top: auto; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--muted); letter-spacing: 0.08em; }
+
+  /* ─────────────── Contact ─────────────── */
+  .contact-socials { display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; margin-top: 1.4rem; }
+  .contact-socials a {
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem;
+    color: var(--muted); text-decoration: none; padding: 0.3rem 0;
+  }
+  .contact-socials a:hover { color: var(--accent); }
+
+  footer {
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem;
+    color: var(--faint); padding: 2.5rem 1rem 1rem;
+    position: relative; z-index: 3;
+  }
+  footer .heart { cursor: pointer; display: inline-block; transition: transform 0.25s ease, color 0.25s ease; }
+  footer .heart:hover { transform: scale(1.4); color: var(--accent-pink); }
+
+  /* ─────────────── HUD fijo ─────────────── */
+  #hud {
+    position: fixed; left: 1.1rem; bottom: 1.1rem; z-index: 4;
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem;
+    letter-spacing: 0.08em; color: var(--muted);
+    background: var(--hud-bg);
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 0.55rem 0.9rem; cursor: default;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex; flex-direction: column; gap: 0.25rem;
+    transition: background-color 0.4s ease, color 0.4s ease;
+    user-select: none;
+  }
+  #hud .row { display: flex; justify-content: space-between; gap: 1rem; }
+  #hud .val { color: var(--accent); }
+  #hud .label { text-transform: uppercase; }
+
+  /* ─────────────── Toasts (easter eggs) ─────────────── */
+  #toasts {
+    position: fixed; right: 1.1rem; bottom: 1.1rem; z-index: 5;
+    display: flex; flex-direction: column; gap: 0.6rem; align-items: flex-end;
+    pointer-events: none;
+  }
+  .toast {
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem;
+    background: var(--ink); color: var(--bg);
+    border-radius: 999px; padding: 0.55rem 1.1rem;
+    opacity: 0; transform: translateY(12px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    max-width: 280px;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* ─────────────── Reveals al scroll ───────────────
+     SOLO se ocultan si JS está activo (clase .js en <html>).
+     Sin JS, o si algo falla, el contenido es 100% visible. */
+  html.js .reveal {
+    opacity: 0; transform: translateY(26px);
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  html.js .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.08s; }
+  .reveal-delay-2 { transition-delay: 0.16s; }
+
+  /* Accesibilidad: reduce motion */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .hero h1 .ch, html.js .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    .scroll-hint { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Capa 0: fallback sin WebGL (visible solo si no hay WebGL) -->
+  <div id="scene-fallback" aria-hidden="true">
+    <div class="silhouette"></div>
+  </div>
+
+  <!-- Capa 1: escena 3D (canvas fijo, nunca captura clicks) -->
+  <canvas id="scene" aria-hidden="true"></canvas>
+
+  <!-- Capa 2: velón global (la página "es" el fondo; no hay cuadros por sección) -->
+  <div id="page-veil" aria-hidden="true"></div>
+
+  <!-- Capa 4: nav + HUD -->
+  <nav>
+    <a class="nav-brand" href="#top" id="egg-logo" title="Tboxfinn">
+      <img src="images/LogoPNG.png" alt="Tboxfinn logo" />
+      TBOXFINN
+    </a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#work">Work</a>
+      <a href="#contact">Contact</a>
+      <button id="theme-toggle" aria-label="Toggle dark mode">
+        <svg class="icon-sun" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+        </svg>
+        <svg class="icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <div id="hud" aria-hidden="true">
+    <div class="row"><span class="label">Visible</span><span class="val" id="hud-build">100%</span></div>
+    <div class="row"><span class="label">Discoveries</span><span class="val" id="hud-disc">0/5</span></div>
+  </div>
+  <div id="toasts" aria-hidden="true"></div>
+
+  <!-- Capa 2: contenido -->
+  <main id="top">
+
+    <!-- ═══════════ HERO ═══════════ -->
+    <section class="hero">
+      <p class="eyebrow reveal">Gameplay &amp; Tools Engineer</p>
+      <!-- El nombre vive en el HTML (visible siempre); JS lo anima letra a letra si puede -->
+      <h1 id="hero-name" aria-label="Hugo Valladolid">
+        <span class="line">HUGO</span>
+        <span class="line">VALLADOLID</span>
+      </h1>
+      <p class="hero-tagline reveal reveal-delay-1">Building solid Unity systems and interactive experiences since 2020.</p>
+      <div class="hero-ctas reveal reveal-delay-2">
+        <a class="btn btn-primary" href="#contact">Let's talk →</a>
+        <a class="btn btn-ghost" href="HugoValladolid_Programmer_CV.pdf" download>Download CV</a>
+      </div>
+      <div class="scroll-hint">↓ scroll to build</div>
+    </section>
+
+    <!-- ═══════════ ABOUT ═══════════ -->
+    <section id="about" class="reveal">
+      <p class="eyebrow">01 — About</p>
+      <h2>My name is Hugo Valladolid.</h2>
+      <img class="about-photo" src="images/MyPicture.jpg" alt="Hugo Valladolid portrait" />
+      <p>Specialized in game mechanics and systems. Since 2020, I have worked on different video games and tools in both Unreal Engine and Unity, some of them launched on platforms like Steam and consoles.</p>
+      <p>My focus is on creating engaging experiences that not only entertain but also challenge players to think differently about how they interact with digital worlds.</p>
+      <ul class="facts">
+        <li><span>Years of experience</span><span>5+</span></li>
+        <li><span>Projects completed</span><span>10+</span></li>
+        <li><span>Main engines</span><span>Unity / Unreal</span></li>
+        <li><span>Specialty</span><span>Gameplay &amp; Tools</span></li>
+      </ul>
+    </section>
+
+    <!-- ═══════════ BELIEFS ═══════════ -->
+    <section id="beliefs" class="reveal">
+      <p class="eyebrow">02 — What I stand for</p>
+      <h2>3 things I strongly believe in</h2>
+      <!-- TODO: aprobar frases con Hugo -->
+      <ul class="beliefs">
+        <li class="egg-belief">Games are systems — if the systems are solid, the fun follows.</li>
+        <li class="egg-belief">Tools are the force multiplier: a great team is only as fast as its pipeline.</li>
+        <li class="egg-belief">Care is not optional. It's the difference between shipped and loved.</li>
+      </ul>
+    </section>
+
+    <!-- ═══════════ SKILLS ═══════════ -->
+    <section id="skills" class="reveal">
+      <p class="eyebrow">03 — Skills</p>
+      <h2>What I bring to the table</h2>
+      <div class="skills-grid">
+        <div>
+          <h3>Game Design</h3>
+          <ul>
+            <li>Mechanics and gameplay design</li>
+            <li>Level design and dialogue systems</li>
+            <li>Menu design and implementation</li>
+            <li>Game balance &amp; progression</li>
+            <li>UX/UI Design</li>
+            <li>Combat systems</li>
+            <li>Rapid prototyping</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Technical Tools</h3>
+          <ul>
+            <li>Unity 3D / Unreal Engine 4 &amp; 5</li>
+            <li>C# / Blueprints</li>
+            <li>Git / Perforce</li>
+            <li>Figma / Adobe Creative Suite</li>
+            <li>Detailed technical documentation</li>
+            <li>Agile methodologies</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ PROJECTS ═══════════ -->
+    <section id="work" class="reveal">
+      <p class="eyebrow">04 — Selected work</p>
+      <h2>Check out my portfolio</h2>
+
+      <a class="project" href="https://tboxfinn.itch.io" target="_blank" rel="noopener noreferrer">
+        <div class="project-media">
+          <video autoplay muted loop playsinline>
+            <source src="videos/VideoPoryecto2.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="project-body">
+          <h3>Mutant Wastelands <span class="arrow">→</span></h3>
+          <p>A post-apocalyptic action roguelite with procedural maps, unique mutant abilities, and challenging combat.</p>
+          <div class="tags">
+            <span>Unity</span><span>Procedural Generation</span><span>Systems Engineering</span>
+          </div>
+          <div class="metric">▸ -80% manual level design time</div>
+        </div>
+      </a>
+
+      <a class="project" href="https://tboxfinn.itch.io" target="_blank" rel="noopener noreferrer">
+        <div class="project-media">
+          <img src="images/DIG.png" alt="DIG Multiplayer Mining Game screenshot" />
+        </div>
+        <div class="project-body">
+          <h3>DIG <span class="arrow">→</span></h3>
+          <p>Multiplayer mining game for up to 4 players featuring procedurally generated levels and networking.</p>
+          <div class="tags">
+            <span>Unity</span><span>Multiplayer</span><span>Marching Cubes</span>
+          </div>
+          <div class="metric">▸ 60 FPS with voxel terrain destruction</div>
+        </div>
+      </a>
+    </section>
+
+    <!-- ═══════════ ASSETS ═══════════ -->
+    <section id="assets" class="reveal">
+      <p class="eyebrow">05 — Unity Assets</p>
+      <h2>Tools for the community</h2>
+      <div class="asset-grid">
+        <a class="asset-card" href="https://assetstore.unity.com/packages/package/311957" target="_blank" rel="noopener noreferrer">
+          <div class="asset-thumb">
+            <img src="https://assetstorev1-prd-cdn.unity3d.com/key-image/e49b8275-fe60-412c-a11c-46cdb88fcfe8.jpg" alt="Procedural Map Generator" loading="lazy" onerror="this.remove(); this.parentElement.classList.add('no-img')" />
+          </div>
+          <div class="asset-body">
+            <h3>Procedural Map Generator</h3>
+            <span class="price">$20.00 ★★★★★</span>
+            <span class="go">View on Asset Store →</span>
+          </div>
+        </a>
+        <a class="asset-card" href="https://assetstore.unity.com/packages/package/371894" target="_blank" rel="noopener noreferrer">
+          <div class="asset-thumb">
+            <img src="https://assetstorev1-prd-cdn.unity3d.com/key-image/326dc00e-fe33-4f09-a298-74364ef0ae5b.jpg" alt="Fishing System Pro" loading="lazy" onerror="this.remove(); this.parentElement.classList.add('no-img')" />
+          </div>
+          <div class="asset-body">
+            <h3>Fishing System Pro</h3>
+            <span class="price">$19.98 ★★★★★</span>
+            <span class="go">View on Asset Store →</span>
+          </div>
+        </a>
+        <a class="asset-card" href="https://assetstore.unity.com/packages/package/370546" target="_blank" rel="noopener noreferrer">
+          <div class="asset-thumb">
+            <img src="https://assetstorev1-prd-cdn.unity3d.com/key-image/00b8fc86-b4e6-4d63-b0cc-6d5e3d63a00c.jpg" alt="Multi Scene Manager" loading="lazy" onerror="this.remove(); this.parentElement.classList.add('no-img')" />
+          </div>
+          <div class="asset-body">
+            <h3>Multi Scene Manager</h3>
+            <span class="price">$19.98 ★★★★★</span>
+            <span class="go">View on Asset Store →</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ═══════════ CONTACT ═══════════ -->
+    <section id="contact" class="reveal">
+      <p class="eyebrow">06 — Contact</p>
+      <h2>Let's build something together.</h2>
+      <p>I'm always open to new projects and collaborations. If you have an interesting idea, I'd love to hear it!</p>
+      <div class="contact-socials">
+        <a href="https://github.com/tboxfinn" target="_blank" rel="noopener noreferrer" class="link-underline">GitHub</a>
+        <a href="https://www.linkedin.com/in/hugodanielvd" target="_blank" rel="noopener noreferrer" class="link-underline">LinkedIn</a>
+        <a href="https://www.youtube.com/@tboxfinn" target="_blank" rel="noopener noreferrer" class="link-underline">YouTube</a>
+        <a href="https://tboxfinn.itch.io" target="_blank" rel="noopener noreferrer" class="link-underline">Itch.io</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2020-2026 HUGO VALLADOLID · <span class="heart" id="egg-heart" title="♥">♥</span></p>
+  </footer>
+
+<!-- ════════════════════════════════════════════════════════════════
+     Script 1 (NO module, corre SIEMPRE):
+     marca JS activo + tema día/noche. Independiente de three.js.
+     ════════════════════════════════════════════════════════════════ -->
+<script>
+  document.documentElement.classList.add('js');
+
+  (function initTheme() {
+    var read = function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } };
+    var write = function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} };
+    var theme = read('theme');
+    var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var current = theme || (systemDark ? 'night' : 'day');
+    document.body.classList.toggle('dark-mode', current === 'night');
+
+    document.getElementById('theme-toggle').addEventListener('click', function () {
+      current = current === 'day' ? 'night' : 'day';
+      document.body.classList.toggle('dark-mode', current === 'night');
+      write('theme', current);
+      window.dispatchEvent(new CustomEvent('themechange', { detail: current }));
+    });
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+      if (!read('theme')) {
+        current = e.matches ? 'night' : 'day';
+        document.body.classList.toggle('dark-mode', current === 'night');
+        window.dispatchEvent(new CustomEvent('themechange', { detail: current }));
+      }
+    });
+  })();
+</script>
+
+<!-- ════════════════════════════════════════════════════════════════
+     Script 2 (module): micro-interacciones SIEMPRE + escena 3D async.
+     El 3D (three.js vía CDN) es OPCIONAL: si la red o WebGL fallan,
+     el contenido sigue visible y se muestra el fallback CSS.
+
+     MODELO 3D PROPIO: coloca un archivo en models/ (tenshu.glb,
+     tower.glb, *.gltf o *.obj) y la escena lo usa automáticamente.
+     Sin modelo, se muestra un placeholder procedural temporal.
+     ════════════════════════════════════════════════════════════════ -->
+
+<!-- importmap: permite que three y sus loaders (GLTFLoader) compartan
+     la misma instancia del módulo desde el CDN -->
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js" } }
+</script>
+
+<script type="module">
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ═══════════════ MICRO-INTERACCIONES (siempre) ═══════════════ */
+
+/* Hero: stagger reveal letra por letra por LÍNEA (HUGO / VALLADOLID).
+   Mejora progresiva sobre el texto base — las líneas nunca se parten. */
+(function initStagger() {
+  const el = document.getElementById('hero-name');
+  if (!el || REDUCED_MOTION) return;
+  const lines = el.querySelectorAll('.line');
+  if (!lines.length) return;
+  let idx = 0;
+  lines.forEach((line) => {
+    const text = line.textContent.trim();
+    line.textContent = '';
+    [...text].forEach((ch) => {
+      const s = document.createElement('span');
+      s.className = 'ch';
+      s.textContent = ch === ' ' ? ' ' : ch;
+      s.style.transitionDelay = (idx * 24) + 'ms';
+      line.appendChild(s);
+      idx++;
+    });
+  });
+  const show = () => el.querySelectorAll('.ch').forEach((s) => s.classList.add('visible'));
+  requestAnimationFrame(() => requestAnimationFrame(show));
+  setTimeout(show, 600); // respaldo si rAF no corre
+})();
+
+/* Reveals por scroll con respaldo: nunca dejan contenido oculto */
+(function initReveals() {
+  const els = document.querySelectorAll('.reveal');
+  const showAll = () => els.forEach((el) => el.classList.add('visible'));
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.05 });
+  els.forEach((el) => io.observe(el));
+  setTimeout(showAll, 2000); // respaldo de seguridad: todo visible pase lo que pase
+})();
+
+/* ── Easter eggs + contador DISCOVERIES (nunca bloquean contenido) ── */
+const eggs = [
+  { id: 'egg-logo',   msg: '🐸 Ribbit! The frog behind the code.' },
+  { id: 'egg-heart',  msg: '♥ You found the heart!' },
+  { id: 'egg-hud',    msg: '🛠️ Construction crew: 1 (it’s me)' },
+  { id: 'egg-name',   msg: '✨ Double-click unlocked: Hugo.exe' },
+  { id: 'egg-belief', msg: '🧠 Belief #' }
+];
+const found = new Set();
+let toastTimers = [];
+
+function toast(msg) {
+  const box = document.getElementById('toasts');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  box.appendChild(t);
+  requestAnimationFrame(() => t.classList.add('show'));
+  toastTimers.push(setTimeout(() => {
+    t.classList.remove('show');
+    setTimeout(() => t.remove(), 400);
+  }, 2600));
+  while (toastTimers.length > 3) clearTimeout(toastTimers.shift());
+}
+
+function discover(key) {
+  if (found.has(key)) return false;
+  found.add(key);
+  const n = found.size;
+  document.getElementById('hud-disc').textContent = n + '/5';
+  if (n === 5) toast('🏆 All discoveries found! You built a friendship.');
+  return true;
+}
+
+(function initEggs() {
+  const logo = document.getElementById('egg-logo');
+  logo.addEventListener('mouseenter', () => { if (discover('logo')) toast(eggs[0].msg); });
+  logo.addEventListener('focus', () => { if (discover('logo')) toast(eggs[0].msg); });
+  document.getElementById('egg-heart').addEventListener('mouseenter', () => {
+    if (discover('heart')) toast(eggs[1].msg);
+  });
+  document.getElementById('hud').addEventListener('mouseenter', () => {
+    if (discover('hud')) toast(eggs[2].msg);
+  });
+  document.getElementById('hero-name').addEventListener('dblclick', () => {
+    if (discover('name')) toast(eggs[3].msg);
+  });
+  document.querySelectorAll('.egg-belief').forEach((li, i) => {
+    li.addEventListener('mouseenter', () => {
+      if (discover('belief' + i)) toast(eggs[4].msg + (i + 1));
+    });
+  });
+})();
+
+/* ═══════════════ ESCENA 3D (opcional, async, nunca bloquea) ═══════════════ */
+
+function webglSupported() {
+  try {
+    const c = document.createElement('canvas');
+    return !!(c.getContext('webgl2') || c.getContext('webgl'));
+  } catch { return false; }
+}
+
+const IS_MOBILE = window.matchMedia('(max-width: 768px)').matches || window.matchMedia('(pointer: coarse)').matches;
+const LOW_END = IS_MOBILE && (navigator.hardwareConcurrency || 8) <= 4;
+
+if (!webglSupported() || LOW_END) {
+  document.getElementById('scene').style.display = 'none';
+  document.getElementById('scene-fallback').style.display = 'block';
+}
+
+initSceneAsync();
+
+async function initSceneAsync() {
+  if (!webglSupported() || LOW_END) return;
+  let THREE;
+  try {
+    THREE = await import('three');
+  } catch (e) {
+    /* Sin red o CDN caído → fallback CSS */
+    document.getElementById('scene').style.display = 'none';
+    document.getElementById('scene-fallback').style.display = 'block';
+    return;
+  }
+  try {
+    const model = await loadTenshuModel(THREE);
+    initScene(THREE, model);
+  } catch (e) {
+    /* Cualquier error de la escena no debe tumbar el contenido */
+    console.error('Scene init failed:', e);
+    document.getElementById('scene').style.display = 'none';
+    document.getElementById('scene-fallback').style.display = 'block';
+  }
+}
+
+/* ── Carga del modelo 3D propio ──
+   Busca models/tboxfinn.glb, tenshu.glb u otro .glb/.gltf/.obj en models/.
+   Devuelve { scene, animations } o null → placeholder procedural.
+   Nota: el modelo local solo carga con servidor estático (http://),
+   no con file:// (Chrome bloquea fetch local por CORS). */
+async function loadTenshuModel(THREE) {
+  const isHttp = location.protocol === 'http:' || location.protocol === 'https:';
+  if (!isHttp) {
+    console.warn('ℹ️ Abre con un servidor estático (python -m http.server) para que cargue tu modelo 3D de models/. Usando placeholder temporal.');
+    return null;
+  }
+  const CANDIDATES = [
+    'models/tboxfinn.glb',   // el personaje 3D (Tboxfinn)
+    'models/tenshu.glb', 'models/tenshu.gltf',
+    'models/tower.glb', 'models/tower.gltf',
+    'models/tenshu.obj', 'models/tower.obj'
+  ];
+  for (const url of CANDIDATES) {
+    try {
+      if (url.endsWith('.obj')) {
+        const { OBJLoader } = await import('https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/loaders/OBJLoader.js');
+        const obj = await new OBJLoader().loadAsync(url);
+        console.log('🏯 Modelo cargado:', url);
+        return { scene: obj, animations: [] };
+      }
+      const { GLTFLoader } = await import('https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/loaders/GLTFLoader.js');
+      const gltf = await new GLTFLoader().loadAsync(url);
+      console.log('🏯 Modelo cargado:', url);
+      return { scene: gltf.scene, animations: gltf.animations || [] };
+    } catch { /* probar siguiente candidato */ }
+  }
+  console.warn('ℹ️ No hay modelo 3D propio en models/ — usando placeholder procedural temporal. Coloca un .glb en models/ para usar tu modelo.');
+  return null;
+}
+
+/* ── Normalización del modelo: altura objetivo (de fondo, no gigante),
+   centrado en X/Z, base en y=0.
+   IMPORTANTE: para modelos con esqueleto (SkinnedMesh) se mide el BOX DE
+   LOS BONES — es lo que realmente renderiza (la geometría en rest pose
+   puede estar desalineada del rig y dar posiciones erróneas). */
+const MODEL_TARGET_H = 12.6;
+
+function skeletonBox(THREE, model) {
+  const box = new THREE.Box3();
+  model.traverse((o) => {
+    /* expandByObject NO expande objetos sin geometría (los bones solo
+       tienen posición) — se expande manualmente con cada punto */
+    if (o.isBone) box.expandByPoint(o.getWorldPosition(new THREE.Vector3()));
+  });
+  return box;
+}
+
+function normalizeModel(THREE, model) {
+  model.updateMatrixWorld(true);                 // propagar transforms antes de medir
+  const size = skeletonBox(THREE, model).getSize(new THREE.Vector3());
+  const scale = MODEL_TARGET_H / Math.max(size.y, 0.001);
+  model.scale.setScalar(scale);
+  model.updateMatrixWorld(true);                 // CRÍTICO: propagar el scale
+  const box = skeletonBox(THREE, model);
+  const center = box.getCenter(new THREE.Vector3());
+  model.position.x = -center.x;
+  model.position.z = -center.z;
+  model.position.y = -box.min.y;                 // base del esqueleto en y=0 (no flota)
+  model.updateMatrixWorld(true);
+  return box.getSize(new THREE.Vector3()).y;     // altura REAL renderizada
+}
+
+/* ── Asignar el plano de corte a todos los materiales del modelo ── */
+function applyCutToModel(THREE, model, cutPlane) {
+  model.traverse((o) => {
+    if (!o.isMesh) return;
+    const mats = Array.isArray(o.material) ? o.material : [o.material];
+    mats.forEach((m) => {
+      m.clippingPlanes = [cutPlane];
+      m.clipShadows = true;
+    });
+    o.castShadow = true;
+  });
+}
+
+/* ───────── Paletas por tema (CSS + 3D) ───────── */
+const PALETTES = {
+  day: {
+    yeso: 0xF2EADB,   // paredes de yeso blanco-crema
+    madera: 0x5C4632, // vigas y verandas
+    tejas: 0x3E4650,  // techo gris pizarra azulado
+    piedra: 0x8D8577, // ishigaki (base de piedra)
+    oro: 0xD4A94B,    // pináculo
+    ground: 0xD9CFBC,
+    particles: 0xFFFFFF,
+    ring: 0x9E5300,   // anillo de corte = acento del logo (PICO-8 oscurecido)
+    skyTop: '#8FC3E8', skyBottom: '#F6F1E7', fog: 0xF6F1E7
+  },
+  night: {
+    yeso: 0x3E382F,
+    madera: 0x2A241C,
+    tejas: 0x17181C,
+    piedra: 0x35302A,
+    oro: 0xC9A24B,
+    ground: 0x241F19,
+    particles: 0xFFD9A0,
+    ring: 0xffa300,   // anillo = naranja PICO-8 puro del logo
+    skyTop: '#0d0b1a', skyBottom: '#161310', fog: 0x161310
+  }
+};
+
+/* ───────── Constantes del tenshu ─────────
+   Estilo Japanese Tenshu (castillo japonés): ishigaki de piedra,
+   5 pisos de yeso con vigas de madera y verandas, techos de tejas
+   con aleros que se elevan en las esquinas, pináculo dorado. */
+const ISHIGAKI_Y = 2.2;  // altura de la base de piedra (visible en el hero)
+const TOWER_TOP = 18.1;  // cima del pináculo
+const FLOORS = [
+  { w: 5.6, hWall: 1.7, overhang: 1.5, pitch: 1.6, lift: 0.55 },
+  { w: 4.6, hWall: 1.5, overhang: 1.3, pitch: 1.4, lift: 0.45 },
+  { w: 3.8, hWall: 1.35, overhang: 1.15, pitch: 1.25, lift: 0.4 },
+  { w: 3.1, hWall: 1.2, overhang: 1.0, pitch: 1.2, lift: 0.35 },
+  { w: 2.6, hWall: 1.1, overhang: 0.9, pitch: 1.0, lift: 0.3 }
+];
+
+let renderer, scene, camera, towerGroup;
+let matYeso, matMadera, matTejas, matPiedra, matOro, matGround, matPedestal;
+let particles, cutRing, skyTexture;
+let cutPlane;
+let currentCut = 0;
+let cutTarget = TOWER_TOP;
+let topY = TOWER_TOP;      // altura real del modelo visible (personaje o torre)
+let progress = 0;
+let theme = document.body.classList.contains('dark-mode') ? 'night' : 'day';
+let needsRender = true;
+let modelLoaded = false;   // true si se usa un modelo 3D propio
+let mixer = null;          // AnimationMixer si el modelo trae animaciones
+
+function initScene(THREE, model) {
+  const canvas = document.getElementById('scene');
+  const pal = () => PALETTES[theme];
+  modelLoaded = !!model;
+
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  renderer.setPixelRatio(IS_MOBILE ? 1 : Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.localClippingEnabled = true;
+  if (!IS_MOBILE) renderer.shadowMap.enabled = true;
+
+  scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(pal().fog, 22, 44);
+
+  const makeSky = () => {
+    const c = document.createElement('canvas');
+    c.width = 4; c.height = 256;
+    const ctx = c.getContext('2d');
+    const g = ctx.createLinearGradient(0, 0, 0, 256);
+    g.addColorStop(0, pal().skyTop);
+    g.addColorStop(1, pal().skyBottom);
+    ctx.fillStyle = g; ctx.fillRect(0, 0, 4, 256);
+    return new THREE.CanvasTexture(c);
+  };
+  skyTexture = makeSky();
+  scene.background = skyTexture;
+
+  /* Cámara fija — la escena queda en la franja DERECHA del viewport,
+     lejos y de fondo (fog + blur CSS la atenúan). El centro de vista
+     apunta a la izquierda de la torre para que quede a la derecha. */
+  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera.position.set(16, 12, 25);
+  camera.lookAt(-18, 8.5, 0);
+
+  /* Luces */
+  const hemi = new THREE.HemisphereLight(0xFFE8C8, 0x8A7B62, 1.1);
+  scene.add(hemi);
+  const sun = new THREE.DirectionalLight(0xFFD9A0, 1.8);
+  sun.position.set(6, 14, 8);
+  if (!IS_MOBILE) {
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(1024, 1024);
+    sun.shadow.camera.left = -9; sun.shadow.camera.right = 9;
+    sun.shadow.camera.top = 17; sun.shadow.camera.bottom = -2;
+    sun.shadow.camera.near = 1; sun.shadow.camera.far = 35;
+  }
+  scene.add(sun);
+
+  /* Plano de corte — se conserva y < constant (normal hacia abajo).
+     Aumentar constant "construye" de abajo hacia arriba. */
+  cutPlane = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0);
+
+  /* Materiales del tenshu (compartidos, recorte por clipping) */
+  const clip = [cutPlane];
+  matYeso   = new THREE.MeshStandardMaterial({ color: pal().yeso,   flatShading: true, clippingPlanes: clip, clipShadows: true });
+  matMadera = new THREE.MeshStandardMaterial({ color: pal().madera, flatShading: true, clippingPlanes: clip, clipShadows: true });
+  /* DoubleSide en las tejas: el winding de la geometría del techo
+     no depende del orden de los vértices — se ve bien desde ambos lados */
+  matTejas  = new THREE.MeshStandardMaterial({ color: pal().tejas,  flatShading: true, side: THREE.DoubleSide, clippingPlanes: clip, clipShadows: true });
+  matPiedra = new THREE.MeshStandardMaterial({ color: pal().piedra, flatShading: true, clippingPlanes: clip, clipShadows: true });
+  matOro    = new THREE.MeshStandardMaterial({ color: pal().oro,    flatShading: true, clippingPlanes: clip, clipShadows: true });
+
+  towerGroup = new THREE.Group();
+  if (model) {
+    /* Modelo 3D propio: se normaliza y se le asigna el plano de corte.
+       Si trae animaciones (p.ej. de Mixamo), se reproduce la primera en loop. */
+    topY = normalizeModel(THREE, model.scene);
+    applyCutToModel(THREE, model.scene, cutPlane);
+    towerGroup.add(model.scene);
+    if (model.animations.length) {
+      mixer = new THREE.AnimationMixer(model.scene);
+      mixer.clipAction(model.animations[0]).play();
+      console.log('🎬 Animación activa:', model.animations[0].name, `(${model.animations[0].duration.toFixed(1)}s)`);
+    }
+
+    /* Plataforma bajo el personaje (ancla visual — "no flota") */
+    matPedestal = new THREE.MeshStandardMaterial({ color: pal().piedra, flatShading: true });
+    const pedestal = new THREE.Mesh(new THREE.CylinderGeometry(6.5, 7.4, 0.5, 32), matPedestal);
+    pedestal.position.y = -0.25;
+    towerGroup.add(pedestal);
+
+    /* Sombra suave (blob) sobre la plataforma — con clipping para que
+       desaparezca junto con el personaje */
+    const sc = document.createElement('canvas');
+    sc.width = 64; sc.height = 64;
+    const sctx = sc.getContext('2d');
+    const sg = sctx.createRadialGradient(32, 32, 4, 32, 32, 30);
+    sg.addColorStop(0, 'rgba(0,0,0,0.45)');
+    sg.addColorStop(1, 'rgba(0,0,0,0)');
+    sctx.fillStyle = sg; sctx.fillRect(0, 0, 64, 64);
+    const shadowTex = new THREE.CanvasTexture(sc);
+    const shadow = new THREE.Mesh(
+      new THREE.CircleGeometry(5.5, 32),
+      new THREE.MeshBasicMaterial({ map: shadowTex, transparent: true, depthWrite: false, clippingPlanes: [cutPlane] })
+    );
+    shadow.rotation.x = -Math.PI / 2;
+    shadow.position.y = 0.02;
+    towerGroup.add(shadow);
+  } else {
+    /* Placeholder procedural temporal (solo hasta que haya modelo propio) */
+    buildTenshu(THREE);
+  }
+  scene.add(towerGroup);
+
+  /* Suelo */
+  matGround = new THREE.MeshStandardMaterial({ color: pal().ground, flatShading: true });
+  const ground = new THREE.Mesh(new THREE.CircleGeometry(10, 48), matGround);
+  ground.rotation.x = -Math.PI / 2;
+  ground.position.y = -0.02;
+  scene.add(ground);
+
+  /* Partículas — flotan sobre la línea de corte (Points ignora clipping) */
+  const pGeo = new THREE.BufferGeometry();
+  const pCount = IS_MOBILE ? 200 : 400;
+  const pos = new Float32Array(pCount * 3);
+  for (let i = 0; i < pCount; i++) {
+    pos[i * 3]     = (Math.random() - 0.5) * 18;
+    pos[i * 3 + 1] = Math.random() * (TOWER_TOP + 2) + 2;
+    pos[i * 3 + 2] = (Math.random() - 0.6) * 10;
+  }
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  particles = new THREE.Points(pGeo, new THREE.PointsMaterial({
+    color: pal().particles, size: 0.09, sizeAttenuation: true,
+    transparent: true, opacity: 0.5, depthWrite: false, blending: THREE.AdditiveBlending
+  }));
+  scene.add(particles);
+
+  /* Anillo de corte — "haz" que marca la línea donde el modelo desaparece */
+  cutRing = new THREE.Mesh(
+    new THREE.RingGeometry(0.6, 7.5, 48),
+    new THREE.MeshBasicMaterial({ color: pal().ring, transparent: true, opacity: 0.25, depthTest: false, side: THREE.DoubleSide })
+  );
+  cutRing.rotation.x = -Math.PI / 2;
+  cutRing.renderOrder = 10;
+  scene.add(cutRing);
+
+  /* ── Scroll → progreso (FLUJO INVERSO) ──
+     Arriba de la página (scroll 0): modelo COMPLETO visible.
+     Al bajar: el corte sube y el modelo va DESAPARECIENDO. */
+  const recomputeDocHeight = () => {
+    const doc = document.documentElement.scrollHeight - window.innerHeight;
+    return Math.max(doc, 1);
+  };
+  const onScroll = () => {
+    const docH = recomputeDocHeight();
+    progress = clamp(window.scrollY / docH, 0, 1);
+    cutTarget = topY * (1 - progress);   // inverso: 100% arriba → 0% abajo
+    $('#hud-build').textContent = Math.round((1 - progress) * 100) + '%';
+    needsRender = true;
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const onResize = () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    needsRender = true;
+  };
+  window.addEventListener('resize', onResize);
+  window.addEventListener('load', onScroll);
+
+  /* Build-in inicial: la construcción arranca mientras el hero revela el nombre */
+  const buildStart = REDUCED_MOTION ? 0 : performance.now();
+  const BUILD_IN_MS = 1200;
+  onScroll();
+
+  /* ── Loop ──
+     Rotación idle desactivada (petición de Hugo: el modelo no debe girar).
+     Build-in inicial: al entrar, el modelo "aparece" de abajo hacia arriba. */
+  let lastFrame = 0;
+  const dt = (now) => {
+    const delta = lastFrame ? (now - lastFrame) / 1000 : 0;
+    lastFrame = now;
+    if (mixer) mixer.update(delta);
+
+    const t = (now - buildStart) / BUILD_IN_MS;
+    const buildIn = REDUCED_MOTION ? 1 : clamp(t, 0, 1);
+    const target = Math.max(cutTarget * buildIn, 0.05);
+    currentCut += (target - currentCut) * 0.08;
+    if (Math.abs(target - currentCut) < 0.01) currentCut = target;
+
+    cutPlane.constant = currentCut;
+    cutRing.visible = currentCut > 0.05 && currentCut < TOWER_TOP;
+    cutRing.position.y = currentCut + 0.02;
+
+    particles.rotation.y += 0.001;
+  };
+
+  const renderFrame = (now) => {
+    dt(now);
+    renderer.render(scene, camera);
+    needsRender = false;
+    requestAnimationFrame(renderFrame);
+  };
+
+  if (IS_MOBILE) {
+    let last = performance.now();
+    const mobileLoop = (now) => {
+      const heart = now - last > 1000;
+      if (needsRender || heart) { dt(now); renderer.render(scene, camera); needsRender = false; last = now; }
+      requestAnimationFrame(mobileLoop);
+    };
+    requestAnimationFrame(mobileLoop);
+  } else {
+    requestAnimationFrame(renderFrame);
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) { renderer.setAnimationLoop(null); }
+    else if (!IS_MOBILE) { requestAnimationFrame(renderFrame); }
+  });
+
+  /* ── Tema: la escena escucha el evento del Script 1 ──
+     Con modelo propio: solo cambia el ambiente (cielo, suelo, luz),
+     el modelo texturizado se mantiene igual. */
+  window.addEventListener('themechange', (e) => {
+    theme = e.detail;
+    const p = PALETTES[theme];
+    if (!modelLoaded) {
+      matYeso.color.set(p.yeso); matMadera.color.set(p.madera); matTejas.color.set(p.tejas);
+      matPiedra.color.set(p.piedra); matOro.color.set(p.oro);
+    }
+    matGround.color.set(p.ground);
+    if (matPedestal) matPedestal.color.set(p.piedra);
+    particles.material.color.set(p.particles);
+    cutRing.material.color.set(p.ring);
+    scene.fog.color.set(p.fog);
+    skyTexture = makeSky();
+    scene.background = skyTexture;
+    needsRender = true;
+  });
+}
+
+/* ═══════════════ CONSTRUCCIÓN DEL TENSHU ═══════════════ */
+
+function buildTenshu(THREE) {
+  const add = (geo, mat, y, x = 0, z = 0) => {
+    const m = new THREE.Mesh(geo, mat);
+    m.position.set(x, y, z);
+    m.castShadow = true;
+    towerGroup.add(m);
+    return m;
+  };
+
+  /* 1. Ishigaki — base de piedra en talud (pirámide truncada de 4 lados) */
+  const ishigaki = new THREE.CylinderGeometry(3.1, 4.6, ISHIGAKI_Y, 4);
+  ishigaki.rotateY(Math.PI / 4);
+  add(ishigaki, matPiedra, ISHIGAKI_Y / 2);
+
+  /* 2. Cinco pisos: muro de yeso + vigas de madera + veranda + techo */
+  let y = ISHIGAKI_Y;
+  FLOORS.forEach((F, i) => {
+    const half = F.w / 2;
+    const isLast = i === FLOORS.length - 1;
+
+    /* Muro de yeso */
+    add(new THREE.BoxGeometry(F.w, F.hWall, F.w), matYeso, y + F.hWall / 2);
+
+    /* Vigas de madera: 4 pilares de esquina + 1 viga horizontal por cara */
+    const p = 0.28;
+    [[half - p / 2, half - p / 2], [-half + p / 2, half - p / 2], [half - p / 2, -half + p / 2], [-half + p / 2, -half + p / 2]]
+      .forEach(([x, z]) => add(new THREE.BoxGeometry(p, F.hWall, p), matMadera, y + F.hWall / 2, x, z));
+    const beamH = 0.16, beamY = y + F.hWall - 0.3;
+    add(new THREE.BoxGeometry(F.w + 0.1, beamH, 0.14), matMadera, beamY, 0, half - 0.1);
+    add(new THREE.BoxGeometry(F.w + 0.1, beamH, 0.14), matMadera, beamY, 0, -half + 0.1);
+    add(new THREE.BoxGeometry(0.14, beamH, F.w + 0.1), matMadera, beamY, half - 0.1, 0);
+    add(new THREE.BoxGeometry(0.14, beamH, F.w + 0.1), matMadera, beamY, -half + 0.1, 0);
+
+    if (!isLast) {
+      /* Veranda (balaustrada) alrededor del piso: caja baja + postes */
+      const vY = y + F.hWall + 0.18;
+      const v = 0.16;
+      const vHalf = half + 0.42;
+      [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(([dx, dz]) => {
+        const len = F.w + 0.85;
+        const g = dx ? new THREE.BoxGeometry(len, v, 0.12) : new THREE.BoxGeometry(0.12, v, len);
+        add(g, matMadera, vY, dx * vHalf, dz * vHalf);
+      });
+      [[1, 1], [1, -1], [-1, 1], [-1, -1]].forEach(([dx, dz]) => {
+        add(new THREE.BoxGeometry(0.12, 0.5, 0.12), matMadera, vY - 0.05, dx * (half + 0.42), dz * (half + 0.42));
+      });
+      y += F.hWall + 0.36;
+    } else {
+      y += F.hWall;
+    }
+
+    /* Techo de tejas con aleros que se elevan en las esquinas */
+    const roof = makePyramidRoof(THREE, F.w, F.w, F.overhang, F.pitch, F.lift);
+    const roofMesh = add(roof, matTejas, y);
+    /* Tapa de la cumbrera (cima del techo) */
+    const cap = new THREE.CylinderGeometry(0.16, 0.16, 0.2, 4);
+    cap.rotateY(Math.PI / 4);
+    add(cap, matMadera, y + F.pitch + 0.1);
+    roofMesh.castShadow = true;
+
+    y += F.pitch;
+  });
+
+  /* 3. Pináculo dorado: linterna + cono */
+  add(new THREE.CylinderGeometry(0.22, 0.3, 0.5, 8), matOro, y + 0.25);
+  add(new THREE.CylinderGeometry(0.06, 0.22, 0.7, 8), matOro, y + 0.85);
+}
+
+/* Techo piramidal de 4 lados con aleros que se elevan en las esquinas.
+   La firma del estilo japonés: el borde del alero sube hacia las esquinas
+   (curva cuadrática: en el centro del lado está bajo, en la esquina alto). */
+function makePyramidRoof(THREE, w, d, overhang, pitch, lift) {
+  const eW = w / 2 + overhang; // mitad del alero en X
+  const eD = d / 2 + overhang; // mitad del alero en Z
+  const S = 10;                // segmentos por lado
+  const geo = new THREE.BufferGeometry();
+  const pos = [];
+  const idx = [];
+
+  /* 4 lados del alero: cada uno de su esquina A a su esquina B */
+  const sides = [
+    [-eW, -eD,  eW, -eD],  // norte (z = -eD), de -X a +X
+    [ eW, -eD,  eW,  eD],  // este  (x = +eW), de -Z a +Z
+    [ eW,  eD, -eW,  eD],  // sur   (z = +eD), de +X a -X
+    [-eW,  eD, -eW, -eD]   // oeste (x = -eW), de +Z a -Z
+  ];
+  sides.forEach(([ax, az, bx, bz]) => {
+    const base = pos.length / 3;
+    for (let i = 0; i <= S; i++) {
+      const t = i / S;
+      const x = ax + (bx - ax) * t;
+      const z = az + (bz - az) * t;
+      const c = 1 - Math.pow(2 * Math.abs(t - 0.5), 2); // 1 en esquinas, 0 en el centro
+      pos.push(x, lift * (0.1 + 0.9 * c), z);
+    }
+    /* cima (apex) */
+    const apex = pos.length / 3;
+    pos.push(0, pitch, 0);
+    /* caras: strip hacia la cima */
+    for (let i = 0; i < S; i++) {
+      const a = base + i, b = base + i + 1;
+      idx.push(a, b, apex);
+    }
+  });
+
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  geo.setIndex(idx);
+  geo.computeVertexNormals();
+  return geo;
+}
+</script>
+</body>
+</html>
