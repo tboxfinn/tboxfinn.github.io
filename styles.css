@@ -63,7 +63,10 @@ body {
   line-height: 1.7;
   transition: background-color 0.4s ease, color 0.4s ease;
   -webkit-font-smoothing: antialiased;
+  /* Evita scroll horizontal en móvil (causa de zoom "pegado" en iOS Safari) */
+  overflow-x: clip;
 }
+@supports not (overflow: clip) { body { overflow-x: hidden; } }
 
 ::selection { background: var(--accent); color: var(--accent-contrast); }
 
@@ -154,7 +157,7 @@ nav {
 .dark-mode #theme-toggle .icon-moon { display: block; }
 
 /* Menú móvil (hamburguesa) */
-.hamburger { background: none; border: none; cursor: pointer; display: none; padding: 6px; }
+.hamburger { background: none; border: none; cursor: pointer; display: none; padding: 8px; }
 .hamburger span {
   display: block; width: 24px; height: 3px;
   background-color: var(--ink); margin: 5px 0;
@@ -164,14 +167,45 @@ nav {
 .hamburger.active span:nth-child(2) { opacity: 0; }
 .hamburger.active span:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
 
-.mobile-menu {
+/* Panel lateral móvil. El HTML usa clases tipo Tailwind (fixed, top-0, right-0,
+   h-full, w-64, z-50, border-l, pt-24, px-6, flex flex-col space-y-5, text-lg)
+   que NO están definidas en este proyecto: se reimplementan aquí, acotadas al
+   #mobile-menu, para que sea un sidebar fijo real y no un bloque suelto que
+   desborda la página (causaba scroll horizontal / zoom "pegado" en móvil). */
+#mobile-menu {
+  position: fixed; top: 0; right: 0;
+  width: min(80vw, 20rem);
+  height: 100vh; height: 100dvh;
+  z-index: 50;
+  border-left: 1px solid var(--border);
   transform: translateX(100%);
   transition: transform 0.3s ease-in-out;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
-.mobile-menu.active { transform: translateX(0); }
-.mobile-menu a { font-family: 'IBM Plex Mono', monospace; text-decoration: none; color: var(--muted); }
-.mobile-menu a:hover { color: var(--accent); }
-.mobile-menu a.active { color: var(--accent); }
+#mobile-menu.active { transform: translateX(0); }
+#mobile-menu .pt-24 { padding-top: clamp(4.5rem, 16vh, 5.5rem); }
+#mobile-menu .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+#mobile-menu .h-full { height: 100%; }
+#mobile-menu .flex { display: flex; }
+#mobile-menu .flex-col { flex-direction: column; }
+#mobile-menu .space-y-5 > * + * { margin-top: 1.25rem; }
+#mobile-menu a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.125rem; /* text-lg */
+  text-decoration: none; color: var(--muted);
+}
+#mobile-menu a:hover { color: var(--accent); }
+#mobile-menu a.active { color: var(--accent); }
+
+/* Overlay del menú móvil: fijo a pantalla completa, oculto por defecto
+   (scripts.js alterna la clase .hidden) */
+#mobile-menu-overlay {
+  position: fixed; inset: 0; z-index: 40;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+}
+#mobile-menu-overlay:not(.hidden) { display: block; }
 
 @media (max-width: 640px) {
   .nav-links > a { display: none; }
@@ -485,6 +519,10 @@ code {
 }
 .form-field input:focus, .form-field select:focus, .form-field textarea:focus {
   outline: none; border-color: var(--accent);
+}
+/* iOS Safari hace auto-zoom al enfocar inputs con font-size < 16px */
+@media (max-width: 640px) {
+  .form-field input, .form-field select, .form-field textarea { font-size: 16px; }
 }
 .form-note { font-size: 0.82rem; color: var(--faint); margin-top: 1rem; }
 
